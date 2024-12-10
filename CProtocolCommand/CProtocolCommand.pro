@@ -9,13 +9,33 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    CCommand.cpp \
     CCommandBtn.cpp \
+    CCommandStack.cpp \
+    CCommandStackElement.cpp \
+    CForCommandBtn.cpp \
+    CIfCommandBtn.cpp \
+    CIfElseCommandBtn.cpp \
+    CMessage.cpp \
+    CValue.cpp \
+    CVarTable.cpp \
+    CWhileCommandBtn.cpp \
     main.cpp \
     CProtocolCommand.cpp
 
 HEADERS += \
+    CCommand.h \
     CCommandBtn.h \
-    CProtocolCommand.h
+    CCommandStack.h \
+    CCommandStackElement.h \
+    CForCommandBtn.h \
+    CIfCommandBtn.h \
+    CIfElseCommandBtn.h \
+    CMessage.h \
+    CProtocolCommand.h \
+    CValue.h \
+    CVarTable.h \
+    CWhileCommandBtn.h
 
 FORMS += \
     CProtocolCommand.ui
