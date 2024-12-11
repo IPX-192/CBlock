@@ -37,8 +37,8 @@ public:
 
 
 private:
-    CCommandBtn* m_body;
-
+    CExpressionCommand* m_Condition{nullptr};   //参数块
+    CStatementCommand* m_Body{nullptr};         //下一个执行块
 };
 
 #endif // CIFCOMMANDBTN_H

@@ -2,6 +2,11 @@
 
 CCommand::CCommand() {}
 
+CCommand::~CCommand()
+{
+
+}
+
 bool CCommand::isValidParam(ParamType given, ParamType target)
 {
     return true;
