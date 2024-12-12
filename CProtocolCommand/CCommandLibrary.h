@@ -4,6 +4,12 @@
 #include <QList>
 #include <QString>
 #include "CCommand.h"
+
+#include "CIfCommandBtn.h"
+#include "CIfElseCommandBtn.h"
+#include "CWhileCommandBtn.h"
+#include "CForCommandBtn.h"
+
 class CCommandBtnLibrary;
 class CCommandLibrary
 {
@@ -19,6 +25,9 @@ public:
     bool contains(QString id);
 
     CCommand* get(QString id) const;
+
+private:
+    QList<CCommand*> m_listCommand;     //存储指向block对象指针的列表
 };
 
 #endif // CCOMMANDLIBRARY_H

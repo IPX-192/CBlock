@@ -43,7 +43,7 @@ CProtocolCommand::CProtocolCommand(QWidget *parent)
 
 
     for (const auto& info : buttonInfos) {
-        QPushButton* pushButton = new QPushButton(info.text);
+        CCommandBtn* pushButton = new CCommandBtn(info.text);
         pushButton->setFixedSize(65, 45);
         pushButton->setStyleSheet("color: black;");
         QGraphicsProxyWidget* proxy = scene -> addWidget(pushButton);
@@ -95,7 +95,7 @@ void CProtocolCommand::buildCommandsList()
     }
 }
 
-void CProtocolCommand::addCommand(QPushButton *commandBtn)
+void CProtocolCommand::addCommand(CCommandBtn *commandBtn)
 {
     if(commandBtn != NULL) {
         m_lisCommands.append(commandBtn);
@@ -103,7 +103,7 @@ void CProtocolCommand::addCommand(QPushButton *commandBtn)
     }
 }
 
-void CProtocolCommand::removeCommand(QPushButton *commandBtn)
+void CProtocolCommand::removeCommand(CCommandBtn *commandBtn)
 {
     for(int i = 0; i < m_lisCommands.size(); i++) {
         if(m_lisCommands[i] == commandBtn) {

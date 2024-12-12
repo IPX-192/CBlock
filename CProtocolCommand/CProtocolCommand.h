@@ -46,9 +46,9 @@ public:
 
     void buildCommandsList();
 
-    void addCommand(QPushButton* commandBtn);
+    void addCommand(CCommandBtn* commandBtn);
 
-    void removeCommand(QPushButton* commandBtn);
+    void removeCommand(CCommandBtn* commandBtn);
 
     void compileProject();
 

@@ -10,16 +10,22 @@
 #include <QFont>
 #include <QList>
 #include <QDebug>
+#include "CCommand.h"
 
 class CCommandBtn : public QPushButton
 {
 public:
-    CCommandBtn();
+    CCommandBtn(CCommand* block);
+    virtual ~CCommandBtn();
 
-public:
-    explicit CCommandBtn(int index, QString text, QObject *parent = 0);
+    virtual CCommandBtn* copy();
+
+    QString getId() const { return m_qstrID; }
 
 signals:
+
+private:
+    QString m_qstrID;
 };
 
 #endif // CCOMMANDBTN_H
