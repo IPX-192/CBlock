@@ -1,8 +1,16 @@
-#include "CCommandExecuteThread.h"
+﻿#include "CCommandExecuteThread.h"
 
 CCommandExecuteThread::CCommandExecuteThread()
 {
 
+}
+
+CCommandExecuteThread::CCommandExecuteThread(CCommand *block)
+{
+    CCommandStackElement* ese = new CCommandStackElement();
+    ese->setBlock(block);
+
+    m_stackCommandStack.push(ese);
 }
 
 CCommandExecuteThread::~CCommandExecuteThread()

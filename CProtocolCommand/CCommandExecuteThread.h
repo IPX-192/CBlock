@@ -1,4 +1,4 @@
-#ifndef CCOMMANDEXECUTETHREAD_H
+﻿#ifndef CCOMMANDEXECUTETHREAD_H
 #define CCOMMANDEXECUTETHREAD_H
 
 #include <QStack>
@@ -12,6 +12,8 @@ class CCommandExecuteThread
 {
 public:
     CCommandExecuteThread();
+
+    CCommandExecuteThread(CCommand* block);
 
     ~CCommandExecuteThread();
 

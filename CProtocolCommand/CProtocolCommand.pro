@@ -11,13 +11,19 @@ CONFIG += c++17
 SOURCES += \
     CCommand.cpp \
     CCommandBtn.cpp \
+    CCommandBtnLibrary.cpp \
+    CCommandExcuteHandler.cpp \
     CCommandExecuteThread.cpp \
+    CCommandLibrary.cpp \
+    CCommandRepr.cpp \
     CCommandStackElement.cpp \
     CExpressionCommand.cpp \
     CForCommandBtn.cpp \
     CIfCommandBtn.cpp \
     CIfElseCommandBtn.cpp \
     CMessage.cpp \
+    CSignal.cpp \
+    CStartCommand.cpp \
     CStatementCommand.cpp \
     CValue.cpp \
     CVarTable.cpp \
@@ -28,7 +34,11 @@ SOURCES += \
 HEADERS += \
     CCommand.h \
     CCommandBtn.h \
+    CCommandBtnLibrary.h \
+    CCommandExcuteHandler.h \
     CCommandExecuteThread.h \
+    CCommandLibrary.h \
+    CCommandRepr.h \
     CCommandStackElement.h \
     CExpressionCommand.h \
     CForCommandBtn.h \
@@ -36,6 +46,8 @@ HEADERS += \
     CIfElseCommandBtn.h \
     CMessage.h \
     CProtocolCommand.h \
+    CSignal.h \
+    CStartCommand.h \
     CStatementCommand.h \
     CValue.h \
     CVarTable.h \

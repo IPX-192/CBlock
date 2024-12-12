@@ -8,6 +8,10 @@
 #include <QList>
 #include <QGraphicsView>
 #include <QTimer>
+#include "CCommandExcuteHandler.h"
+#include "CSignal.h"
+#include "CCommandBtn.h"
+#include "CCommandLibrary.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -24,10 +28,10 @@ struct ButtonInfo {
 };
 
 //定义要控制的类型
-// struct
-// {
+class TestA
+{
 
-// };
+};
 
 class CProtocolCommand : public QWidget
 {
@@ -48,9 +52,13 @@ public:
 
     void compileProject();
 
+    void comileBody();
+
 signals:
     //命令区变更
     void sigCommandsUpdated();
+
+    void sigSendSignal(const CSignal &signal);
 
 private slots:
     void onCommandsUpdated();
@@ -70,7 +78,7 @@ private:
 
     ButtonInfo buttonInfos[12];  // 作为成员变量定义按钮信息数组
 
-    QList<QPushButton*> m_lisCommands;
+    QList<CCommandBtn*> m_lisCommands;
 
 
     QList<QPushButton*> m_test;
@@ -78,7 +86,10 @@ private:
 
     QGraphicsScene* m_CommandMainScene{nullptr};
 
-    QTimer* m_Timer;
+    CCommandExcuteHandler m_excuteHandler;
+
+    CCommandLibrary m_CommandLibrary;
+
 
 
 

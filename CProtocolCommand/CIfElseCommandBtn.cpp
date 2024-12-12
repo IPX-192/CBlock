@@ -1,21 +1,30 @@
 #include "CIfElseCommandBtn.h"
+#include "CMessage.h"
+#include "CCommandExecuteThread.h"
 
 CIfElseCommandBtn::CIfElseCommandBtn() {}
 
 CIfElseCommandBtn::~CIfElseCommandBtn()
 {
-    if(_condition != NULL)
-        delete _condition;
-    if(_ifBody != NULL)
-        delete _ifBody;
-    if(_elseBody != NULL)
-        delete _elseBody;
+    if(m_Condition != NULL)
+        delete m_Condition;
+    if(m_IfBody != NULL)
+        delete m_IfBody;
+    if(m_ElseBody != NULL)
+        delete m_ElseBody;
+}
+
+QList<CCommand::ParamType> CIfElseCommandBtn::getParamTypes() const
+{
+    QList<CCommand::ParamType> params;
+    params.append(CCommand::BOOLEAN_EXPRESSION);
+    return params;
 }
 
 void CIfElseCommandBtn::executeNextStep(CCommandExecuteThread &executionThread) const
 {
     //check if block is valid for execution
-    if(_condition == NULL || _ifBody == NULL || _elseBody == NULL) {
+    if(m_Condition == NULL || m_IfBody == NULL || m_ElseBody == NULL) {
         executionThread.endExecution(NULL);
         return;
     }
@@ -31,7 +40,7 @@ void CIfElseCommandBtn::executeNextStep(CCommandExecuteThread &executionThread) 
     //test condition
     if(m->getValue() == 0)
     {
-        executionThread.setNextBlock(_condition);
+        executionThread.setNextBlock(m_Condition);
         m->setValue(1);
         return;
     }
@@ -39,7 +48,7 @@ void CIfElseCommandBtn::executeNextStep(CCommandExecuteThread &executionThread) 
     //check condition and run body if condition evaluated true
     if(m->getValue() == 1)
     {
-        Value* value = (Value*) executionThread.getReturnValue();
+        CValue* value = (CValue*) executionThread.getReturnValue();
         //if no return value or false -> end execution
         if(value == NULL)
         {
@@ -49,13 +58,13 @@ void CIfElseCommandBtn::executeNextStep(CCommandExecuteThread &executionThread) 
         else if (value->toBool())
         {
             //if condition true -> execute if body
-            executionThread.setNextBlock(_ifBody);
+            executionThread.setNextBlock(m_IfBody);
             m->setValue(2);
         }
         else if (!value->toBool())
         {
             //if condition false -> execute else body
-            executionThread.setNextBlock(_elseBody);
+            executionThread.setNextBlock(m_ElseBody);
             m->setValue(2);
         }
 
@@ -85,9 +94,9 @@ bool CIfElseCommandBtn::addBody(CStatementCommand *body, int index)
         return false;
 
     if (index == 0)
-        _ifBody = body;
+        m_IfBody = body;
     else if (index == 1)
-        _elseBody = body;
+        m_ElseBody = body;
 
     return true;
 }

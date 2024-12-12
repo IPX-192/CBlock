@@ -3,6 +3,14 @@
 
 #include <QPushButton>
 
+#include <QStringList>
+#include <QString>
+#include <QPoint>
+#include <QSize>
+#include <QFont>
+#include <QList>
+#include <QDebug>
+
 class CCommandBtn : public QPushButton
 {
 public:

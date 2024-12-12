@@ -20,10 +20,6 @@ CProtocolCommand::CProtocolCommand(QWidget *parent)
     QGraphicsScene* scene = new QGraphicsScene(this);
     ui->graphicsView->setScene(scene);
 
-    m_Timer = new QTimer();
-    m_Timer->setInterval(10);
-
-    connect(m_Timer, SIGNAL(timeout()), this, SLOT(executionTick()));
 
     // QGraphicsRectItem* rectItem = new QGraphicsRectItem(0, 0, 100, 100);
     // scene-> addItem(rectItem);
@@ -119,6 +115,15 @@ void CProtocolCommand::removeCommand(QPushButton *commandBtn)
 
 void CProtocolCommand::compileProject()
 {
+    //只要放入了命令块就开始编译
+    if(m_lisCommands.size())
+    {
+
+    }
+}
+
+void CProtocolCommand::comileBody()
+{
 
 }
 
@@ -149,9 +154,14 @@ void CProtocolCommand::on_btn_Start_clicked()
 
 
     //编译项目
-
+    compileProject();
 
     //开始运行
-    m_Timer->start();
+    m_excuteHandler.start();
+
+    //默认触发事件是start之后
+    emit sigSendSignal(CSignal(CSignal::START));
+
+
 }
 

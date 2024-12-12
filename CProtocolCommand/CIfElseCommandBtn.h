@@ -20,7 +20,7 @@ public:
 
     virtual QString getParamDescription() const {return QObject::tr("If") + QString(" %p");}
 
-     virtual QString getBodiesDescription() const {return QObject::tr("Then") + QString(" %b ") + QObject::tr("Else") + QString(" %b");}
+    virtual QString getBodiesDescription() const {return QObject::tr("Then") + QString(" %b ") + QObject::tr("Else") + QString(" %b");}
 
     virtual void executeNextStep(CCommandExecuteThread& executionThread) const;
 
@@ -37,8 +37,9 @@ public:
 
 
 private:
-    CExpressionCommand* m_Condition{nullptr};   //参数块
-    CStatementCommand* m_Body{nullptr};         //下一个执行块
+    CExpressionCommand* m_Condition;
+    CStatementCommand* m_IfBody;
+    CStatementCommand* m_ElseBody;
 };
 
 #endif // CIFELSECOMMANDBTN_H
