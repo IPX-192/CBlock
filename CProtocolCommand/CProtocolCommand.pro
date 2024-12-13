@@ -2,6 +2,8 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+CONFIG -= release
+
 CONFIG += c++17
 
 # You can make your code fail to compile if it uses deprecated APIs.
@@ -15,6 +17,7 @@ SOURCES += \
     CCommandExcuteHandler.cpp \
     CCommandExecuteThread.cpp \
     CCommandLibrary.cpp \
+    CCommandParam.cpp \
     CCommandRepr.cpp \
     CCommandStackElement.cpp \
     CExpressionCommand.cpp \
@@ -38,6 +41,7 @@ HEADERS += \
     CCommandExcuteHandler.h \
     CCommandExecuteThread.h \
     CCommandLibrary.h \
+    CCommandParam.h \
     CCommandRepr.h \
     CCommandStackElement.h \
     CExpressionCommand.h \

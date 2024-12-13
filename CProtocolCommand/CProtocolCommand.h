@@ -12,6 +12,7 @@
 #include "CSignal.h"
 #include "CCommandBtn.h"
 #include "CCommandLibrary.h"
+#include "CCommandBtnLibrary.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -76,7 +77,7 @@ private:
     Ui::CProtocolCommand *ui;
 
 
-    ButtonInfo buttonInfos[12];  // 作为成员变量定义按钮信息数组
+    ButtonInfo buttonInfos[10];  // 作为成员变量定义按钮信息数组
 
     QList<CCommandBtn*> m_lisCommands;
 
@@ -90,7 +91,9 @@ private:
 
     CCommandLibrary m_CommandLibrary;
 
+    CCommandBtnLibrary* m_pCommandBtnLibrary{nullptr};
 
+    CCommandBtn *m_curCommandBtn{nullptr};
 
 
     //控制的变量区

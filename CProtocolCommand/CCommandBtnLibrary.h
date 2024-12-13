@@ -1,4 +1,4 @@
-#ifndef CCOMMANDBTNLIBRARY_H
+﻿#ifndef CCOMMANDBTNLIBRARY_H
 #define CCOMMANDBTNLIBRARY_H
 
 #include <QList>

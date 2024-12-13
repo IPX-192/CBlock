@@ -54,24 +54,28 @@
        <property name="title">
         <string>命令区</string>
        </property>
-       <layout class="QGridLayout" name="gridLayout_6">
-        <item row="0" column="0">
-         <widget class="QGraphicsView" name="graphicsView">
-          <property name="minimumSize">
-           <size>
-            <width>225</width>
-            <height>500</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>225</width>
-            <height>500</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="QGraphicsView" name="graphicsView">
+        <property name="geometry">
+         <rect>
+          <x>12</x>
+          <y>32</y>
+          <width>225</width>
+          <height>500</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>225</width>
+          <height>500</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>225</width>
+          <height>500</height>
+         </size>
+        </property>
+       </widget>
       </widget>
      </item>
     </layout>

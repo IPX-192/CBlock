@@ -1,4 +1,5 @@
 #include "CCommandLibrary.h"
+#include "CCommandBtnLibrary.h"
 #include "CCommand.h"
 
 CCommandLibrary::CCommandLibrary() {
@@ -49,7 +50,7 @@ CCommand *CCommandLibrary::getBlockInstance(QString id) const
 
 }
 
-CCommandBtnLibrary *CCommandLibrary::createBlockReprLibrary() const
+CCommandBtnLibrary* CCommandLibrary::createBlockReprLibrary() const
 {
     CCommandBtnLibrary* lib = new CCommandBtnLibrary;
 
@@ -67,7 +68,6 @@ bool CCommandLibrary::contains(QString id)
         {
             return true;
         }
-
     }
 
     return false;
