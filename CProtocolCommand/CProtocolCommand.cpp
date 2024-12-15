@@ -43,7 +43,7 @@ CProtocolCommand::CProtocolCommand(QWidget *parent)
 
     buttonInfos[7] = {">", 32, 200};
     buttonInfos[8] = {"<", 100, 150};
-    buttonInfos[9] = {"Add", 100, 200};
+    buttonInfos[9] = {"+=", 100, 200};
 
     int row = 0;
     int col = 0;
@@ -70,7 +70,7 @@ CProtocolCommand::CProtocolCommand(QWidget *parent)
         }
 
         // 使用lambda表达式来连接按钮点击信号和自定义的槽函数逻辑，打印按钮文字
-        connect(commandBtn, &CCommandBtn::clicked, this, &CProtocolCommand::onCommandBtnClicked);
+        connect(commandBtn, &CCommandBtn::sigClicked, this, &CProtocolCommand::onCommandBtnClicked);
     }
 
     //layout->setSpacing(30);
@@ -87,39 +87,43 @@ CProtocolCommand::~CProtocolCommand()
 
 void CProtocolCommand::resetCommandsList()
 {
-    foreach (QPushButton* block, m_test) {
-
+    // 先删除所有 QGraphicsProxyWidget
+    foreach (QGraphicsItem* item, m_CommandMainScene->items()) {
+        QGraphicsProxyWidget* proxyWidget = qgraphicsitem_cast<QGraphicsProxyWidget*>(item);
+        if (proxyWidget) {
+            QWidget* widget = proxyWidget->widget();
+            if (widget) {
+                widget->setParent(nullptr);  // 确保 widget 的父对象不会影响到删除
+            }
+            delete proxyWidget;  // 删除 QGraphicsProxyWidget
+        }
     }
-    m_CommandMainScene->clear();
 
-    m_test.clear();
+    // 清理场景中的所有项
+    m_CommandMainScene->clear();
 }
 
 void CProtocolCommand::buildCommandsList()
 {
-    resetCommandsList();
 
-    foreach(QPushButton* block, m_lisCommands) {
-
-        m_test.append(block);
-        //blockView->setPos(block->getPosition());
-        QGraphicsProxyWidget* proxy = m_CommandMainScene -> addWidget(block);
-        proxy->setPos(50, 100);
-
-        //  m_CommandMainScene->addItem((QGraphicsItem*)block);
-    }
 }
 
 void CProtocolCommand::addCommand(CCommandBtn *commandBtn)
 {
-    if(commandBtn != NULL) {
-        m_lisCommands.append(commandBtn);
-        emit onCommandsUpdated();
-    }
+    if (commandBtn != nullptr && !m_lisCommands.contains(commandBtn)) {
 
-    //添加到中间区域
-    QGraphicsProxyWidget* proxy = m_CommandMainScene ->addWidget(commandBtn);
-    proxy->setPos(100,200);
+        // connect(commandBtn, &CCommandBtn::sigClicked, this, &CProtocolCommand::onCommandBtnClicked1);
+
+        m_lisCommands.append(commandBtn);
+
+        int x = 0;
+        int y = m_lisCommands.size() * 50;
+        QGraphicsProxyWidget* proxy = m_CommandMainScene->addWidget(commandBtn);
+        proxy->setPos(x, y);
+
+        connect(commandBtn, &CCommandBtn::sigClicked, this, &CProtocolCommand::onCommandBtnClicked1);
+        //emit onCommandsUpdated();
+    }
 }
 
 void CProtocolCommand::removeCommand(CCommandBtn *commandBtn)
@@ -151,18 +155,48 @@ void CProtocolCommand::onCommandsUpdated()
     buildCommandsList();
 }
 
-void CProtocolCommand::onCommandBtnClicked()
+void CProtocolCommand::onCommandBtnClicked(QString strCat)
 {
-    //qDebug()<<"safasfsafase2" << strCat;
+    qDebug()<<"safasfsafase2" << strCat;
 
-    CCommandBtn* clickedButton = qobject_cast<CCommandBtn*>(sender());
+    CCommandBtn* clickedButton = new CCommandBtn(strCat,strCat);
 
-    if (clickedButton) {
-        qDebug() << "Clicked button text: " << clickedButton->text();
 
-        addCommand(clickedButton);
-    }
+    clickedButton->setFixedSize(65, 45);
+    clickedButton->setStyleSheet("color: black;");
+    clickedButton->setLacked(true);
+
+    addCommand(clickedButton);
+
 }
+
+void CProtocolCommand::onCommandBtnClicked1(QString strCat)
+{
+    qDebug()<<"safasfsafase3" << strCat;
+
+    //  foreach(CCommandBtn* block, m_lisCommands) {
+
+
+
+    // qDebug()<<"fffffffff" << block->getId();
+
+
+    //  }
+
+
+}
+
+// void CProtocolCommand::onCommandBtnClicked()
+// {
+
+//     CCommandBtn* clickedButton = qobject_cast<CCommandBtn*>(sender());
+
+//     if (clickedButton) {
+//         qDebug() << "Clicked button text: " << clickedButton->text();
+
+//         addCommand(clickedButton);
+//     }
+// }
 
 void CProtocolCommand::executionTick()
 {
@@ -182,6 +216,24 @@ void CProtocolCommand::on_btn_Start_clicked()
     //默认触发事件是start之后
     emit sigSendSignal(CSignal(CSignal::START));
 
+
+}
+
+
+void CProtocolCommand::on_pushButton_Nunber_clicked()
+{
+
+}
+
+
+void CProtocolCommand::on_pushButton_Text_clicked()
+{
+
+}
+
+
+void CProtocolCommand::on_pushButton_Boolean_clicked()
+{
 
 }
 

@@ -48,9 +48,22 @@ public:
     CCommand::ParamType getReturnType() const { return m_ReturnType; };
 
 
+    // 用于表示按钮是否被选中的属性
+    bool isChecked() const;
+
+    void setChecked(bool checked);
+
+    void setLacked(bool lacked);
+
+protected:
+    void paintEvent(QPaintEvent *event) override;
+   // void mousePressEvent(QMouseEvent *event) override;
+
+
+
 
 signals:
-         // void sigClicked(QString);
+    void sigClicked(QString strCat);
 
 public slots:
     void onBtnClicked();
@@ -61,6 +74,10 @@ private:
 
     CCommand::ParamType m_ReturnType;
     CCommandBtn* m_NextCommandBtn;
+
+    bool m_checked{false};
+
+    bool m_bLacked{false};
 
     QList<CCommandParam*> m_listParams;   //一个单独的块里面的参数
 

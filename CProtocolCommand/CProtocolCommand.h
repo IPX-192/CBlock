@@ -64,7 +64,12 @@ signals:
 private slots:
     void onCommandsUpdated();
 
-    void onCommandBtnClicked();
+    //void onCommandBtnClicked();
+
+
+    void onCommandBtnClicked(QString strCat);
+
+    void onCommandBtnClicked1(QString strCat);
 
     //开始按钮
 
@@ -72,6 +77,12 @@ private slots:
 
 
     void on_btn_Start_clicked();
+
+    void on_pushButton_Nunber_clicked();
+
+    void on_pushButton_Text_clicked();
+
+    void on_pushButton_Boolean_clicked();
 
 private:
     Ui::CProtocolCommand *ui;
@@ -83,6 +94,8 @@ private:
 
 
     QList<QPushButton*> m_test;
+
+    int m_iIndex;
 
 
     QGraphicsScene* m_CommandMainScene{nullptr};
@@ -98,6 +111,9 @@ private:
 
     //控制的变量区
 
-    int m_showValue{0};
+    int m_iValue{0};
+    QString m_strValue{""};
+    bool m_bValue{false};
+
 };
 #endif // CPROTOCOLCOMMAND_H

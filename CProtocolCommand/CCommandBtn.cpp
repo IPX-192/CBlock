@@ -1,5 +1,9 @@
 #include "CCommandBtn.h"
 #include "CCommandParam.h"
+#include <QPushButton>
+#include <QStyleOptionButton>
+#include <QPainter>
+#include <QMouseEvent>
 
 CCommandBtn::CCommandBtn(CCommand *block)
 {
@@ -14,7 +18,7 @@ CCommandBtn::CCommandBtn(QString cat, QString text, QWidget *parent):
 {
     // connect(this, SIGNAL(sigClicked()), this, SLOT(onBtnClicked()));
 
-    //  connect(this, &CCommandBtn::sigClicked, this, &CCommandBtn::onBtnClicked);
+    connect(this, &CCommandBtn::clicked, this, &CCommandBtn::onBtnClicked);
 
 }
 
@@ -134,8 +138,52 @@ CCommandBtn *CCommandBtn::getParam(int index) const
     return m_listParams.at(index)->getBlock();
 }
 
+bool CCommandBtn::isChecked() const
+{
+    return m_checked;
+}
+
+void CCommandBtn::setChecked(bool checked)
+{
+    m_checked = checked;
+    update();  // 重绘按钮，使样式更新显示
+}
+
+void CCommandBtn::setLacked(bool lacked)
+{
+    m_bLacked = lacked;
+}
+
+void CCommandBtn::paintEvent(QPaintEvent *event)
+{
+    QPushButton::paintEvent(event);
+    QStyleOptionButton option;
+    initStyleOption(&option);
+
+    QPainter painter(this);
+    if (m_checked && m_bLacked) {
+        // 设置画笔为红色，宽度为2像素，绘制矩形边框来表示选中状态
+        QPen pen(Qt::red);
+        pen.setWidth(2);
+        painter.setPen(pen);
+        painter.drawRect(rect().adjusted(0, 0, -1, -1));
+    }
+}
+
+// void CCommandBtn::mousePressEvent(QMouseEvent *event)
+// {
+//     QPushButton::mousePressEvent(event);
+//     // 切换选中状态
+//     m_checked =!m_checked;
+//     update();
+// }
+
 void CCommandBtn::onBtnClicked()
 {
-    qDebug()<<"safasfsafase1" << m_qstrCat;
-    //  emit sigClicked(m_qstrCat);
+    m_checked =!m_checked;
+    if(m_checked)
+    {
+        emit sigClicked(m_qstrCat);
+    }
+    update();
 }
