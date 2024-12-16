@@ -21,6 +21,7 @@ SOURCES += \
     CCommandRepr.cpp \
     CCommandStackElement.cpp \
     CConstantCommand.cpp \
+    CConstantCommandBtn.cpp \
     CEventCommand.cpp \
     CExpressionCommand.cpp \
     CForCommandBtn.cpp \
@@ -32,6 +33,7 @@ SOURCES += \
     CStatementCommand.cpp \
     CStatementsCommand.cpp \
     CValue.cpp \
+    CVarCommandBtn.cpp \
     CVarTable.cpp \
     CWhileCommandBtn.cpp \
     main.cpp \
@@ -48,6 +50,7 @@ HEADERS += \
     CCommandRepr.h \
     CCommandStackElement.h \
     CConstantCommand.h \
+    CConstantCommandBtn.h \
     CEventCommand.h \
     CExpressionCommand.h \
     CForCommandBtn.h \
@@ -60,6 +63,7 @@ HEADERS += \
     CStatementCommand.h \
     CStatementsCommand.h \
     CValue.h \
+    CVarCommandBtn.h \
     CVarTable.h \
     CWhileCommandBtn.h
 

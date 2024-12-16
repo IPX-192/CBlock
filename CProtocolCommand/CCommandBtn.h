@@ -72,12 +72,14 @@ public:
 
     virtual bool isConstantBlockRepr() const { return false; }
 
+    virtual bool isVarBlockRepr() const { return false; }
+
 
 protected:
     void paintEvent(QPaintEvent *event) override;
     // void mousePressEvent(QMouseEvent *event) override;
 
-
+    CCommandBtn(CCommand::ParamType type);
 
 
 signals:

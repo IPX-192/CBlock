@@ -261,21 +261,42 @@ CExpressionCommand *CProtocolCommand::compileSpecialCaseExpression(CCommandBtn *
 
     //number or string
     if(blockRepr->isConstantBlockRepr()) {
-        if(blockRepr->getReturnType() == Block::STRING_EXPRESSION)
-            return new CConstantCommand(new StringValue(((ConstantBlockRepr*)blockRepr)->getValue().toString()));
-        if(blockRepr->getReturnType() == Block::NUMBER_EXPRESSION)
-            return new CConstantCommand(new NumberValue(((ConstantBlockRepr*)blockRepr)->getValue().toDouble()));
+        if(blockRepr->getReturnType() == CCommand::STRING_EXPRESSION)
+        {
+            return new CConstantCommand(new StringValue(((CConstantCommandBtn*)blockRepr)->getValue().toString()));
+        }
+
+        if(blockRepr->getReturnType() == CCommand::NUMBER_EXPRESSION)
+        {
+            return new CConstantCommand(new NumberValue(((CConstantCommandBtn*)blockRepr)->getValue().toDouble()));
+        }
     }
 
     //if variable:
     if(blockRepr->isVarBlockRepr())
+    {
         return compileVarBlock(blockRepr);
+    }
+
 
     //if everything fails:
 
     return NULL;
 }
 
+CVarCommandBtn *CProtocolCommand::compileVarBlock(CCommandBtn *blockRepr)
+{
+    // Value::DataType dataType = Value::BOOLEAN;
+
+    // if(blockRepr->getReturnType() == Block::STRING_VAR || blockRepr->getReturnType() == Block::STRING_EXPRESSION)
+    //     dataType = Value::STRING;
+
+    // else if(blockRepr->getReturnType() == Block::NUMBER_VAR || blockRepr->getReturnType() == Block::NUMBER_EXPRESSION)
+    //     dataType = Value::NUMBER;
+
+    // return new VarBlock(((VarBlockRepr*)blockRepr)->getVarName(), dataType);
+    return nullptr;
+}
 
 
 void CProtocolCommand::onCommandsUpdated()

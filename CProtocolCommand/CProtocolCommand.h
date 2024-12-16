@@ -17,6 +17,8 @@
 #include "CStatementCommand.h"
 #include "CExpressionCommand.h"
 #include "CConstantCommand.h"
+#include "CConstantCommandBtn.h"
+#include "CVarCommandBtn.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -68,6 +70,8 @@ public:
     CExpressionCommand* compileExpression(CCommandBtn* blockRepr);
 
     CExpressionCommand* compileSpecialCaseExpression(CCommandBtn* blockRepr);
+
+    CVarCommandBtn* compileVarBlock(CCommandBtn* blockRepr);
 
 
 signals:
