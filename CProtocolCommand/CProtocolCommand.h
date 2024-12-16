@@ -16,6 +16,7 @@
 #include "CStatementsCommand.h"
 #include "CStatementCommand.h"
 #include "CExpressionCommand.h"
+#include "CConstantCommand.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
