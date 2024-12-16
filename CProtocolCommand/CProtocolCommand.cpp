@@ -141,14 +141,142 @@ void CProtocolCommand::compileProject()
     //只要放入了命令块就开始编译
     if(m_lisCommands.size())
     {
-
+        comileBody(m_lisCommands.first());
     }
 }
 
-void CProtocolCommand::comileBody()
+CStatementCommand* CProtocolCommand::comileBody(CCommandBtn *blockRepr)
+{
+    CStatementsCommand* statements = new CStatementsCommand();
+
+    int i = 0;
+    if(blockRepr == nullptr)
+    {
+        return statements;
+
+    }
+
+    do {
+        statements->addStatement(compileStatement(blockRepr));
+        blockRepr = blockRepr->getNextStatement();
+        i ++ ;
+    } while(blockRepr != NULL);
+
+    qDebug() << u8"一共多少语句块" << i;
+    return statements;
+}
+
+CStatementCommand* CProtocolCommand::compileStatement(CCommandBtn *blockRepr)
 {
 
+    if(blockRepr == nullptr)
+    {
+        return nullptr;
+    }
+
+    CStatementCommand* statement = (CStatementCommand*) m_CommandLibrary.getBlockInstance(blockRepr->getId());
+
+    if(statement == nullptr) {
+
+        return NULL;
+    }
+
+    //给具体的块增加参数，比如小于判断的左右两边框子的值,如果是while也是条件的值就是参数
+    for(int i = 0; i < blockRepr->getNumParams(); i++) {
+        statement->addParameter(compileParam(blockRepr->getParam(i)), i);
+    }
+
+    for(int i = 0; i < blockRepr->getNumBodies(); i++) {
+        statement->addBody(comileBody(blockRepr->getBody(i)), i);
+    }
+
+    return statement;
 }
+
+CCommand *CProtocolCommand::compileParam(CCommandBtn *blockRepr)
+{
+    if(blockRepr == nullptr)
+    {
+        return nullptr;
+    }
+
+    if(CCommand::isExpressionParam(blockRepr->getReturnType()))
+    {
+        return compileExpression(blockRepr);
+    }
+
+    if(CCommand::isVariableParam(blockRepr->getReturnType()))
+    {
+
+    }
+
+    if(CCommand::isListParam(blockRepr->getReturnType()))
+    {
+
+    }
+    return nullptr;
+}
+
+CExpressionCommand *CProtocolCommand::compileExpression(CCommandBtn *blockRepr)
+{
+    if(blockRepr == nullptr)
+    {
+        return nullptr;
+    }
+
+    CExpressionCommand* expression = (CExpressionCommand*)m_CommandLibrary.getBlockInstance(blockRepr->getId());
+
+    if(expression == NULL) //if constant or variable
+    {
+        // return compileSpecialCaseExpression(blockRepr);
+    }
+
+
+    for(int i = 0; i < blockRepr->getNumParams(); i++) {
+        expression->addParameter(compileParam(blockRepr->getParam(i)), i);
+    }
+
+    return expression;
+
+}
+
+CExpressionCommand *CProtocolCommand::compileSpecialCaseExpression(CCommandBtn *blockRepr)
+{
+    qDebug()<<u8"<<<<<<<<<<<     compileSpecialCaseExpression";
+    if(blockRepr == NULL)
+        return NULL;
+
+    //if constant:
+
+    //true or false
+    if(blockRepr->getId() == "Boolean_true")
+    {
+
+    }
+
+    if(blockRepr->getId() == "Boolean_false")
+    {
+
+    }
+
+    //number or string
+    if(blockRepr->isConstantBlockRepr()) {
+        if(blockRepr->getReturnType() == Block::STRING_EXPRESSION)
+            return new CConstantCommand(new StringValue(((ConstantBlockRepr*)blockRepr)->getValue().toString()));
+        if(blockRepr->getReturnType() == Block::NUMBER_EXPRESSION)
+            return new CConstantCommand(new NumberValue(((ConstantBlockRepr*)blockRepr)->getValue().toDouble()));
+    }
+
+    //if variable:
+    if(blockRepr->isVarBlockRepr())
+        return compileVarBlock(blockRepr);
+
+    //if everything fails:
+
+    return NULL;
+}
+
+
 
 void CProtocolCommand::onCommandsUpdated()
 {
@@ -222,6 +350,14 @@ void CProtocolCommand::on_btn_Start_clicked()
 
 void CProtocolCommand::on_pushButton_Nunber_clicked()
 {
+
+    CCommandBtn* clickedButton = new CCommandBtn("number","number");
+
+
+    clickedButton->setFixedSize(30, 30);
+    clickedButton->setStyleSheet("color: black;");
+
+    addCommand(clickedButton);
 
 }
 

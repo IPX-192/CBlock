@@ -6,8 +6,6 @@
 class CStatementCommand : public CCommand
 {
 public:
-    CStatementCommand();
-
     virtual ~CStatementCommand() {}
 
     virtual QString getId() const = 0;

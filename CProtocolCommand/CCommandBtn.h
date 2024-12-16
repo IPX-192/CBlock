@@ -29,6 +29,18 @@ public:
 
     QString getId() const { return m_qstrID; }
 
+    bool removeBody(int index);
+
+    bool removeParam(int index);
+
+    bool removeNextStatement();
+
+    bool removeFromParent();
+
+    int getNumBodies() const;
+
+    int getNumParams() const;
+
 
     bool placeParam(CCommandBtn* repr, int index);
 
@@ -41,9 +53,12 @@ public:
 
     bool doesParamFit(CCommandBtn* repr, int index);
 
+
     CCommandBtn* getBody(int index) const;
 
     CCommandBtn* getParam(int index) const;
+
+    CCommandBtn* getNextStatement() { return m_NextCommandBtn; }
 
     CCommand::ParamType getReturnType() const { return m_ReturnType; };
 
@@ -55,9 +70,12 @@ public:
 
     void setLacked(bool lacked);
 
+    virtual bool isConstantBlockRepr() const { return false; }
+
+
 protected:
     void paintEvent(QPaintEvent *event) override;
-   // void mousePressEvent(QMouseEvent *event) override;
+    // void mousePressEvent(QMouseEvent *event) override;
 
 
 

@@ -37,6 +37,36 @@ CCommandBtn *CCommandBtn::copy()
     return new CCommandBtn(*this);
 }
 
+bool CCommandBtn::removeBody(int index)
+{
+    return false;
+}
+
+bool CCommandBtn::removeParam(int index)
+{
+    return false;
+}
+
+bool CCommandBtn::removeNextStatement()
+{
+    return false;
+}
+
+bool CCommandBtn::removeFromParent()
+{
+    return false;
+}
+
+int CCommandBtn::getNumBodies() const
+{
+    return m_listBodies.size();
+}
+
+int CCommandBtn::getNumParams() const
+{
+    return m_listParams.size();
+}
+
 bool CCommandBtn::placeParam(CCommandBtn *repr, int index)
 {
     if(repr == nullptr)

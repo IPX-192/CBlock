@@ -13,6 +13,9 @@
 #include "CCommandBtn.h"
 #include "CCommandLibrary.h"
 #include "CCommandBtnLibrary.h"
+#include "CStatementsCommand.h"
+#include "CStatementCommand.h"
+#include "CExpressionCommand.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -53,7 +56,18 @@ public:
 
     void compileProject();
 
-    void comileBody();
+    CStatementCommand* comileBody(CCommandBtn *blockRepr);
+
+    CStatementCommand* compileStatement(CCommandBtn *blockRepr);
+
+    CCommand* compileParam(CCommandBtn *blockRepr);
+
+
+    //编译常量和变量的表达式
+    CExpressionCommand* compileExpression(CCommandBtn* blockRepr);
+
+    CExpressionCommand* compileSpecialCaseExpression(CCommandBtn* blockRepr);
+
 
 signals:
     //命令区变更
