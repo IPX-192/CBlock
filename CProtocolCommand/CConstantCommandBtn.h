@@ -16,7 +16,7 @@ public:
 
     virtual bool isConstantBlockRepr() const { return true; }
 
-      QVariant getValue() const {return m_Value;}
+    QVariant getValue() const {return m_Value;}
 
     void setValue(QVariant value) {m_Value = value;}
 

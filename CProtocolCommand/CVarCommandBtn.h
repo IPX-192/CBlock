@@ -1,44 +1,31 @@
 #ifndef CVARCOMMANDBTN_H
 #define CVARCOMMANDBTN_H
 
-#include "CExpressionCommand.h"
-#include "CValue.h"
-#include "CVarTable.h"
+#include "CCommandBtn.h"
 
-class CVarCommandBtn : public CExpressionCommand
+class CVarCommandBtn : public CCommandBtn
 {
+    Q_OBJECT
 public:
-    CVarCommandBtn();
+    CVarCommandBtn(CCommand::ParamType returnType, QString varName);
 
-    CVarCommandBtn(const QString& varName, CValue::DataType dataType) : _varName(varName), _dataType(dataType) {}
+    CVarCommandBtn(const CVarCommandBtn& block);
 
-    virtual ~CVarCommandBtn() {}
-
-    virtual QString getId() const {return QString("VarBlock");}
-
-    virtual ParamType getReturnType() const;
-
-    virtual QList<ParamType> getParamTypes() const {return QList<ParamType>();}
-
-    virtual QString getParamDescription() const {return QString("");}
-
-    virtual void executeNextStep(CCommandExecuteThread& executionThread) const;
-
-    virtual void setValue(CValue* value, CVarTable& varTable) const;
-
-    virtual bool addParameter(CCommand* parameter, int index) {return false;}
-
-    virtual bool addBody(CExpressionCommand* body, int index) {return false;}
+    QString getVarName() const {return _varName;}
 
 
-   // virtual CCommand* newInstance() const {return new CVarCommandBtn(_varName, _dataType);}
+
+    virtual CVarCommandBtn* copy();
+
+    virtual bool isVarBlockRepr() const { return true; }
 
 
-    virtual QString getVarName() const {return _varName;}
+public slots:
+    void deleteVariable();
 
 private:
     QString _varName;
-    CValue::DataType _dataType;
+
 };
 
 #endif // CVARCOMMANDBTN_H

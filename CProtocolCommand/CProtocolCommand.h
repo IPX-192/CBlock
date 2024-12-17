@@ -19,6 +19,7 @@
 #include "CConstantCommand.h"
 #include "CConstantCommandBtn.h"
 #include "CVarCommandBtn.h"
+#include "CVarCommand.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -71,7 +72,7 @@ public:
 
     CExpressionCommand* compileSpecialCaseExpression(CCommandBtn* blockRepr);
 
-    CVarCommandBtn* compileVarBlock(CCommandBtn* blockRepr);
+    CVarCommand* compileVarBlock(CCommandBtn* blockRepr);
 
 
 signals:
@@ -116,6 +117,8 @@ private:
 
     int m_iIndex;
 
+
+    QString m_lastID{""};
 
     QGraphicsScene* m_CommandMainScene{nullptr};
 

@@ -18,7 +18,6 @@ SOURCES += \
     CCommandExecuteThread.cpp \
     CCommandLibrary.cpp \
     CCommandParam.cpp \
-    CCommandRepr.cpp \
     CCommandStackElement.cpp \
     CConstantCommand.cpp \
     CConstantCommandBtn.cpp \
@@ -33,6 +32,7 @@ SOURCES += \
     CStatementCommand.cpp \
     CStatementsCommand.cpp \
     CValue.cpp \
+    CVarCommand.cpp \
     CVarCommandBtn.cpp \
     CVarTable.cpp \
     CWhileCommandBtn.cpp \
@@ -47,7 +47,6 @@ HEADERS += \
     CCommandExecuteThread.h \
     CCommandLibrary.h \
     CCommandParam.h \
-    CCommandRepr.h \
     CCommandStackElement.h \
     CConstantCommand.h \
     CConstantCommandBtn.h \
@@ -63,6 +62,7 @@ HEADERS += \
     CStatementCommand.h \
     CStatementsCommand.h \
     CValue.h \
+    CVarCommand.h \
     CVarCommandBtn.h \
     CVarTable.h \
     CWhileCommandBtn.h

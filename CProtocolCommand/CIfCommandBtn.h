@@ -12,7 +12,7 @@ public:
 
     ~CIfCommandBtn();
 
-    virtual QString getId() const {return QString("Control_IfBlock");}
+    virtual QString getId() const {return QString("if");}
 
     virtual QList<ParamType> getParamTypes() const;
 

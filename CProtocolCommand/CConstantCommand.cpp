@@ -27,3 +27,8 @@ CCommand::ParamType CConstantCommand::getReturnType() const
         return CCommand::VOID;
     }
 }
+
+void CConstantCommand::executeNextStep(CCommandExecuteThread &executionThread) const
+{
+
+}

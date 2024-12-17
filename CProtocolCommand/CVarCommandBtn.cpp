@@ -1,28 +1,25 @@
 #include "CVarCommandBtn.h"
 
-CVarCommandBtn::CVarCommandBtn() {}
-
-CCommand::ParamType CVarCommandBtn::getReturnType() const
-{
-    switch(_dataType)
-    {
-    case CValue::BOOLEAN:
-        return CCommand::BOOLEAN_VAR;
-    case CValue::NUMBER:
-        return CCommand::NUMBER_VAR;
-    case CValue::STRING:
-        return CCommand::STRING_VAR;
-    default:
-        return CCommand::VOID;
-    }
-}
-
-void CVarCommandBtn::executeNextStep(CCommandExecuteThread &executionThread) const
+CVarCommandBtn::CVarCommandBtn(CCommand::ParamType returnType, QString varName)
+    : CCommandBtn(returnType, varName), _varName(varName)
 {
 
 }
 
-void CVarCommandBtn::setValue(CValue *value, CVarTable &varTable) const
+CVarCommandBtn::CVarCommandBtn(const CVarCommandBtn &block)
+    : CCommandBtn(block.getReturnType(), block.getVarName()), _varName(block._varName)
 {
 
 }
+
+
+CVarCommandBtn *CVarCommandBtn::copy()
+{
+    return new CVarCommandBtn(*this);
+}
+
+void CVarCommandBtn::deleteVariable()
+{
+
+}
+

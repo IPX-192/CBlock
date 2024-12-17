@@ -205,9 +205,10 @@ CCommand *CProtocolCommand::compileParam(CCommandBtn *blockRepr)
         return compileExpression(blockRepr);
     }
 
+    //添加了变量
     if(CCommand::isVariableParam(blockRepr->getReturnType()))
     {
-
+        return compileVarBlock(blockRepr);
     }
 
     if(CCommand::isListParam(blockRepr->getReturnType()))
@@ -284,17 +285,18 @@ CExpressionCommand *CProtocolCommand::compileSpecialCaseExpression(CCommandBtn *
     return NULL;
 }
 
-CVarCommandBtn *CProtocolCommand::compileVarBlock(CCommandBtn *blockRepr)
+CVarCommand *CProtocolCommand::compileVarBlock(CCommandBtn *blockRepr)
 {
-    // Value::DataType dataType = Value::BOOLEAN;
+    // CValue::DataType dataType = CValue::BOOLEAN;
 
-    // if(blockRepr->getReturnType() == Block::STRING_VAR || blockRepr->getReturnType() == Block::STRING_EXPRESSION)
-    //     dataType = Value::STRING;
+    // if(blockRepr->getReturnType() == CCommand::STRING_VAR || blockRepr->getReturnType() == CCommand::STRING_EXPRESSION)
+    //     dataType = CValue::STRING;
 
-    // else if(blockRepr->getReturnType() == Block::NUMBER_VAR || blockRepr->getReturnType() == Block::NUMBER_EXPRESSION)
-    //     dataType = Value::NUMBER;
+    // else if(blockRepr->getReturnType() == CCommand::NUMBER_VAR || blockRepr->getReturnType() == CCommand::NUMBER_EXPRESSION)
+    //     dataType = CValue::NUMBER;
 
-    // return new VarBlock(((VarBlockRepr*)blockRepr)->getVarName(), dataType);
+    // return new CVarCommand(((CVarCommandBtn*)blockRepr)->getVarName(), dataType);
+
     return nullptr;
 }
 
@@ -306,15 +308,33 @@ void CProtocolCommand::onCommandsUpdated()
 
 void CProtocolCommand::onCommandBtnClicked(QString strCat)
 {
-    qDebug()<<"safasfsafase2" << strCat;
 
-    CCommandBtn* clickedButton = new CCommandBtn(strCat,strCat);
+    CCommandBtn* clickedButton = m_pCommandBtnLibrary->getBlockReprInstance(strCat);
 
+    if(clickedButton == nullptr)
+    {
+        return;
+    }
 
-    clickedButton->setFixedSize(65, 45);
+    clickedButton->setFixedSize(100, 45);
     clickedButton->setStyleSheet("color: black;");
+    clickedButton->setText(strCat);
     clickedButton->setLacked(true);
 
+
+    if(strCat == ">")
+    {
+        foreach(CCommandBtn* block, m_lisCommands) {
+
+
+            if(m_lastID == block->getId())
+            {
+                block->placeParam(clickedButton,0);
+                qDebug()<<"rrrrrrrr"<<block->getId();
+            }
+        }
+
+    }
     addCommand(clickedButton);
 
 }
@@ -323,14 +343,16 @@ void CProtocolCommand::onCommandBtnClicked1(QString strCat)
 {
     qDebug()<<"safasfsafase3" << strCat;
 
-    //  foreach(CCommandBtn* block, m_lisCommands) {
+    m_lastID = strCat;
+
+    // foreach(CCommandBtn* block, m_lisCommands) {
 
 
+    //     if(strCat == block->getId())
+    //     {
 
-    // qDebug()<<"fffffffff" << block->getId();
-
-
-    //  }
+    //     }
+    // }
 
 
 }
@@ -372,8 +394,7 @@ void CProtocolCommand::on_btn_Start_clicked()
 void CProtocolCommand::on_pushButton_Nunber_clicked()
 {
 
-    CCommandBtn* clickedButton = new CCommandBtn("number","number");
-
+    CCommandBtn* clickedButton = new CCommandBtn("num","num");
 
     clickedButton->setFixedSize(30, 30);
     clickedButton->setStyleSheet("color: black;");

@@ -10,21 +10,45 @@ CCommandBtn::CCommandBtn(CCommand *block)
     if(block)
     {
         m_qstrID = block->getId();
+        m_ReturnType= block->getReturnType();
+        m_strListParamLabels = block->getParamDescription().split("%p");
+        for (int i = 0; i < m_strListParamLabels.size(); ++i) {
+            m_strListParamLabels.replace(i, m_strListParamLabels.at(i).trimmed());
+        }
+        m_strListBodyLabels = block->getBodiesDescription().split("%b", QString::SkipEmptyParts);
+        for (int i = 0; i < m_strListBodyLabels.size(); ++i) {
+            m_strListBodyLabels.replace(i, m_strListBodyLabels.at(i).trimmed());
+        }
+
+        foreach (CCommand::ParamType type, block->getParamTypes()) {
+            m_listParams.append(new CCommandParam(type));
+        }
+
+        for (int i = 0; i < block->getNumBodies(); ++i) {
+            m_listBodies.append(nullptr);
+        }
+        m_qstrCat = block->getId();
+
+        qDebug()<<"fffffffffffffffffff "<<m_qstrCat;
     }
 }
 
 CCommandBtn::CCommandBtn(QString cat, QString text, QWidget *parent):
     QPushButton(text, parent), m_qstrCat(cat)
 {
-    // connect(this, SIGNAL(sigClicked()), this, SLOT(onBtnClicked()));
+
+
+    m_qstrID = cat;
 
     connect(this, &CCommandBtn::clicked, this, &CCommandBtn::onBtnClicked);
+
+    m_qstrID = "wweqw";
 
 }
 
 CCommandBtn::CCommandBtn(const CCommandBtn &repr)
 {
-
+ m_qstrID = "wweqw1";
 }
 
 CCommandBtn::~CCommandBtn()
@@ -77,7 +101,9 @@ bool CCommandBtn::placeParam(CCommandBtn *repr, int index)
     {
         return false;
     }
-    m_listBodies.replace(index,repr);
+
+    m_listParams.at(index)->setBlock(repr);
+
 }
 
 bool CCommandBtn::placeBody(CCommandBtn *repr, int index)
@@ -90,7 +116,7 @@ bool CCommandBtn::placeBody(CCommandBtn *repr, int index)
     {
         return false;
     }
-    m_listParams.at(index)->setBlock(repr);
+    m_listBodies.replace(index,repr);
 
 }
 
@@ -148,6 +174,11 @@ bool CCommandBtn::doesParamFit(CCommandBtn *repr, int index)
     return false;
 }
 
+bool CCommandBtn::needParam()
+{
+    return m_bNeedParam;
+}
+
 CCommandBtn *CCommandBtn::getBody(int index) const
 {
     if (index < 0 || index >= m_listBodies.size())
@@ -200,6 +231,30 @@ void CCommandBtn::paintEvent(QPaintEvent *event)
     }
 }
 
+CCommandBtn::CCommandBtn(CCommand::ParamType type, QString name, bool isVar)
+{
+
+    if(isVar) {
+        m_qstrID = QString("Var"); //used for creating variables
+        m_strListParamLabels.append(name);
+    } else {
+        QString cat;
+        if (type == CCommand::NUMBER_EXPRESSION)
+            cat = "Number";
+        else if (type == CCommand::BOOLEAN_EXPRESSION)
+            cat = "Boolean";
+        else
+            cat = "String";
+        m_qstrID = cat + QString("_") + name; //used for creating true and false
+
+        if (name == "true")
+            m_strListParamLabels.append(tr("true"));
+        else
+            m_strListParamLabels.append(tr("false"));
+    }
+    m_ReturnType = type;
+}
+
 CCommandBtn::CCommandBtn(CCommand::ParamType type)
 {
     if(type == CCommand::STRING_EXPRESSION)
@@ -214,20 +269,30 @@ CCommandBtn::CCommandBtn(CCommand::ParamType type)
     m_ReturnType = type;
 }
 
-// void CCommandBtn::mousePressEvent(QMouseEvent *event)
-// {
-//     QPushButton::mousePressEvent(event);
-//     // 切换选中状态
-//     m_checked =!m_checked;
-//     update();
-// }
-
-void CCommandBtn::onBtnClicked()
+void CCommandBtn::mousePressEvent(QMouseEvent *event)
 {
+    QPushButton::mousePressEvent(event);
+
+
+    qDebug()<<"sfasfasfsafassssttttt22" << m_qstrID;
+    // 切换选中状态
     m_checked =!m_checked;
-    if(m_checked)
+
+
+    if(m_bLacked && m_checked)
     {
         emit sigClicked(m_qstrCat);
     }
+
     update();
+}
+
+void CCommandBtn::onBtnClicked()
+{
+    emit sigClicked(m_qstrCat);
+}
+
+void CCommandBtn::onBtnClicked1()
+{
+    qDebug()<<"sfasfasfsafassssttttt1";
 }

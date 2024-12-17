@@ -19,7 +19,7 @@ class CCommandBtn : public QPushButton
 public:
     CCommandBtn(CCommand* block);
 
-    explicit CCommandBtn(QString cat,QString text, QWidget *parent = 0);
+    CCommandBtn(QString cat,QString text, QWidget *parent = 0);
 
     CCommandBtn(const CCommandBtn& repr);
 
@@ -53,6 +53,8 @@ public:
 
     bool doesParamFit(CCommandBtn* repr, int index);
 
+    bool needParam();
+
 
     CCommandBtn* getBody(int index) const;
 
@@ -77,8 +79,9 @@ public:
 
 protected:
     void paintEvent(QPaintEvent *event) override;
-    // void mousePressEvent(QMouseEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
 
+    CCommandBtn(CCommand::ParamType type, QString name, bool isVar = true);
     CCommandBtn(CCommand::ParamType type);
 
 
@@ -88,16 +91,26 @@ signals:
 public slots:
     void onBtnClicked();
 
+    void onBtnClicked1();
+
+
 private:
     QString m_qstrID;
     QString m_qstrCat;
 
     CCommand::ParamType m_ReturnType;
+
+    QStringList m_strListParamLabels;
+
+    QStringList m_strListBodyLabels;
+
     CCommandBtn* m_NextCommandBtn;
 
     bool m_checked{false};
 
     bool m_bLacked{false};
+
+    bool m_bNeedParam{false};
 
     QList<CCommandParam*> m_listParams;   //一个单独的块里面的参数
 
