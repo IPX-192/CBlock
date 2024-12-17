@@ -37,18 +37,58 @@ CCommandBtn::CCommandBtn(QString cat, QString text, QWidget *parent):
     QPushButton(text, parent), m_qstrCat(cat)
 {
 
-
     m_qstrID = cat;
-
     connect(this, &CCommandBtn::clicked, this, &CCommandBtn::onBtnClicked);
-
-    m_qstrID = "wweqw";
-
 }
 
 CCommandBtn::CCommandBtn(const CCommandBtn &repr)
 {
- m_qstrID = "wweqw1";
+    m_qstrID = repr.getId();
+    m_ReturnType= repr.getReturnType();
+    m_strListParamLabels = repr.getParamDescriptions();
+    m_strListBodyLabels = repr.getBodyDescriptions();
+
+    for (int i = 0; i < repr.getNumParams(); ++i)
+    {
+        CCommandParam* p = new CCommandParam(repr.getParamType(i));
+        if(repr.getParam(i) != nullptr) {
+            CCommandBtn* newParam = repr.getParam(i)->copy();
+            newParam->setParent(this);
+            p->setBlock(newParam);
+        }
+        m_listParams.append(p);
+    }
+
+    for (int i = 0; i < repr.getNumBodies(); ++i)
+    {
+        CCommandBtn* body = repr.getBody(i);
+
+        if (body == nullptr)
+        {
+            m_listBodies.append(nullptr);
+        }
+
+        else
+        {
+            CCommandBtn* newBody = body->copy();
+            newBody->setParent(this);
+            m_listBodies.append(newBody);
+        }
+    }
+
+    if (repr.m_NextCommandBtn != nullptr)
+    {
+        m_NextCommandBtn = repr.m_NextCommandBtn->copy();
+        m_NextCommandBtn->setParent(this);
+    }
+    else
+    {
+        m_NextCommandBtn = nullptr;
+    }
+
+
+    m_qstrCat = repr.getId();
+
 }
 
 CCommandBtn::~CCommandBtn()
@@ -197,6 +237,11 @@ CCommandBtn *CCommandBtn::getParam(int index) const
     }
 
     return m_listParams.at(index)->getBlock();
+}
+
+CCommand::ParamType CCommandBtn::getParamType(int index) const
+{
+    return m_listParams.at(index)->getParamType();
 }
 
 bool CCommandBtn::isChecked() const

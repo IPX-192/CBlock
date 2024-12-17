@@ -13,3 +13,9 @@ CValue *NumberValue::copy() const
     NumberValue* value = new NumberValue(this->toDouble());
     return value;
 }
+
+CValue *BooleanValue::copy() const
+{
+    BooleanValue* value = new BooleanValue(this->toBool());
+    return value;
+}

@@ -24,6 +24,7 @@ SOURCES += \
     CEventCommand.cpp \
     CExpressionCommand.cpp \
     CForCommandBtn.cpp \
+    CGreaterThanNumberCommand.cpp \
     CIfCommandBtn.cpp \
     CIfElseCommandBtn.cpp \
     CMessage.cpp \
@@ -53,6 +54,7 @@ HEADERS += \
     CEventCommand.h \
     CExpressionCommand.h \
     CForCommandBtn.h \
+    CGreaterThanNumberCommand.h \
     CIfCommandBtn.h \
     CIfElseCommandBtn.h \
     CMessage.h \

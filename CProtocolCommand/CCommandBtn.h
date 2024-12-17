@@ -64,6 +64,13 @@ public:
 
     CCommand::ParamType getReturnType() const { return m_ReturnType; };
 
+    CCommand::ParamType getParamType(int index) const;
+
+
+    QStringList getParamDescriptions() const { return m_strListParamLabels; }
+
+    QStringList getBodyDescriptions() const { return m_strListBodyLabels; }
+
 
     // 用于表示按钮是否被选中的属性
     bool isChecked() const;
@@ -104,7 +111,7 @@ private:
 
     QStringList m_strListBodyLabels;
 
-    CCommandBtn* m_NextCommandBtn;
+    CCommandBtn* m_NextCommandBtn{nullptr};
 
     bool m_checked{false};
 

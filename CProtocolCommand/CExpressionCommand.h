@@ -26,7 +26,7 @@ public:
 
     virtual bool addParameter(CCommand* parameter, int index) = 0;
 
-    bool addBody(CExpressionCommand* body, int index) {return false;}
+    bool addBody(CStatementCommand* body, int index) {return false;}
 
     virtual CCommand* newInstance() const = 0;
 

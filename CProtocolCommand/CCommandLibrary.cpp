@@ -7,6 +7,7 @@ CCommandLibrary::CCommandLibrary() {
     registerBlock(new CIfCommandBtn());
     registerBlock(new CIfElseCommandBtn());
     registerBlock(new CWhileCommandBtn());
+    registerBlock(new CGreaterThanNumberCommand());
 
 }
 

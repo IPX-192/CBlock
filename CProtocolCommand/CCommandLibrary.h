@@ -9,6 +9,7 @@
 #include "CIfElseCommandBtn.h"
 #include "CWhileCommandBtn.h"
 #include "CForCommandBtn.h"
+#include "CGreaterThanNumberCommand.h"
 
 class CCommandBtnLibrary;
 class CCommandLibrary

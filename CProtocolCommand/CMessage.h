@@ -17,22 +17,22 @@ public:
     /**
      * @brief Constructor
      */
-    IntMessage(int value = 0) : _value(value) {}
+    IntMessage(int value = 0) : m_iValue(value) {}
 
     /**
      * @brief Sets the value
      * @param value The value to set
      */
-    void setValue(int value) {_value = value;}
+    void setValue(int value) {m_iValue = value;}
 
-    /**
+    /**4
      * @brief Returns the current value
      * @return The current value
      */
-    int getValue() const {return _value;}
+    int getValue() const {return m_iValue;}
 
 private:
-    int _value;
+    int m_iValue;
 };
 
 class ValueMessage : public CMessage
@@ -43,7 +43,7 @@ public:
      * @param value The initial value
      * @param number The initial number
      */
-    ValueMessage(CValue* value = NULL, int number = 0) : _value(value), _number(number) {}
+    ValueMessage(CValue* value = NULL, int number = 0) : m_Value(value), m_iMumber(number) {}
 
     /**
      * @brief Destructor
@@ -54,7 +54,7 @@ public:
      * @brief Returns the current value
      * @return The Value pointer
      */
-    virtual CValue* getValue() const {return _value;}
+    virtual CValue* getValue() const {return m_Value;}
 
     /**
      * @brief Sets the value
@@ -66,17 +66,17 @@ public:
      * @brief Returns the current number
      * @return The number
      */
-    virtual int getNumber() const {return _number;}
+    virtual int getNumber() const {return m_iMumber;}
 
     /**
      * @brief Sets the number
      * @param number The number to set
      */
-    virtual void setNumber(int number) {_number = number;}
+    virtual void setNumber(int number) {m_iMumber = number;}
 
 private:
-    CValue* _value;
-    int _number;
+    CValue* m_Value;
+    int m_iMumber;
 
 };
 
