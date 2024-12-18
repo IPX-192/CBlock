@@ -7,7 +7,14 @@ CCommandLibrary::CCommandLibrary() {
     registerBlock(new CIfCommandBtn());
     registerBlock(new CIfElseCommandBtn());
     registerBlock(new CWhileCommandBtn());
+    registerBlock(new CDivideCommand());
+    registerBlock(new CEqualNumberCommand());
     registerBlock(new CGreaterThanNumberCommand());
+    registerBlock(new CLessThanNumberCommand());
+    registerBlock(new CMinusCommand());
+    registerBlock(new CMultiplyCommand());
+    registerBlock(new CNumberRassignment());
+    registerBlock(new CPlusCommand());
 
 }
 

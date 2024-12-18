@@ -21,7 +21,6 @@ bool CCommandBtnLibrary::registerBlock(CCommandBtn *blockRepr)
     m_listBlockReprs.append(blockRepr);
 }
 
-//调用命令块的拷贝构造，只有在读取历史生成过的命令区需要，新建命令块不需要
 CCommandBtn *CCommandBtnLibrary::getBlockReprInstance(QString id) const
 {
     CCommandBtn* block = get(id);

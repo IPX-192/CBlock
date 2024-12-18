@@ -9,7 +9,15 @@
 #include "Commands/bool/CIfElseCommandBtn.h"
 #include "Commands/bool/CWhileCommandBtn.h"
 #include "Commands/bool/CForCommandBtn.h"
+#include "Commands/number/CDivideCommand.h"
+#include "Commands/number/CEqualNumberCommand.h"
 #include "Commands/number/CGreaterThanNumberCommand.h"
+#include "Commands/number/CLessThanNumberCommand.h"
+#include "Commands/number/CMinusCommand.h"
+#include "Commands/number/CMultiplyCommand.h"
+#include "Commands/number/CNumberRassignment.h"
+#include "Commands/number/CPlusCommand.h"
+
 
 class CCommandBtnLibrary;
 class CCommandLibrary

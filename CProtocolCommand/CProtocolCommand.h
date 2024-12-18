@@ -10,6 +10,7 @@
 #include <QTimer>
 #include "CCommandExcuteHandler.h"
 #include "CSignal.h"
+#include "CCommand.h"
 #include "CCommandBtn.h"
 #include "CCommandLibrary.h"
 #include "CCommandBtnLibrary.h"
@@ -66,6 +67,11 @@ public:
 
     CCommand* compileParam(CCommandBtn *blockRepr);
 
+    void addVariable(CVarCommandBtn* var);
+
+
+    void removeVariable(CVarCommandBtn* var);
+
 
     //编译常量和变量的表达式
     CExpressionCommand* compileExpression(CCommandBtn* blockRepr);
@@ -110,10 +116,9 @@ private:
 
     ButtonInfo buttonInfos[10];  // 作为成员变量定义按钮信息数组
 
-    QList<CCommandBtn*> m_lisCommands;
+    QList<CCommandBtn*> m_listCommands;
 
-
-    QList<QPushButton*> m_test;
+    QList<CVarCommandBtn*> m_listVars;
 
     int m_iIndex;
 

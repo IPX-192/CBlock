@@ -1,11 +1,11 @@
-#include "CLessthanNumberCommand.h"
+#include "CLessThanNumberCommand.h"
 #include "CMessage.h"
 #include "CCommandExecuteThread.h"
 #include "CValue.h"
 
-CLessthanNumberCommand::CLessthanNumberCommand() {}
+CLessThanNumberCommand::CLessThanNumberCommand() {}
 
-CLessthanNumberCommand::~CLessthanNumberCommand()
+CLessThanNumberCommand::~CLessThanNumberCommand()
 {
     if(m_Left != nullptr)
     {
@@ -19,7 +19,7 @@ CLessthanNumberCommand::~CLessthanNumberCommand()
     }
 }
 
-QList<CCommand::ParamType> CLessthanNumberCommand::getParamTypes() const
+QList<CCommand::ParamType> CLessThanNumberCommand::getParamTypes() const
 {
     QList<CCommand::ParamType> params;
     params.append(CCommand::NUMBER_EXPRESSION);
@@ -27,7 +27,7 @@ QList<CCommand::ParamType> CLessthanNumberCommand::getParamTypes() const
     return params;
 }
 
-void CLessthanNumberCommand::executeNextStep(CCommandExecuteThread &executionThread) const
+void CLessThanNumberCommand::executeNextStep(CCommandExecuteThread &executionThread) const
 {
     if(m_Left == nullptr || m_Right == nullptr) {
         executionThread.endExecution(nullptr);
@@ -85,7 +85,7 @@ void CLessthanNumberCommand::executeNextStep(CCommandExecuteThread &executionThr
     executionThread.endExecution(nullptr);
 }
 
-bool CLessthanNumberCommand::addParameter(CCommand *parameter, int index)
+bool CLessThanNumberCommand::addParameter(CCommand *parameter, int index)
 {
     if(parameter == nullptr || (parameter->getReturnType() != CCommand::NUMBER_EXPRESSION && parameter->getReturnType() != CCommand::NUMBER_VAR))
     {

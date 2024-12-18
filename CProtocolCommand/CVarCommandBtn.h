@@ -11,7 +11,7 @@ public:
 
     CVarCommandBtn(const CVarCommandBtn& block);
 
-    QString getVarName() const {return _varName;}
+    QString getVarName() const {return m_qstrVarName;}
 
 
 
@@ -24,7 +24,7 @@ public slots:
     void deleteVariable();
 
 private:
-    QString _varName;
+    QString m_qstrVarName;
 
 };
 

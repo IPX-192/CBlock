@@ -110,14 +110,14 @@ void CProtocolCommand::buildCommandsList()
 
 void CProtocolCommand::addCommand(CCommandBtn *commandBtn)
 {
-    if (commandBtn != nullptr && !m_lisCommands.contains(commandBtn)) {
+    if (commandBtn != nullptr && !m_listCommands.contains(commandBtn)) {
 
         // connect(commandBtn, &CCommandBtn::sigClicked, this, &CProtocolCommand::onCommandBtnClicked1);
 
-        m_lisCommands.append(commandBtn);
+        m_listCommands.append(commandBtn);
 
         int x = 0;
-        int y = m_lisCommands.size() * 50;
+        int y = m_listCommands.size() * 50;
         QGraphicsProxyWidget* proxy = m_CommandMainScene->addWidget(commandBtn);
         proxy->setPos(x, y);
 
@@ -128,9 +128,9 @@ void CProtocolCommand::addCommand(CCommandBtn *commandBtn)
 
 void CProtocolCommand::removeCommand(CCommandBtn *commandBtn)
 {
-    for(int i = 0; i < m_lisCommands.size(); i++) {
-        if(m_lisCommands[i] == commandBtn) {
-            m_lisCommands.removeAt(i);
+    for(int i = 0; i < m_listCommands.size(); i++) {
+        if(m_listCommands[i] == commandBtn) {
+            m_listCommands.removeAt(i);
             emit onCommandsUpdated();
         }
     }
@@ -139,9 +139,9 @@ void CProtocolCommand::removeCommand(CCommandBtn *commandBtn)
 void CProtocolCommand::compileProject()
 {
     //只要放入了命令块就开始编译
-    if(m_lisCommands.size())
+    if(m_listCommands.size())
     {
-        comileBody(m_lisCommands.first());
+        comileBody(m_listCommands.first());
     }
 }
 
@@ -216,6 +216,23 @@ CCommand *CProtocolCommand::compileParam(CCommandBtn *blockRepr)
 
     }
     return nullptr;
+}
+
+void CProtocolCommand::addVariable(CVarCommandBtn *var)
+{
+
+    var->setFixedSize(30, 30);
+    var->setStyleSheet("color: black;");
+    var->setText(var->getVarName());
+    addCommand(var);
+
+    m_listVars.append(var);
+
+}
+
+void CProtocolCommand::removeVariable(CVarCommandBtn *var)
+{
+    m_listVars.removeAll(var);
 }
 
 CExpressionCommand *CProtocolCommand::compileExpression(CCommandBtn *blockRepr)
@@ -322,9 +339,10 @@ void CProtocolCommand::onCommandBtnClicked(QString strCat)
     clickedButton->setLacked(true);
 
 
+    //测试代码
     if(strCat == ">")
     {
-        foreach(CCommandBtn* block, m_lisCommands) {
+        foreach(CCommandBtn* block, m_listCommands) {
 
 
             if(m_lastID == block->getId())
@@ -332,6 +350,13 @@ void CProtocolCommand::onCommandBtnClicked(QString strCat)
                 block->placeParam(clickedButton,0);
                 qDebug()<<"rrrrrrrr"<<block->getId();
             }
+        }
+
+        //添加参数
+        if(m_listVars.size())
+        {
+            clickedButton->placeParam(m_listVars.at(0),0);
+            qDebug()<<"rrrrrrrr"<<clickedButton->getId();
         }
 
     }
@@ -345,7 +370,7 @@ void CProtocolCommand::onCommandBtnClicked1(QString strCat)
 
     m_lastID = strCat;
 
-    // foreach(CCommandBtn* block, m_lisCommands) {
+    // foreach(CCommandBtn* block, m_listCommands) {
 
 
     //     if(strCat == block->getId())
@@ -394,12 +419,16 @@ void CProtocolCommand::on_btn_Start_clicked()
 void CProtocolCommand::on_pushButton_Nunber_clicked()
 {
 
-    CCommandBtn* clickedButton = new CCommandBtn("num","num");
+    // CCommandBtn* clickedButton = new CCommandBtn("num","num");
 
-    clickedButton->setFixedSize(30, 30);
-    clickedButton->setStyleSheet("color: black;");
+    // clickedButton->setFixedSize(30, 30);
+    // clickedButton->setStyleSheet("color: black;");
 
-    addCommand(clickedButton);
+    // addCommand(clickedButton);
+
+    QString strVarName = "num";
+
+    addVariable(new CVarCommandBtn(CCommand::NUMBER_VAR,strVarName));
 
 }
 

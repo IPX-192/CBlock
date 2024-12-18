@@ -1,13 +1,13 @@
-#ifndef CLESSTHANNUMBERCOMMAND_H
-#define CLESSTHANNUMBERCOMMAND_H
+#ifndef CLessThanNumberCommand_H
+#define CLessThanNumberCommand_H
 
 #include "CExpressionCommand.h"
 
-class CLessthanNumberCommand :public CExpressionCommand
+class CLessThanNumberCommand :public CExpressionCommand
 {
 public:
-    CLessthanNumberCommand();
-    ~CLessthanNumberCommand();
+    CLessThanNumberCommand();
+    ~CLessThanNumberCommand();
 
     virtual QString getId() const {return QString("<");}
 
@@ -21,11 +21,11 @@ public:
 
     virtual bool addParameter(CCommand* parameter, int index);
 
-    virtual CCommand* newInstance() const {return new CLessthanNumberCommand();}
+    virtual CCommand* newInstance() const {return new CLessThanNumberCommand();}
 
 private:
     CExpressionCommand* m_Left{nullptr};
     CExpressionCommand* m_Right{nullptr};
 };
 
-#endif // CLESSTHANNUMBERCOMMAND_H
+#endif // CLessThanNumberCommand_H
