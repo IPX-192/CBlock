@@ -23,6 +23,7 @@ SOURCES += \
     CConstantCommandBtn.cpp \
     CEventCommand.cpp \
     CExpressionCommand.cpp \
+    CNumberConstantCommandBtnView.cpp \
     Commands/bool/CForCommandBtn.cpp \
     Commands/bool/CIfCommandBtn.cpp \
     Commands/bool/CIfElseCommandBtn.cpp \
@@ -60,6 +61,7 @@ HEADERS += \
     CConstantCommandBtn.h \
     CEventCommand.h \
     CExpressionCommand.h \
+    CNumberConstantCommandBtnView.h \
     Commands/bool/CForCommandBtn.h \
     Commands/bool/CIfCommandBtn.h \
     Commands/bool/CIfElseCommandBtn.h \

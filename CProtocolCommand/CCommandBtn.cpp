@@ -302,14 +302,27 @@ CCommandBtn::CCommandBtn(CCommand::ParamType type, QString name, bool isVar)
 
 CCommandBtn::CCommandBtn(CCommand::ParamType type)
 {
+
+    qDebug()<<"vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv";
     if(type == CCommand::STRING_EXPRESSION)
+    {
         m_qstrID = "String_String";
+    }
+
     else if (type == CCommand::NUMBER_EXPRESSION)
+    {
         m_qstrID = "Number_Number";
+    }
+
     else if (type == CCommand::SPRITE)
+    {
         m_qstrID = "Sprite_Sprite";
+    }
+
     else if (type == CCommand::FUNCTION_START)
+    {
         m_qstrID = "Function_Start";
+    }
 
     m_ReturnType = type;
 }

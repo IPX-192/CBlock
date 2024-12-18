@@ -356,7 +356,13 @@ void CProtocolCommand::onCommandBtnClicked(QString strCat)
         if(m_listVars.size())
         {
             clickedButton->placeParam(m_listVars.at(0),0);
+
+            CConstantCommandBtn * aa = new CConstantCommandBtn(CCommand::NUMBER_VAR);
+
+            clickedButton->placeParam(aa->copy(),1);
+
             qDebug()<<"rrrrrrrr"<<clickedButton->getId();
+
         }
 
     }
@@ -429,6 +435,8 @@ void CProtocolCommand::on_pushButton_Nunber_clicked()
     QString strVarName = "num";
 
     addVariable(new CVarCommandBtn(CCommand::NUMBER_VAR,strVarName));
+
+
 
 }
 
