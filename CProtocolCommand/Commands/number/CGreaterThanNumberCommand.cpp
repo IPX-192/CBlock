@@ -11,10 +11,16 @@ CGreaterThanNumberCommand::CGreaterThanNumberCommand()
 
 CGreaterThanNumberCommand::~CGreaterThanNumberCommand()
 {
-    if(_left != NULL)
-        delete _left;
-    if(_right != NULL)
-        delete _right;
+    if(m_Left != nullptr)
+    {
+        delete m_Left;
+        m_Left = nullptr;
+    }
+    if(m_Right != nullptr)
+    {
+        delete m_Right;
+        m_Right = nullptr;
+    }
 }
 
 QList<CCommand::ParamType> CGreaterThanNumberCommand::getParamTypes() const
@@ -27,14 +33,14 @@ QList<CCommand::ParamType> CGreaterThanNumberCommand::getParamTypes() const
 
 void CGreaterThanNumberCommand::executeNextStep(CCommandExecuteThread &executionThread) const
 {
-    if(_left == NULL || _right == NULL) {
-        executionThread.endExecution(NULL);
+    if(m_Left == nullptr || m_Right == nullptr) {
+        executionThread.endExecution(nullptr);
         return;
     }
 
     //get message
     ValueMessage* m = (ValueMessage*)executionThread.getMessage();
-    if(m == NULL)
+    if(m == nullptr)
     {
         m = new ValueMessage();
         executionThread.setMessage(m);
@@ -43,7 +49,7 @@ void CGreaterThanNumberCommand::executeNextStep(CCommandExecuteThread &execution
     //evaluate left
     if(m->getNumber() == 0)
     {
-        executionThread.setNextBlock(_left);
+        executionThread.setNextBlock(m_Left);
         m->setNumber(1);
         return;
     }
@@ -53,24 +59,24 @@ void CGreaterThanNumberCommand::executeNextStep(CCommandExecuteThread &execution
     {
         m->setValue(executionThread.getReturnValue()->copy());
         //check left value
-        if(m->getValue() == NULL || m->getValue()->getDataType() != CValue::NUMBER)
+        if(m->getValue() == nullptr || m->getValue()->getDataType() != CValue::NUMBER)
         {
-            executionThread.endExecution(NULL);
+            executionThread.endExecution(nullptr);
             return;
         }
-        executionThread.setNextBlock(_right);
+        executionThread.setNextBlock(m_Right);
         m->setNumber(2);
         return;
     }
 
-    //Compire _left and _right
+    //Compire m_Left and m_Right
     if(m->getNumber() == 2)
     {
         CValue* v = executionThread.getReturnValue();
         //check right value
-        if(v == NULL || v->getDataType() != CValue::NUMBER)
+        if(v == nullptr || v->getDataType() != CValue::NUMBER)
         {
-            executionThread.endExecution(NULL);
+            executionThread.endExecution(nullptr);
             return;
         }
 
@@ -80,25 +86,25 @@ void CGreaterThanNumberCommand::executeNextStep(CCommandExecuteThread &execution
         return;
     }
 
-    executionThread.endExecution(NULL);
+    executionThread.endExecution(nullptr);
 }
 
 bool CGreaterThanNumberCommand::addParameter(CCommand *parameter, int index)
 {
-    if(parameter == NULL || (parameter->getReturnType() != CCommand::NUMBER_EXPRESSION && parameter->getReturnType() != CCommand::NUMBER_VAR))
+    if(parameter == nullptr || (parameter->getReturnType() != CCommand::NUMBER_EXPRESSION && parameter->getReturnType() != CCommand::NUMBER_VAR))
     {
         return false;
     }
 
     if(index == 0)
     {
-        _left = (CExpressionCommand*)parameter;
+        m_Left = (CExpressionCommand*)parameter;
         return true;
     }
 
     if(index == 1)
     {
-        _right = (CExpressionCommand*)parameter;
+        m_Right = (CExpressionCommand*)parameter;
         return true;
     }
 

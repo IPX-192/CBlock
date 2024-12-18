@@ -43,7 +43,7 @@ public:
      * @param value The initial value
      * @param number The initial number
      */
-    ValueMessage(CValue* value = NULL, int number = 0) : m_Value(value), m_iMumber(number) {}
+    ValueMessage(CValue* value = nullptr, int number = 0) : m_Value(value), m_iMumber(number) {}
 
     /**
      * @brief Destructor

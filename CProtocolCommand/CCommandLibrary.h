@@ -5,11 +5,11 @@
 #include <QString>
 #include "CCommand.h"
 
-#include "CIfCommandBtn.h"
-#include "CIfElseCommandBtn.h"
-#include "CWhileCommandBtn.h"
-#include "CForCommandBtn.h"
-#include "CGreaterThanNumberCommand.h"
+#include "Commands/bool/CIfCommandBtn.h"
+#include "Commands/bool/CIfElseCommandBtn.h"
+#include "Commands/bool/CWhileCommandBtn.h"
+#include "Commands/bool/CForCommandBtn.h"
+#include "Commands/number/CGreaterThanNumberCommand.h"
 
 class CCommandBtnLibrary;
 class CCommandLibrary

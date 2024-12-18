@@ -23,10 +23,13 @@ SOURCES += \
     CConstantCommandBtn.cpp \
     CEventCommand.cpp \
     CExpressionCommand.cpp \
-    CForCommandBtn.cpp \
-    CGreaterThanNumberCommand.cpp \
-    CIfCommandBtn.cpp \
-    CIfElseCommandBtn.cpp \
+    Commands/bool/CForCommandBtn.cpp \
+    Commands/bool/CIfCommandBtn.cpp \
+    Commands/bool/CIfElseCommandBtn.cpp \
+    Commands/bool/CWhileCommandBtn.cpp \
+    Commands/number/CDivideCommand.cpp \
+    Commands/number/CEqualNumberCommand.cpp \
+    Commands/number/CGreaterThanNumberCommand.cpp \
     CMessage.cpp \
     CSignal.cpp \
     CStartCommand.cpp \
@@ -36,7 +39,11 @@ SOURCES += \
     CVarCommand.cpp \
     CVarCommandBtn.cpp \
     CVarTable.cpp \
-    CWhileCommandBtn.cpp \
+    Commands/number/CLessThanNumberCommand.cpp \
+    Commands/number/CMinusCommand.cpp \
+    Commands/number/CMultiplyCommand.cpp \
+    Commands/number/CNumberRassignment.cpp \
+    Commands/number/CPlusCommand.cpp \
     main.cpp \
     CProtocolCommand.cpp
 
@@ -53,10 +60,13 @@ HEADERS += \
     CConstantCommandBtn.h \
     CEventCommand.h \
     CExpressionCommand.h \
-    CForCommandBtn.h \
-    CGreaterThanNumberCommand.h \
-    CIfCommandBtn.h \
-    CIfElseCommandBtn.h \
+    Commands/bool/CForCommandBtn.h \
+    Commands/bool/CIfCommandBtn.h \
+    Commands/bool/CIfElseCommandBtn.h \
+    Commands/bool/CWhileCommandBtn.h \
+    Commands/number/CDivideCommand.h \
+    Commands/number/CEqualNumberCommand.h \
+    Commands/number/CGreaterThanNumberCommand.h \
     CMessage.h \
     CProtocolCommand.h \
     CSignal.h \
@@ -67,7 +77,11 @@ HEADERS += \
     CVarCommand.h \
     CVarCommandBtn.h \
     CVarTable.h \
-    CWhileCommandBtn.h
+    Commands/number/CLessThanNumberCommand.h \
+    Commands/number/CMinusCommand.h \
+    Commands/number/CMultiplyCommand.h \
+    Commands/number/CNumberRassignment.h \
+    Commands/number/CPlusCommand.h
 
 FORMS += \
     CProtocolCommand.ui
