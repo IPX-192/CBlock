@@ -24,6 +24,8 @@ SOURCES += \
     CEventCommand.cpp \
     CExpressionCommand.cpp \
     CNumberConstantCommandBtnView.cpp \
+    CObject.cpp \
+    CVarIable.cpp \
     Commands/bool/CForCommandBtn.cpp \
     Commands/bool/CIfCommandBtn.cpp \
     Commands/bool/CIfElseCommandBtn.cpp \
@@ -62,6 +64,8 @@ HEADERS += \
     CEventCommand.h \
     CExpressionCommand.h \
     CNumberConstantCommandBtnView.h \
+    CObject.h \
+    CVarIable.h \
     Commands/bool/CForCommandBtn.h \
     Commands/bool/CIfCommandBtn.h \
     Commands/bool/CIfElseCommandBtn.h \

@@ -1,4 +1,4 @@
-#ifndef CPROTOCOLCOMMAND_H
+﻿#ifndef CPROTOCOLCOMMAND_H
 #define CPROTOCOLCOMMAND_H
 
 #include <QWidget>
@@ -21,6 +21,7 @@
 #include "CConstantCommandBtn.h"
 #include "CVarCommandBtn.h"
 #include "CVarCommand.h"
+#include "CObject.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {

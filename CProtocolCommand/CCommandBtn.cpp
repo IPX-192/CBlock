@@ -303,7 +303,7 @@ CCommandBtn::CCommandBtn(CCommand::ParamType type, QString name, bool isVar)
 CCommandBtn::CCommandBtn(CCommand::ParamType type)
 {
 
-    qDebug()<<"vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv";
+
     if(type == CCommand::STRING_EXPRESSION)
     {
         m_qstrID = "String_String";
@@ -325,6 +325,8 @@ CCommandBtn::CCommandBtn(CCommand::ParamType type)
     }
 
     m_ReturnType = type;
+
+    qDebug()<<"vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv" << m_qstrID;
 }
 
 void CCommandBtn::mousePressEvent(QMouseEvent *event)

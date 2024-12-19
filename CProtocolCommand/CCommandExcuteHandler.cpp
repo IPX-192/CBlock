@@ -1,4 +1,5 @@
-#include "CCommandExcuteHandler.h"
+﻿#include "CCommandExcuteHandler.h"
+#include <QDebug>
 
 CCommandExcuteHandler::CCommandExcuteHandler() {
 
@@ -6,7 +7,7 @@ CCommandExcuteHandler::CCommandExcuteHandler() {
     m_bRunning = false;
     m_bWorking = false;
     m_qTimer = new QTimer();
-    m_qTimer->setInterval(10);
+    m_qTimer->setInterval(20);
 
     connect(m_qTimer, SIGNAL(timeout()), this, SLOT(onExecutionTick()));
 
@@ -29,29 +30,41 @@ void CCommandExcuteHandler::start()
     m_qTimer->start();
 }
 
+void CCommandExcuteHandler::stop()
+{
+    m_bRunning = false;
+
+    m_qTimer->stop();
+}
+
 int CCommandExcuteHandler::getNumThreads() const
 {
     return m_listThreads.size();
 }
 
-//有几个事件命令就增加几个事件的处理线程
-void CCommandExcuteHandler::addExecutionThread(CCommand *block)
+void CCommandExcuteHandler::addExecutionThread(CCommand *block, CVarTable *varTable)
 {
-    if(block == NULL )
-        return;
-
-    CCommandExecuteThread* thread = new CCommandExecuteThread(block);
-
-    m_listThreads.append(thread);
 
 }
+
+//有几个事件命令就增加几个事件的处理线程
+// void CCommandExcuteHandler::addExecutionThread(CCommand *block, CObject *sprite)
+// {
+//     if(block == NULL )
+//         return;
+
+//     CCommandExecuteThread* thread = new CCommandExecuteThread(block);
+
+//     m_listThreads.append(thread);
+
+// }
 
 void CCommandExcuteHandler::executeThreads()
 {
     //放了物块这里就是赋值,执行了事件之后会删除
     if(m_listThreads.size() == 0)
     {
-        //qDebug()<<u8"没得物块";
+        qDebug()<<u8"没得物块";
         return;
     }
     for(int i = m_listThreads.size()-1; i >= 0; i--) {

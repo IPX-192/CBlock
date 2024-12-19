@@ -156,5 +156,71 @@ private:
     bool m_bValue;
 };
 
+class ValueList
+{
+public:
+    /**
+     * @brief Constructor method
+     * @param name The name of the list
+     * @param type The type of the list
+     */
+    ValueList() {}
+
+    /**
+     * @brief Copy constructor
+     * @param list The list to copy
+     */
+    ValueList(const ValueList& list) {}
+
+    /**
+     * @brief Destructor method
+     */
+    virtual ~ValueList() {}
+
+    /**
+     * @brief Returns the name of the list
+     * @return The name of the list
+     */
+    virtual QString getName() const = 0;
+
+    /**
+     * @brief Returns the value at a specific index on the list
+     * @param pos The position for which to return the value
+     * @return The value at position pos
+     */
+    virtual CValue* getValueAt(int pos) const = 0;
+
+    /**
+     * @brief Sets the value at a specific index on the list
+     * @param pos The position for which to set the value
+     * @param value The value to set
+     */
+    virtual void setValueAt(int pos, CValue* value) = 0;
+
+    /**
+     * @brief Adds a value to the list
+     * @param value The value to add
+     */
+    virtual void addValue(CValue* value) = 0;
+
+    /**
+     * @brief Returns the datatype
+     * @return The datatype of the list
+     */
+    virtual CValue::DataType getDataType() const = 0;
+
+    /**
+     * @brief Returns the size of a valuelist
+     * @return The size of the value list
+     */
+    virtual int getSize() const = 0;
+
+    /**
+     * @brief Returns an exact copy of this ValueList
+     * @return An exact copy of this ValueList
+     */
+    virtual ValueList* copy() const = 0;
+};
+
 
 #endif // CVALUE_H

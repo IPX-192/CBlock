@@ -1,4 +1,4 @@
-#ifndef CCOMMANDEXCUTEHANDLER_H
+﻿#ifndef CCOMMANDEXCUTEHANDLER_H
 #define CCOMMANDEXCUTEHANDLER_H
 
 #include "CCommandExecuteThread.h"
@@ -7,6 +7,7 @@
 #include <QList>
 #include <QTimer>
 #include <QDateTime>
+#include "CObject.h"
 
 class CCommandExcuteHandler : public QObject
 {
@@ -24,7 +25,7 @@ public:
     int getNumThreads() const;
 
 
-    void addExecutionThread(CCommand* block);
+    void addExecutionThread(CCommand* block,CVarTable* varTable);
 
     bool isRunning() const { return m_bRunning; }
 
@@ -37,9 +38,8 @@ public slots:
     void onExecutionTick();
 
 signals:
-    void sigExecutionTicked();
 
-
+    void sigDrawingTicked();
 
 
 

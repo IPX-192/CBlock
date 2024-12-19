@@ -1,4 +1,4 @@
-#include "CProtocolCommand.h"
+﻿#include "CProtocolCommand.h"
 #include "ui_CProtocolCommand.h"
 #include <QPushButton>
 #include <QGraphicsLinearLayout>
@@ -78,6 +78,7 @@ CProtocolCommand::CProtocolCommand(QWidget *parent)
 
 
     m_pCommandBtnLibrary = m_CommandLibrary.createBlockReprLibrary();
+
 }
 
 CProtocolCommand::~CProtocolCommand()
@@ -352,18 +353,29 @@ void CProtocolCommand::onCommandBtnClicked(QString strCat)
             }
         }
 
-        //添加参数
-        if(m_listVars.size())
-        {
-            clickedButton->placeParam(m_listVars.at(0),0);
 
-            CConstantCommandBtn * aa = new CConstantCommandBtn(CCommand::NUMBER_VAR);
+        CConstantCommandBtn * aa = new CConstantCommandBtn(CCommand::NUMBER_EXPRESSION);
 
-            clickedButton->placeParam(aa->copy(),1);
+        aa->setValue(15);
 
-            qDebug()<<"rrrrrrrr"<<clickedButton->getId();
+        clickedButton->placeParam(aa->copy(),0);
 
-        }
+        CConstantCommandBtn * bb = new CConstantCommandBtn(CCommand::NUMBER_EXPRESSION);
+
+
+        aa->setValue(10);
+
+
+        clickedButton->placeParam(bb->copy(),1);
+
+        qDebug()<<"rrrrrrrr"<<clickedButton->getId();
+
+        // //添加参数
+        // if(m_listVars.size())
+        // {
+
+
+        // }
 
     }
     addCommand(clickedButton);
@@ -417,6 +429,8 @@ void CProtocolCommand::on_btn_Start_clicked()
 
     //默认触发事件是start之后
     emit sigSendSignal(CSignal(CSignal::START));
+
+   // m_excuteHandler.addExecutionThread();
 
 
 }

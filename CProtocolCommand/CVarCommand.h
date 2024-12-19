@@ -33,7 +33,7 @@ public:
     virtual bool addBody(CExpressionCommand* body, int index) {return false;}
 
 
-    //virtual CCommand* newInstance() const {return new CVarCommand(m_qstrVarName, m_DataType);}
+    virtual CCommand* newInstance() const {return new CVarCommand(m_qstrVarName, m_DataType);}
 
 
     virtual QString getVarName() const {return m_qstrVarName;}

@@ -15,6 +15,7 @@ CCommandLibrary::CCommandLibrary() {
     registerBlock(new CMultiplyCommand());
     registerBlock(new CNumberRassignment());
     registerBlock(new CPlusCommand());
+    registerBlock(new CStartCommand());
 
 }
 
