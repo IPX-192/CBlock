@@ -7,18 +7,18 @@
 #include "CValue.h"
 #include "CMessage.h"
 #include "CCommandStackElement.h"
+#include "CSprite.h"
 
 class CCommandExecuteThread
 {
 public:
     CCommandExecuteThread();
 
-    CCommandExecuteThread(CCommand* block);
+    CCommandExecuteThread(CCommand* block,CVarTable* varTable, CSprite* sprite);
 
     ~CCommandExecuteThread();
 
     bool isEmpty() const;
-
 
     void executeNext();
 
@@ -28,6 +28,13 @@ public:
 
     CMessage* getMessage() const;
 
+    void setVarTable(CVarTable* varTable);
+
+    CVarTable* getVarTable() const;
+
+    CSprite* getSprite() const;
+
+    void setSprite(CSprite* sprite);
 
     void endExecution(CValue* returnValue);
 

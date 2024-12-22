@@ -42,22 +42,17 @@ int CCommandExcuteHandler::getNumThreads() const
     return m_listThreads.size();
 }
 
-void CCommandExcuteHandler::addExecutionThread(CCommand *block, CVarTable *varTable)
+void CCommandExcuteHandler::addExecutionThread(CCommand *block, CVarTable *varTable, CSprite *sprite)
 {
+    if(block == nullptr || varTable == nullptr || sprite == nullptr)
+    {
+        return;
+    }
 
+    CCommandExecuteThread* thread = new CCommandExecuteThread(block, varTable, sprite);
+
+    m_listThreads.append(thread);
 }
-
-//有几个事件命令就增加几个事件的处理线程
-// void CCommandExcuteHandler::addExecutionThread(CCommand *block, CObject *sprite)
-// {
-//     if(block == NULL )
-//         return;
-
-//     CCommandExecuteThread* thread = new CCommandExecuteThread(block);
-
-//     m_listThreads.append(thread);
-
-// }
 
 void CCommandExcuteHandler::executeThreads()
 {

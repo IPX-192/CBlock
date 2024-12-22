@@ -5,11 +5,12 @@ CCommandExecuteThread::CCommandExecuteThread()
 
 }
 
-CCommandExecuteThread::CCommandExecuteThread(CCommand *block)
+CCommandExecuteThread::CCommandExecuteThread(CCommand *block, CVarTable *varTable, CSprite *sprite)
 {
     CCommandStackElement* ese = new CCommandStackElement();
     ese->setBlock(block);
-
+    ese->setVarTable(varTable);
+    ese->setSprite(sprite);
     m_stackCommandStack.push(ese);
 }
 
@@ -76,9 +77,13 @@ void CCommandExecuteThread::setMessage(CMessage *message)
         return;
 
     if(!m_stackCommandStack.isEmpty())
+    {
         m_stackCommandStack.top()->setMessage(message);
+    }
     else
+    {
         delete message;
+    }
 }
 
 CMessage *CCommandExecuteThread::getMessage() const
@@ -87,6 +92,34 @@ CMessage *CCommandExecuteThread::getMessage() const
         return nullptr;
 
     return m_stackCommandStack.top()->getMessage();
+}
+
+void CCommandExecuteThread::setVarTable(CVarTable *varTable)
+{
+    if(!m_stackCommandStack.isEmpty())
+        m_stackCommandStack.top()->setVarTable(varTable);
+}
+
+CVarTable *CCommandExecuteThread::getVarTable() const
+{
+    if(m_stackCommandStack.isEmpty())
+        return NULL;
+
+    return m_stackCommandStack.top()->getVarTable();
+}
+
+CSprite *CCommandExecuteThread::getSprite() const
+{
+    if(m_stackCommandStack.isEmpty())
+        return NULL;
+
+    return m_stackCommandStack.top()->getSprite();
+}
+
+void CCommandExecuteThread::setSprite(CSprite *sprite)
+{
+    if(!m_stackCommandStack.isEmpty())
+        m_stackCommandStack.top()->setSprite(sprite);
 }
 
 void CCommandExecuteThread::endExecution(CValue *returnValue)

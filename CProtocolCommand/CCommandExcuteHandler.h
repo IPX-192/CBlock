@@ -7,7 +7,6 @@
 #include <QList>
 #include <QTimer>
 #include <QDateTime>
-#include "CObject.h"
 
 class CCommandExcuteHandler : public QObject
 {
@@ -25,7 +24,7 @@ public:
     int getNumThreads() const;
 
 
-    void addExecutionThread(CCommand* block,CVarTable* varTable);
+    void addExecutionThread(CCommand* block,CVarTable* varTable, CSprite* sprite);
 
     bool isRunning() const { return m_bRunning; }
 

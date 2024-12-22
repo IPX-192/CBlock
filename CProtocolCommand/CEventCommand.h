@@ -3,7 +3,8 @@
 
 #include "CCommand.h"
 #include "CSignal.h"
-#include "CObject.h"
+
+class CSprite;
 class CStatementCommand;
 
 
@@ -27,7 +28,7 @@ public:
 
     virtual QString getBodiesDescription() const = 0;
 
-    virtual void sendSignal(const CSignal& signal, CObject* sprite) = 0;
+    virtual void sendSignal(const CSignal& signal, CSprite* item) = 0;
 
     virtual void executeNextStep(CCommandExecuteThread& executionThread) const {}
 

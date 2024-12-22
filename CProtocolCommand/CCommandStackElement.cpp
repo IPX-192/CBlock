@@ -23,8 +23,10 @@ CCommandStackElement *CCommandStackElement::getCopy() const
 {
     CCommandStackElement* ese = new CCommandStackElement();
 
-    ese->setMessage(NULL);
+    ese->setMessage(nullptr);
     ese->setBlock(m_Command);
+    ese->setSprite(m_Sprite);
+    ese->setVarTable(m_VarTable);
 
     return ese;
 }

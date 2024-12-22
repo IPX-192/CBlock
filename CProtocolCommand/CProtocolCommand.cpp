@@ -13,6 +13,8 @@ CProtocolCommand::CProtocolCommand(QWidget *parent)
 
 
     m_CommandMainScene = new QGraphicsScene();
+
+    m_excuteHandler = new CCommandExcuteHandler();
     ui->graphicsView_2->setScene(m_CommandMainScene);
 
     m_CommandMainScene->clear();
@@ -137,16 +139,95 @@ void CProtocolCommand::removeCommand(CCommandBtn *commandBtn)
     }
 }
 
+void CProtocolCommand::createSprite()
+{
+    m_GlobalVars = new SimpleVarTable;
+    //模拟一个控制的对象
+    m_Sprite = new CSprite(m_GlobalVars);
+
+    m_Sprite->setExecutionHandler(m_excuteHandler);
+    CCommandBtn* eventCommandBtn = m_pCommandBtnLibrary->getBlockReprInstance("Start");
+    m_listCommands.append(eventCommandBtn);
+
+    QString strVarName = "test";
+
+    addVariable(new CVarCommandBtn(CCommand::NUMBER_VAR,strVarName));
+
+
+    if(m_Sprite)
+    {
+        qDebug()<<"rrrrrrrr11111";
+        compileSprite(m_Sprite);
+    }
+}
+
 void CProtocolCommand::compileProject()
 {
     //只要放入了命令块就开始编译
     if(m_listCommands.size())
     {
-        comileBody(m_listCommands.first());
+        compileBody(m_listCommands.first());
     }
 }
 
-CStatementCommand* CProtocolCommand::comileBody(CCommandBtn *blockRepr)
+void CProtocolCommand::compileSprite(CSprite *sprite)
+{
+    foreach (CCommandBtn* blockRepr, m_listCommands) {
+        //ignore non-event blocks
+        if(blockRepr->getReturnType() == CCommand::EVENT) {
+            qDebug()<<u8"有命令块";
+            sprite->addBlock(compileEventBlock(blockRepr));
+        }
+        else
+        {
+            qDebug()<<u8"没有命令块";
+        }
+    }
+
+
+    //增加变量
+    foreach (CVarCommandBtn* varBlockRepr, m_listVars) {
+
+
+        qDebug()<<"asffffffffffffffffff  "<<varBlockRepr;
+        return;
+
+        if(isListVar(varBlockRepr))
+        {
+            sprite->getVarTable()->addList(new SimpleValueList(varBlockRepr->getVarName(), getDataType(varBlockRepr)));
+        }
+
+        else
+        {
+            CVarIable* aa  = new SimpleVariable(varBlockRepr->getVarName(), getDataType(varBlockRepr));
+            if(aa == nullptr)
+            {
+                qDebug()<<"vvvvvvvvvvvvvvvvvvvvvvvv";
+            }
+            else
+            {
+                sprite->getVarTable()->addVariable(aa);
+            }
+        }
+
+    }
+}
+
+CEventCommand *CProtocolCommand::compileEventBlock(CCommandBtn *blockRepr)
+{
+    CEventCommand* block = (CEventCommand*)m_CommandLibrary.getBlockInstance(blockRepr->getId());   //这个id是指这个物块的名字，比如空格还是回车之类的
+    if(block == NULL) {
+
+        return NULL;
+    }
+
+    //重要:这里的关键是找到下一个物块，下一个物块是通过拖拽的时候确定的
+    block->setStatement(compileBody(blockRepr->getNextStatement()));
+
+    return block;
+}
+
+CStatementCommand* CProtocolCommand::compileBody(CCommandBtn *blockRepr)
 {
     CStatementsCommand* statements = new CStatementsCommand();
 
@@ -188,7 +269,7 @@ CStatementCommand* CProtocolCommand::compileStatement(CCommandBtn *blockRepr)
     }
 
     for(int i = 0; i < blockRepr->getNumBodies(); i++) {
-        statement->addBody(comileBody(blockRepr->getBody(i)), i);
+        statement->addBody(compileBody(blockRepr->getBody(i)), i);
     }
 
     return statement;
@@ -234,6 +315,29 @@ void CProtocolCommand::addVariable(CVarCommandBtn *var)
 void CProtocolCommand::removeVariable(CVarCommandBtn *var)
 {
     m_listVars.removeAll(var);
+}
+
+bool CProtocolCommand::isListVar(CVarCommandBtn *varBlockRepr)
+{
+    CCommand::ParamType rtrn = varBlockRepr->getReturnType();
+
+    return (rtrn == CCommand::BOOLEAN_LIST || rtrn == CCommand::NUMBER_LIST || rtrn == CCommand::STRING_LIST);
+}
+
+CValue::DataType CProtocolCommand::getDataType(CCommandBtn *blockRepr)
+{
+    CValue::DataType dataType = CValue::BOOLEAN;
+
+    if(blockRepr->getReturnType() == CCommand::STRING_EXPRESSION || blockRepr->getReturnType() == CCommand::STRING_LIST || blockRepr->getReturnType() == CCommand::STRING_VAR)
+    {
+        dataType = CValue::STRING;
+    }
+
+    else if(blockRepr->getReturnType() == CCommand::NUMBER_EXPRESSION || blockRepr->getReturnType() == CCommand::NUMBER_LIST || blockRepr->getReturnType() == CCommand::NUMBER_VAR)
+    {
+        dataType = CValue::NUMBER;
+    }
+    return dataType;
 }
 
 CExpressionCommand *CProtocolCommand::compileExpression(CCommandBtn *blockRepr)
@@ -420,17 +524,19 @@ void CProtocolCommand::executionTick()
 void CProtocolCommand::on_btn_Start_clicked()
 {
 
+    // m_listCommands.clear();
 
+    createSprite();
     //编译项目
-    compileProject();
+    //compileProject();
 
     //开始运行
-    m_excuteHandler.start();
+    //  m_excuteHandler->start();
 
     //默认触发事件是start之后
-    emit sigSendSignal(CSignal(CSignal::START));
+    //  emit sigSendSignal(CSignal(CSignal::START));
 
-   // m_excuteHandler.addExecutionThread();
+    // m_excuteHandler.addExecutionThread();
 
 
 }

@@ -2,6 +2,7 @@
 #define CVALUE_H
 
 #include <QString>
+#include <QList>
 
 class CValue
 {
@@ -156,7 +157,7 @@ private:
     bool m_bValue;
 };
 
-class ValueList
+class CValueList
 {
 public:
     /**
@@ -164,18 +165,18 @@ public:
      * @param name The name of the list
      * @param type The type of the list
      */
-    ValueList() {}
+    CValueList() {}
 
     /**
      * @brief Copy constructor
      * @param list The list to copy
      */
-    ValueList(const ValueList& list) {}
+    CValueList(const CValueList& list) {}
 
     /**
      * @brief Destructor method
      */
-    virtual ~ValueList() {}
+    virtual ~CValueList() {}
 
     /**
      * @brief Returns the name of the list
@@ -210,16 +211,85 @@ public:
     virtual CValue::DataType getDataType() const = 0;
 
     /**
-     * @brief Returns the size of a valuelist
+     * @brief Returns the size of a CValueList
      * @return The size of the value list
      */
     virtual int getSize() const = 0;
 
     /**
+     * @brief Returns an exact copy of this CValueList
+     * @return An exact copy of this CValueList
+     */
+    virtual CValueList* copy() const = 0;
+};
+
+class SimpleValueList : public CValueList
+{
+public:
+    SimpleValueList(QString name, CValue::DataType type);
+    SimpleValueList(const SimpleValueList &list);
+
+    virtual ~SimpleValueList();
+
+    /**
+     * @brief Returns the name of the list
+     * @return The name of the list
+     */
+    QString getName() const { return m_qstrName; }
+
+    /**
+     * @brief Returns the value at a specific index on the list
+     * @param pos The position for which to return the value
+     * @return The value at position pos
+     */
+    CValue* getValueAt(int pos) const;
+
+    /**
+     * @brief Sets the value at a specific index on the list
+     * @param pos The position for which to set the value
+     * @param value The value to set
+     */
+    void setValueAt(int pos, CValue* value);
+
+    /**
+     * @brief Adds a value to the list
+     * @param value The value to add
+     */
+    void addValue(CValue* value);
+
+    /**
+     * @brief Returns the datatype
+     * @return The datatype of the list
+     */
+    CValue::DataType getDataType() const { return m_DataType; }
+
+    /**
+     * @brief Returns the size of a valuelist
+     * @return The size of the value list
+     */
+    int getSize() const { return m_listValues.size(); }
+
+    /**
      * @brief Returns an exact copy of this ValueList
      * @return An exact copy of this ValueList
      */
-    virtual ValueList* copy() const = 0;
+    CValueList *copy() const {return new SimpleValueList(*this);}
+
+private:
+    /**
+     * @brief The name of the list
+     */
+    QString m_qstrName;
+
+    /**
+     * @brief The values in the list
+     */
+    QList<CValue*> m_listValues;
+
+    /**
+     * @brief The datatype of the list
+     */
+    CValue::DataType m_DataType;
 };
 
 

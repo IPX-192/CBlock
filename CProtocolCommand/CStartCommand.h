@@ -1,4 +1,4 @@
-#ifndef CSTARTCOMMAND_H
+﻿#ifndef CSTARTCOMMAND_H
 #define CSTARTCOMMAND_H
 
 #include "CEventCommand.h"
@@ -10,7 +10,7 @@ public:
 
     ~CStartCommand(){}
 
-    QString getId() const {return QString("Event_StartEventBlock");}
+    QString getId() const {return QString("Start");}
 
     virtual QList<ParamType> getParamTypes() const {return QList<ParamType>();}
 
@@ -20,7 +20,7 @@ public:
 
     QString getBodiesDescription() const {return QString("");}
 
-    virtual void sendSignal(const CSignal& signal, CObject* sprite);
+    virtual void sendSignal(const CSignal& signal, CSprite* sprite);
 
     virtual bool addParameter(CCommand* parameter, int index) {return false;}
 

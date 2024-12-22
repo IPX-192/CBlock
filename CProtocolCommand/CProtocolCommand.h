@@ -21,7 +21,8 @@
 #include "CConstantCommandBtn.h"
 #include "CVarCommandBtn.h"
 #include "CVarCommand.h"
-#include "CObject.h"
+#include "CSprite.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -60,9 +61,16 @@ public:
 
     void removeCommand(CCommandBtn* commandBtn);
 
+    void createSprite();
+
     void compileProject();
 
-    CStatementCommand* comileBody(CCommandBtn *blockRepr);
+
+    void compileSprite(CSprite* sprite);
+
+    CEventCommand* compileEventBlock(CCommandBtn* blockRepr);
+
+    CStatementCommand* compileBody(CCommandBtn *blockRepr);
 
     CStatementCommand* compileStatement(CCommandBtn *blockRepr);
 
@@ -70,8 +78,12 @@ public:
 
     void addVariable(CVarCommandBtn* var);
 
-
     void removeVariable(CVarCommandBtn* var);
+
+
+    bool isListVar(CVarCommandBtn* varBlockRepr);
+
+    CValue::DataType getDataType(CCommandBtn* blockRepr);
 
 
     //编译常量和变量的表达式
@@ -121,6 +133,8 @@ private:
 
     QList<CVarCommandBtn*> m_listVars;
 
+    QList<CSprite*> m_listSprites;     //这个是控制的那个对象，就是小蜜蜂
+
     int m_iIndex;
 
 
@@ -128,7 +142,7 @@ private:
 
     QGraphicsScene* m_CommandMainScene{nullptr};
 
-    CCommandExcuteHandler m_excuteHandler;
+    CCommandExcuteHandler* m_excuteHandler{nullptr};
 
     CCommandLibrary m_CommandLibrary;
 
@@ -137,11 +151,16 @@ private:
     CCommandBtn *m_curCommandBtn{nullptr};
 
 
+    CSprite*   m_Sprite{nullptr};
+
+
     //控制的变量区
 
     int m_iValue{0};
     QString m_strValue{""};
     bool m_bValue{false};
+
+    SimpleVarTable* m_GlobalVars;
 
 };
 #endif // CPROTOCOLCOMMAND_H
