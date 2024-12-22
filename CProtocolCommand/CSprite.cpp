@@ -6,12 +6,14 @@
 
 CSprite::CSprite(SimpleVarTable *globalVars)
 {
-
+    m_SpriteVars = new SpriteVarTable(globalVars);
 }
 
 CSprite::~CSprite()
 {
+    qDeleteAll(m_qlistEventCommand);
 
+    delete m_SpriteVars;
 }
 
 void CSprite::setExecutionHandler(CCommandExcuteHandler *test)

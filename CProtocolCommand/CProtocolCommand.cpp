@@ -190,7 +190,7 @@ void CProtocolCommand::compileSprite(CSprite *sprite)
 
 
         qDebug()<<"asffffffffffffffffff  "<<varBlockRepr;
-        return;
+
 
         if(isListVar(varBlockRepr))
         {
@@ -206,10 +206,10 @@ void CProtocolCommand::compileSprite(CSprite *sprite)
             }
             else
             {
+                qDebug()<<"vvvvvvvvvvvvvvvvvvvvvvvv1" <<sprite->getVarTable() ;
                 sprite->getVarTable()->addVariable(aa);
             }
         }
-
     }
 }
 
@@ -234,6 +234,7 @@ CStatementCommand* CProtocolCommand::compileBody(CCommandBtn *blockRepr)
     int i = 0;
     if(blockRepr == nullptr)
     {
+         qDebug()<<"vvvvvvvvvvvvvvvvvvvvvvvv12";
         return statements;
 
     }
