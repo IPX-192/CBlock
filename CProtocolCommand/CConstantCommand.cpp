@@ -1,4 +1,5 @@
 #include "CConstantCommand.h"
+#include "CCommandExecuteThread.h"
 
 CConstantCommand::~CConstantCommand()
 {
@@ -30,5 +31,9 @@ CCommand::ParamType CConstantCommand::getReturnType() const
 
 void CConstantCommand::executeNextStep(CCommandExecuteThread &executionThread) const
 {
+    CValue *valCopy = NULL;
+    if(m_Value != NULL)
+        valCopy = m_Value->copy();
 
+    executionThread.endExecution(valCopy);
 }

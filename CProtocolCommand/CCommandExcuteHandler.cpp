@@ -7,7 +7,7 @@ CCommandExcuteHandler::CCommandExcuteHandler() {
     m_bRunning = false;
     m_bWorking = false;
     m_qTimer = new QTimer();
-    m_qTimer->setInterval(1000);
+    m_qTimer->setInterval(50);
 
     connect(m_qTimer, SIGNAL(timeout()), this, SLOT(onExecutionTick()));
 
@@ -59,11 +59,9 @@ void CCommandExcuteHandler::executeThreads()
     //放了物块这里就是赋值,执行了事件之后会删除
     if(m_listThreads.size() == 0)
     {
-        qDebug()<<u8"没得物块";
         return;
     }
 
-    qDebug()<<"sfasfafaf";
     for(int i = m_listThreads.size()-1; i >= 0; i--) {
         CCommandExecuteThread* et = m_listThreads.at(i);
         et->executeNext();                  //重要：物块的关键应该是在这里执行的

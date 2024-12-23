@@ -1,4 +1,5 @@
 ﻿#include "CCommandExecuteThread.h"
+#include <QDebug>
 
 CCommandExecuteThread::CCommandExecuteThread()
 {
@@ -39,7 +40,7 @@ void CCommandExecuteThread::executeNext()
     {
         return;
     }
-
+    qDebug()<<u8"几个里面的块" <<m_stackCommandStack.size() <<"vvvvvvvvv "<< m_stackCommandStack.top()->getBlock()->getId();
 
     m_bKeepTopBlock = true;
     m_NextBlock = nullptr;
@@ -47,6 +48,9 @@ void CCommandExecuteThread::executeNext()
     m_stackCommandStack.top()->getBlock()->executeNextStep(*this);  //重要：执行物块代码的是这里，最顶部的物块这里是实例化的x和y。
 
     //if top block ended execution -> pop block
+
+    qDebug()<<"vdddddddddd "<<m_bKeepTopBlock;
+
     if(!m_bKeepTopBlock)
         delete m_stackCommandStack.pop();
     //if top block did not end execution -> delete returnValue and set next block to execute

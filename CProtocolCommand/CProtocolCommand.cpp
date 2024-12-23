@@ -158,7 +158,7 @@ void CProtocolCommand::createSprite()
 
     QString strVarName = "test";
 
-    addVariable(new CVarCommandBtn(CCommand::NUMBER_VAR,strVarName));
+    //addVariable(new CVarCommandBtn(CCommand::NUMBER_VAR,strVarName));
 
 
     if(m_Sprite)
@@ -341,7 +341,7 @@ CExpressionCommand *CProtocolCommand::compileExpression(CCommandBtn *blockRepr)
 
     if(expression == NULL) //if constant or variable
     {
-        // return compileSpecialCaseExpression(blockRepr);
+        return compileSpecialCaseExpression(blockRepr);
     }
 
 
@@ -461,14 +461,14 @@ void CProtocolCommand::onCommandBtnClicked(QString strCat)
 
         CConstantCommandBtn * aa = new CConstantCommandBtn(CCommand::NUMBER_EXPRESSION);
 
-        aa->setValue(12);
+        aa->setValue(18);
 
         clickedButton->placeParam(aa->copy(),0);
 
         CConstantCommandBtn * bb = new CConstantCommandBtn(CCommand::NUMBER_EXPRESSION);
 
 
-        aa->setValue(10);
+        bb->setValue(20);
 
 
         clickedButton->placeParam(bb->copy(),1);
