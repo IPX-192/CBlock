@@ -24,9 +24,7 @@ public:
 
     SpriteVarTable* getVarTable() const { return m_SpriteVars; }
 
-
     void sendSignal(const CSignal &signal);
-
 
 private:
     SpriteVarTable* m_SpriteVars;

@@ -52,6 +52,8 @@ public:
     CProtocolCommand(QWidget *parent = nullptr);
     ~CProtocolCommand();
 
+    void initialize();
+
     //复位命令设置区
     void resetCommandsList();
 
@@ -62,9 +64,6 @@ public:
     void removeCommand(CCommandBtn* commandBtn);
 
     void createSprite();
-
-    void compileProject();
-
 
     void compileSprite(CSprite* sprite);
 

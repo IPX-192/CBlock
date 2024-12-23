@@ -1,6 +1,6 @@
 ﻿#include "CSprite.h"
 #include "CCommandExcuteHandler.h"
-
+#include <QDebug>
 
 
 
@@ -29,4 +29,12 @@ CCommandExcuteHandler *CSprite::getExecutionHandler()
     }
 
     return nullptr;
+}
+
+void CSprite::sendSignal(const CSignal &signal)
+{
+    foreach (CEventCommand* b, m_qlistEventCommand) {
+        qDebug()<<"sfafasfasfasfafa "<<b->getId();
+        b->sendSignal(signal, this);
+    }
 }

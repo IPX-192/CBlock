@@ -7,7 +7,7 @@ CCommandExcuteHandler::CCommandExcuteHandler() {
     m_bRunning = false;
     m_bWorking = false;
     m_qTimer = new QTimer();
-    m_qTimer->setInterval(20);
+    m_qTimer->setInterval(1000);
 
     connect(m_qTimer, SIGNAL(timeout()), this, SLOT(onExecutionTick()));
 
@@ -62,6 +62,8 @@ void CCommandExcuteHandler::executeThreads()
         qDebug()<<u8"没得物块";
         return;
     }
+
+    qDebug()<<"sfasfafaf";
     for(int i = m_listThreads.size()-1; i >= 0; i--) {
         CCommandExecuteThread* et = m_listThreads.at(i);
         et->executeNext();                  //重要：物块的关键应该是在这里执行的

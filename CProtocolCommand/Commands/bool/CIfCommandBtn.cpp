@@ -1,4 +1,4 @@
-#include "CIfCommandBtn.h"
+﻿#include "CIfCommandBtn.h"
 #include "CMessage.h"
 #include "CCommandExecuteThread.h"
 
@@ -54,6 +54,7 @@ void CIfCommandBtn::executeNextStep(CCommandExecuteThread &executionThread) cons
             return;
         }
 
+        qDebug()<<u8"表达式是成立的";
         //if condition true -> execute body
         executionThread.setNextBlock(m_Body);
         m->setValue(2);

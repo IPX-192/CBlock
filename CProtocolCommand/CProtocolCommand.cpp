@@ -81,11 +81,19 @@ CProtocolCommand::CProtocolCommand(QWidget *parent)
 
     m_pCommandBtnLibrary = m_CommandLibrary.createBlockReprLibrary();
 
+    initialize();
+
 }
 
 CProtocolCommand::~CProtocolCommand()
 {
     delete ui;
+}
+
+void CProtocolCommand::initialize()
+{
+    CCommandBtn* eventCommandBtn = m_pCommandBtnLibrary->getBlockReprInstance("Start");
+    m_listCommands.append(eventCommandBtn);
 }
 
 void CProtocolCommand::resetCommandsList()
@@ -146,8 +154,7 @@ void CProtocolCommand::createSprite()
     m_Sprite = new CSprite(m_GlobalVars);
 
     m_Sprite->setExecutionHandler(m_excuteHandler);
-    CCommandBtn* eventCommandBtn = m_pCommandBtnLibrary->getBlockReprInstance("Start");
-    m_listCommands.append(eventCommandBtn);
+
 
     QString strVarName = "test";
 
@@ -158,15 +165,6 @@ void CProtocolCommand::createSprite()
     {
         qDebug()<<"rrrrrrrr11111";
         compileSprite(m_Sprite);
-    }
-}
-
-void CProtocolCommand::compileProject()
-{
-    //只要放入了命令块就开始编译
-    if(m_listCommands.size())
-    {
-        compileBody(m_listCommands.first());
     }
 }
 
@@ -188,10 +186,6 @@ void CProtocolCommand::compileSprite(CSprite *sprite)
     //增加变量
     foreach (CVarCommandBtn* varBlockRepr, m_listVars) {
 
-
-        qDebug()<<"asffffffffffffffffff  "<<varBlockRepr;
-
-
         if(isListVar(varBlockRepr))
         {
             sprite->getVarTable()->addList(new SimpleValueList(varBlockRepr->getVarName(), getDataType(varBlockRepr)));
@@ -200,13 +194,8 @@ void CProtocolCommand::compileSprite(CSprite *sprite)
         else
         {
             CVarIable* aa  = new SimpleVariable(varBlockRepr->getVarName(), getDataType(varBlockRepr));
-            if(aa == nullptr)
+            if(aa != nullptr)
             {
-                qDebug()<<"vvvvvvvvvvvvvvvvvvvvvvvv";
-            }
-            else
-            {
-                qDebug()<<"vvvvvvvvvvvvvvvvvvvvvvvv1" <<sprite->getVarTable() ;
                 sprite->getVarTable()->addVariable(aa);
             }
         }
@@ -234,7 +223,7 @@ CStatementCommand* CProtocolCommand::compileBody(CCommandBtn *blockRepr)
     int i = 0;
     if(blockRepr == nullptr)
     {
-         qDebug()<<"vvvvvvvvvvvvvvvvvvvvvvvv12";
+        qDebug()<<"vvvvvvvvvvvvvvvvvvvvvvvv12";
         return statements;
 
     }
@@ -410,19 +399,18 @@ CExpressionCommand *CProtocolCommand::compileSpecialCaseExpression(CCommandBtn *
 
 CVarCommand *CProtocolCommand::compileVarBlock(CCommandBtn *blockRepr)
 {
-    // CValue::DataType dataType = CValue::BOOLEAN;
+    CValue::DataType dataType = CValue::BOOLEAN;
 
-    // if(blockRepr->getReturnType() == CCommand::STRING_VAR || blockRepr->getReturnType() == CCommand::STRING_EXPRESSION)
-    //     dataType = CValue::STRING;
-
-    // else if(blockRepr->getReturnType() == CCommand::NUMBER_VAR || blockRepr->getReturnType() == CCommand::NUMBER_EXPRESSION)
-    //     dataType = CValue::NUMBER;
-
-    // return new CVarCommand(((CVarCommandBtn*)blockRepr)->getVarName(), dataType);
-
-    return nullptr;
+    if(blockRepr->getReturnType() == CCommand::STRING_VAR || blockRepr->getReturnType() == CCommand::STRING_EXPRESSION)
+    {
+        dataType = CValue::STRING;
+    }
+    else if(blockRepr->getReturnType() == CCommand::NUMBER_VAR || blockRepr->getReturnType() == CCommand::NUMBER_EXPRESSION)
+    {
+        dataType = CValue::NUMBER;
+    }
+    return new CVarCommand(((CVarCommandBtn*)blockRepr)->getVarName(), dataType);
 }
-
 
 void CProtocolCommand::onCommandsUpdated()
 {
@@ -445,6 +433,18 @@ void CProtocolCommand::onCommandBtnClicked(QString strCat)
     clickedButton->setLacked(true);
 
 
+    if( m_listCommands.size() > 0 &&  m_listCommands.first()->getId() == "Start")
+    {
+
+        m_listCommands.first()->placeNextStatement(clickedButton);
+    }
+
+    else
+    {
+        qDebug()<<"vvsdsada";
+    }
+
+
     //测试代码
     if(strCat == ">")
     {
@@ -461,7 +461,7 @@ void CProtocolCommand::onCommandBtnClicked(QString strCat)
 
         CConstantCommandBtn * aa = new CConstantCommandBtn(CCommand::NUMBER_EXPRESSION);
 
-        aa->setValue(15);
+        aa->setValue(12);
 
         clickedButton->placeParam(aa->copy(),0);
 
@@ -524,22 +524,19 @@ void CProtocolCommand::executionTick()
 
 void CProtocolCommand::on_btn_Start_clicked()
 {
-
-    // m_listCommands.clear();
-
     createSprite();
     //编译项目
-    //compileProject();
+
 
     //开始运行
-    //  m_excuteHandler->start();
+    m_excuteHandler->start();
 
     //默认触发事件是start之后
-    //  emit sigSendSignal(CSignal(CSignal::START));
 
-    // m_excuteHandler.addExecutionThread();
-
-
+    if(m_Sprite != nullptr)
+    {
+        m_Sprite->sendSignal(CSignal(CSignal::START));
+    }
 }
 
 
