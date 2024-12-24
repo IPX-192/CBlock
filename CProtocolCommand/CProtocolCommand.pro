@@ -20,6 +20,7 @@ SOURCES += \
     CCommandParam.cpp \
     CCommandRepr.cpp \
     CCommandReprView.cpp \
+    CCommandReprviewholder.cpp \
     CCommandStackElement.cpp \
     CConstantCommand.cpp \
     CConstantCommandBtn.cpp \
@@ -63,6 +64,7 @@ HEADERS += \
     CCommandParam.h \
     CCommandRepr.h \
     CCommandReprView.h \
+    CCommandReprviewholder.h \
     CCommandStackElement.h \
     CConstantCommand.h \
     CConstantCommandBtn.h \

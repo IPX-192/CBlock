@@ -15,7 +15,7 @@
 #include "CCommand.h"
 
 
-CCommandReprView *CCommandReprView::newBlockReprView(CCommandBtn *blockRepr, QGraphicsItem *parent)
+CCommandReprView *CCommandReprView::newBlockReprView(CCommandRepr *blockRepr, QGraphicsItem *parent)
 {
     //test if blockRepr is ConstantBlock
     if(blockRepr->isConstantBlockRepr())
@@ -26,7 +26,7 @@ CCommandReprView *CCommandReprView::newBlockReprView(CCommandBtn *blockRepr, QGr
         }
         if(blockRepr->getReturnType() == CCommand::NUMBER_EXPRESSION)
         {
-            return new CNumberConstantCommandBtnView((CConstantCommandBtn*)blockRepr, parent);
+            // return new CNumberConstantCommandBtnView((CConstantCommandBtn*)blockRepr, parent);
         }
     }
 
@@ -34,7 +34,7 @@ CCommandReprView *CCommandReprView::newBlockReprView(CCommandBtn *blockRepr, QGr
     return new CCommandReprView(blockRepr, parent);
 }
 
-CCommandReprView::CCommandReprView(CCommandBtn* blockRepr, QGraphicsItem *parent) : QGraphicsItem(parent), _blockRepr(blockRepr), _nextStatement(NULL)
+CCommandReprView::CCommandReprView(CCommandRepr* blockRepr, QGraphicsItem *parent) : QGraphicsItem(parent), _blockRepr(blockRepr), _nextStatement(NULL)
 {
     setCursor(QCursor(Qt::OpenHandCursor));
 
@@ -64,7 +64,7 @@ void CCommandReprView::paint(QPainter *painter, const QStyleOptionGraphicsItem *
 
     //draw descriptions
     painter->setPen(Qt::black);
-    painter->setFont(BlockRepr::FONT);
+    painter->setFont(CCommandRepr::FONT);
 
     for(int i = 0; i < _blockRepr->getParamDescriptions().size(); i++)
     {
@@ -97,7 +97,7 @@ void CCommandReprView::init()
 
     //set holder on nextStatement
     if(_blockRepr->getReturnType() == CCommand::VOID || _blockRepr->getReturnType() == CCommand::EVENT || _blockRepr->getReturnType() == CCommand::FUNCTION_START) {
-        _nextStatement = new BlockReprViewHolder(CCommand::VOID, -1, false, this);
+        // _nextStatement = new BlockReprViewHolder(CCommand::VOID, -1, false, this);
         _isNextStatementHolder = true;
     }
 
@@ -107,6 +107,82 @@ void CCommandReprView::init()
 }
 
 QPoint *CCommandReprView::createPolygonPoints() const
+{
+
+    int numBodies = _blockRepr->getNumBodies();
+
+    //total points = numBodies * 4
+    int numPoints = numBodies*4+4;
+    QPoint* points = new QPoint[numPoints];
+
+    //top left
+    points[0].setX(0);
+    points[0].setY(0);
+
+    //top right
+    int margin = (_blockRepr->getReturnType() == CCommand::VOID || _blockRepr->getReturnType() == CCommand::EVENT) ? CCommandRepr::LEFT_GUTTER : 0;
+    points[1].setX(_blockRepr->getHeaderSize().width() + margin);
+    points[1].setY(0);
+
+    //right
+    points[2].setX(points[1].x());
+    points[2].setY(_blockRepr->getHeaderSize().height());
+
+    for(int i = 0; i < numBodies; i++)
+    {
+        //top left
+        points[(i*4)+3].setX(_blockRepr->LEFT_GUTTER);
+        points[(i*4)+3].setY(points[(i*4)+2].y());
+
+        //down
+        points[(i*4)+4].setX(_blockRepr->LEFT_GUTTER);
+        points[(i*4)+4].setY(points[(i*4)+3].y() + _blockRepr->getBodySize(i).height());
+
+        //if next body following
+        if((i*4)+1 < numBodies)
+        {
+            //right
+            points[(i*4)+5].setX(_blockRepr->LEFT_GUTTER + _blockRepr->getBodyDescriptionSize(i+1).width());
+            points[(i*4)+5].setY(points[(i*4)+4].y());
+
+            //down
+            points[(i*4)+6].setX(points[(i*4)+5].x());
+            points[(i*4)+6].setY(points[(i*4)+5].y() + _blockRepr->getBodyDescriptionSize(i+1).height());
+        }
+
+        //bottom part
+        else
+        {
+            //right
+            points[(i*4)+5].setX(_blockRepr->LEFT_GUTTER + _blockRepr->FOOTER_WIDTH);
+            points[(i*4)+5].setY(points[(i*4)+4].y());
+
+            //down
+            points[(i*4)+6].setX(points[(i*4)+5].x());
+            points[(i*4)+6].setY(points[(i*4)+5].y() + _blockRepr->FOOTER_HEIGHT);
+        }
+    }
+
+    //bottom left
+    points[numPoints-1].setX(0);
+    points[numPoints-1].setY(points[numPoints-2].y());
+
+    return points;
+}
+
+QPolygon CCommandReprView::createPolygon() const
+{
+    QPolygon p;
+    QPoint* points = createPolygonPoints();
+    int numPoints = _blockRepr->getNumBodies()*4+4;
+    for(int i = 0; i < numPoints; i++)
+        p.append(points[i]);
+    delete [] points;
+
+    return p;
+}
+
+void CCommandReprView::resetHolders()
 {
     //reset params
     for(int i = 0; i < _blockRepr->getNumParams(); i++) {
@@ -151,18 +227,6 @@ QPoint *CCommandReprView::createPolygonPoints() const
             _isNextStatementHolder = true;
         }
     }
-}
-
-QPolygon CCommandReprView::createPolygon() const
-{
-    QPolygon p;
-    QPoint* points = createPolygonPoints();
-    int numPoints = _blockRepr->getNumBodies()*4+4;
-    for(int i = 0; i < numPoints; i++)
-        p.append(points[i]);
-    delete [] points;
-
-    return p;
 }
 
 void CCommandReprView::updateBlock()

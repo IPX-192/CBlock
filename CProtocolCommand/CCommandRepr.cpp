@@ -27,15 +27,15 @@ CCommandRepr::CCommandRepr(CCommand *block)
 {
     CCommandRepr::FONT.setPixelSize(11);
 
-    _id = block->getId();
+    m_qstrID = block->getId();
     _returnType = block->getReturnType();
-    _paramLabels = block->getParamDescription().split("%p");
-    for (int i = 0; i < _paramLabels.size(); ++i) {
-        _paramLabels.replace(i, _paramLabels.at(i).trimmed());
+    m_strListParamLabels = block->getParamDescription().split("%p");
+    for (int i = 0; i < m_strListParamLabels.size(); ++i) {
+        m_strListParamLabels.replace(i, m_strListParamLabels.at(i).trimmed());
     }
-    _bodyLabels = block->getBodiesDescription().split("%b", QString::SkipEmptyParts);
-    for (int i = 0; i < _bodyLabels.size(); ++i) {
-        _bodyLabels.replace(i, _bodyLabels.at(i).trimmed());
+    m_strListBodyLabels = block->getBodiesDescription().split("%b", QString::SkipEmptyParts);
+    for (int i = 0; i < m_strListBodyLabels.size(); ++i) {
+        m_strListBodyLabels.replace(i, m_strListBodyLabels.at(i).trimmed());
     }
 
     foreach (CCommand::ParamType type, block->getParamTypes()) {
@@ -54,10 +54,10 @@ CCommandRepr::CCommandRepr(const CCommandRepr& repr)
 {
     CCommandRepr::FONT.setPixelSize(11);
 
-    _id = repr.getId();
+    m_qstrID = repr.getId();
     _returnType = repr.getReturnType();
-    _paramLabels = repr.getParamDescriptions();
-    _bodyLabels = repr.getBodyDescriptions();
+    m_strListParamLabels = repr.getParamDescriptions();
+    m_strListBodyLabels = repr.getBodyDescriptions();
 
     for (int i = 0; i < repr.getNumParams(); i++) {
         CCommandParam* p = new CCommandParam(repr.getParamType(i));
@@ -180,10 +180,10 @@ QSize CCommandRepr::getHeaderSize()
 
 QSize CCommandRepr::getBodyDescriptionSize(int index)
 {
-    if (index < 0 || index >= _bodyLabels.size())
+    if (index < 0 || index >= m_strListBodyLabels.size())
         return QSize();
 
-    return getFontRect(_bodyLabels.at(index)).size() + QSize(MARGIN * 3, MARGIN * 2);
+    return getFontRect(m_strListBodyLabels.at(index)).size() + QSize(MARGIN * 3, MARGIN * 2);
 }
 
 QSize CCommandRepr::getBodySize(int index)
@@ -196,10 +196,10 @@ QSize CCommandRepr::getBodySize(int index)
 
 QSize CCommandRepr::getParamDescriptionsize(int index)
 {
-    if (index < 0 || index >= _paramLabels.size())
+    if (index < 0 || index >= m_strListParamLabels.size())
         return QSize();
 
-    return getFontRect(_paramLabels.at(index)).size();
+    return getFontRect(m_strListParamLabels.at(index)).size();
 }
 
 QSize CCommandRepr::getParamSize(int index)
@@ -220,14 +220,14 @@ QPoint CCommandRepr::getParamDescriptionPosition(int index)
 
 QPoint CCommandRepr::getBodyDescriptionPosition(int index)
 {
-    if (index < 0 || index >= _bodyLabels.size())
+    if (index < 0 || index >= m_strListBodyLabels.size())
         return QPoint();
 
     QPoint pos(LEFT_GUTTER + MARGIN, getParamListSize().height() + MARGIN);
 
     for (int i = 0; i < _bodies.size(); ++i) {
         if (index == i)
-            return pos + QPoint(0, getFontRect(_bodyLabels.at(index)).height()/2);
+            return pos + QPoint(0, getFontRect(m_strListBodyLabels.at(index)).height()/2);
 
         pos += QPoint(0, getBodySize(i).height() + 19);
     }
@@ -371,13 +371,7 @@ bool CCommandRepr::removeNextStatement()
 
 bool CCommandRepr::removeFromParent()
 {
-    if (_parent == NULL && _holderParent == NULL)
-        return true;
-
-    if (_parent == NULL)
-        return _holderParent->removeBlock(this);
-
-    return _parent->remove(this);
+    return true;
 }
 
 bool CCommandRepr::remove(CCommandRepr* repr)
@@ -459,15 +453,7 @@ QSize CCommandRepr::getParamListSize()
 
 void CCommandRepr::revert()
 {
-    if (_parent == NULL && _holderParent == NULL)
-        return;
-
-    if (_parent == NULL) {
-        _holderParent->addBlock(this);
-        return;
-    }
-
-    _parent->revertToParent();
+    return;
 }
 
 void CCommandRepr::revertToParent()
@@ -540,7 +526,7 @@ void CCommandRepr::calculateSize()
     total += header;
 
     // size of body descriptions (starts at 1 because description 0 is in header)
-    for (int i = 1; i < _bodyLabels.size(); ++i) {
+    for (int i = 1; i < m_strListBodyLabels.size(); ++i) {
         QSize s = getBodyDescriptionSize(i);
         total += QSize(0, s.height());
         total.setWidth(max(total.width(), s.width()));
@@ -558,7 +544,7 @@ void CCommandRepr::calculateSize()
     }
 
     // fixed footer
-    if (_bodyLabels.size() > 0) {
+    if (m_strListBodyLabels.size() > 0) {
         total += QSize(0, FOOTER_HEIGHT);
     }
 
@@ -573,10 +559,10 @@ void CCommandRepr::calculateSize()
 void CCommandRepr::calculateParamListSize()
 {
     QSize params(MARGIN, 2 * MARGIN);
-    for (int i = 0; i < max(_params.size(), _paramLabels.size()); ++i) {
-        if (i < _paramLabels.size()) {
-            params += QSize(getFontRect(_paramLabels.at(i)).size().width() + MARGIN_HORIZONTAL, 0);
-            params.setHeight(max(params.height(), 2 * MARGIN + getFontRect(_paramLabels.at(i)).size().height()));
+    for (int i = 0; i < max(_params.size(), m_strListParamLabels.size()); ++i) {
+        if (i < m_strListParamLabels.size()) {
+            params += QSize(getFontRect(m_strListParamLabels.at(i)).size().width() + MARGIN_HORIZONTAL, 0);
+            params.setHeight(max(params.height(), 2 * MARGIN + getFontRect(m_strListParamLabels.at(i)).size().height()));
         }
 
         if (i < _params.size()) {
@@ -602,7 +588,7 @@ void CCommandRepr::calculateHeaderSize()
     // calculate params and text
     QSize params = getParamListSize();
 
-    if (_bodyLabels.size() == 0)
+    if (m_strListBodyLabels.size() == 0)
         _headerSize = params;
     else
         _headerSize = QSize(max(params.width(), firstBodyDesc.width()), params.height() + firstBodyDesc.height());
@@ -613,10 +599,10 @@ void CCommandRepr::calculateParamPositions()
     _paramPositions.clear();
     int margin = (getReturnType() == CCommand::VOID || getReturnType() == CCommand::EVENT) ? LEFT_GUTTER : 0;
     QSize params(margin + MARGIN, 2 * MARGIN);
-    for (int i = 0; i < max(_params.size(), _paramLabels.size()); ++i) {
-        if (i < _paramLabels.size()) {
-            params += QSize(getFontRect(_paramLabels.at(i)).size().width() + MARGIN_HORIZONTAL, 0);
-            params.setHeight(max(params.height(), 2 * MARGIN + getFontRect(_paramLabels.at(i)).size().height()));
+    for (int i = 0; i < max(_params.size(), m_strListParamLabels.size()); ++i) {
+        if (i < m_strListParamLabels.size()) {
+            params += QSize(getFontRect(m_strListParamLabels.at(i)).size().width() + MARGIN_HORIZONTAL, 0);
+            params.setHeight(max(params.height(), 2 * MARGIN + getFontRect(m_strListParamLabels.at(i)).size().height()));
         }
 
         if (i < _params.size()) {
@@ -646,12 +632,12 @@ void CCommandRepr::calculateParamLabelPositions()
     _paramLabelPositions.clear();
     int margin = (getReturnType() == CCommand::VOID || getReturnType() == CCommand::EVENT) ? LEFT_GUTTER : 0;
     QSize params(margin + MARGIN, 2 * MARGIN);
-    for (int i = 0; i < max(_params.size(), _paramLabels.size()); ++i) {
-        if (i < _paramLabels.size()) {
-            _paramLabelPositions.append(QPoint(params.width(), getParamListSize().height()/2 + getFontRect(_paramLabels.at(i)).height()/2 - MARGIN + 1));
+    for (int i = 0; i < max(_params.size(), m_strListParamLabels.size()); ++i) {
+        if (i < m_strListParamLabels.size()) {
+            _paramLabelPositions.append(QPoint(params.width(), getParamListSize().height()/2 + getFontRect(m_strListParamLabels.at(i)).height()/2 - MARGIN + 1));
 
-            params += QSize(getFontRect(_paramLabels.at(i)).size().width() + MARGIN_HORIZONTAL, 0);
-            params.setHeight(max(params.height(), 2 * MARGIN + getFontRect(_paramLabels.at(i)).size().height()));
+            params += QSize(getFontRect(m_strListParamLabels.at(i)).size().width() + MARGIN_HORIZONTAL, 0);
+            params.setHeight(max(params.height(), 2 * MARGIN + getFontRect(m_strListParamLabels.at(i)).size().height()));
         }
 
         if (i < _params.size()) {
@@ -686,13 +672,13 @@ CCommandRepr* CCommandRepr::copy()
 
 void CCommandRepr::setParamLabels(QStringList paramLabels)
 {
-    _paramLabels = paramLabels;
+    m_strListParamLabels = paramLabels;
     emitBlockUpdated(true, true, true);
 }
 
 void CCommandRepr::setParamLabels(QString paramLabels)
 {
-    _paramLabels = paramLabels.split("%p");;
+    m_strListParamLabels = paramLabels.split("%p");;
     emitBlockUpdated(true, true, true);
 }
 

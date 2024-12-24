@@ -7,9 +7,8 @@
 #include <QColor>
 #include <QGraphicsSceneContextMenuEvent>
 
-#include "CCommandBtn.h"
-#include "CNumberConstantCommandBtnView.h"
 #include "CCommandRepr.h"
+#include "CCommandReprviewholder.h"
 
 class BlockColors
 {
@@ -31,13 +30,13 @@ public:
 
     virtual ~CCommandReprView();
 
-    virtual QRectF boundingRect() const;
+    virtual QRectF boundingRect() const {return _bounds;}
 
     virtual QPainterPath shape () const {return _shape;}
 
     virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);
 
-    CCommandReprView* getBlockRepr() const {return _blockRepr;}
+    CCommandRepr* getBlockRepr() const {return _blockRepr;}
 
 
 private:
@@ -61,7 +60,7 @@ public slots:
 
 protected:
 
-    explicit CCommandReprView(CCommandBtn* blockRepr, QGraphicsItem *parent = 0);
+    explicit CCommandReprView(CCommandRepr* blockRepr, QGraphicsItem *parent = 0);
 
     virtual void mousePressEvent(QGraphicsSceneMouseEvent* event);
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent* event);
@@ -74,7 +73,7 @@ protected:
     virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);
 
 private:
-    CCommandBtn* _blockRepr;
+    CCommandRepr* _blockRepr;
     QGraphicsItem** _params;
     bool* _isParamHolder;
     QGraphicsItem** _bodies;
@@ -85,10 +84,6 @@ private:
     QRectF _bounds;
     QPainterPath _shape;
 
-
-
 };
-
-inline QRectF CCommandReprView::boundingRect() const {return _bounds;}
 
 #endif // CCOMMANDREPRVIEW_H

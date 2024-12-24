@@ -3,6 +3,7 @@
 
 #include "CCommand.h"
 class CCommandBtn;
+class CCommandRepr;
 
 class CCommandParam
 {
@@ -10,15 +11,17 @@ public:
     CCommandParam(CCommand::ParamType type);
     ~CCommandParam();
 
-    CCommandBtn* getBlock() const { return m_CommandBtn; }
+    CCommandRepr* getBlock() const { return m_CommandBtn; }
 
     CCommand::ParamType getParamType() const { return m_ParamType; }
 
-    void setBlock(CCommandBtn* block);
+    //待删除
+    void setBlock(CCommandRepr* block);
 
 
 private:
-    CCommandBtn* m_CommandBtn;
+    CCommandRepr* m_CommandBtn;
+
 
     CCommand::ParamType m_ParamType;
 

@@ -6,13 +6,13 @@
 #include "CCommandReprView.h"
 
 class CConstantCommandBtn;
-
 class CNumberConstantCommandBtnView : public CCommandReprView
 {
+    Q_OBJECT
 public:
     CNumberConstantCommandBtnView();
 
-    NumberConstantBlockReprView(CConstantCommandBtn* blockRepr, QGraphicsItem *parent = 0);
+    CNumberConstantCommandBtnView(CConstantCommandBtn* blockRepr, QGraphicsItem *parent = 0);
 
 public slots:
     /**

@@ -2,8 +2,9 @@
 #define CCONSTANTCOMMANDBTN_H
 
 #include "CCommandBtn.h"
+#include "CCommandRepr.h"
 
-class CConstantCommandBtn : public CCommandBtn
+class CConstantCommandBtn : public CCommandRepr
 {
 public:
 
@@ -12,13 +13,17 @@ public:
 
     CConstantCommandBtn(const CConstantCommandBtn& block);
 
-    virtual CCommandBtn* copy();
+    virtual CCommandRepr* copy();
 
     virtual bool isConstantBlockRepr() const { return true; }
 
     QVariant getValue() const {return m_Value;}
 
     void setValue(QVariant value) {m_Value = value;}
+
+    virtual QSize getTotalSize();
+    virtual QSize getSize();
+    virtual QSize getHeaderSize();
 
 private:
     QVariant m_Value;

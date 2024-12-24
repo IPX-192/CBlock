@@ -463,7 +463,7 @@ void CProtocolCommand::onCommandBtnClicked(QString strCat)
 
         aa->setValue(28);
 
-        clickedButton->placeParam(aa->copy(),0);
+        //clickedButton->placeParam(aa->copy(),0);
 
         CConstantCommandBtn * bb = new CConstantCommandBtn(CCommand::NUMBER_EXPRESSION);
 
@@ -471,7 +471,7 @@ void CProtocolCommand::onCommandBtnClicked(QString strCat)
         bb->setValue(20);
 
 
-        clickedButton->placeParam(bb->copy(),1);
+        //clickedButton->placeParam(bb->copy(),1);
 
         qDebug()<<"rrrrrrrr"<<clickedButton->getId();
 

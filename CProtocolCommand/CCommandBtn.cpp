@@ -54,7 +54,7 @@ CCommandBtn::CCommandBtn(const CCommandBtn &repr)
         if(repr.getParam(i) != nullptr) {
             CCommandBtn* newParam = repr.getParam(i)->copy();
             newParam->setParent(this);
-            p->setBlock(newParam);
+            //p->setBlock(newParam);
         }
         m_listParams.append(p);
     }
@@ -142,7 +142,7 @@ bool CCommandBtn::placeParam(CCommandBtn *repr, int index)
         return false;
     }
 
-    m_listParams.at(index)->setBlock(repr);
+    //m_listParams.at(index)->setBlock(repr);
 
 }
 
@@ -236,7 +236,7 @@ CCommandBtn *CCommandBtn::getParam(int index) const
         return nullptr;
     }
 
-    return m_listParams.at(index)->getBlock();
+    //return m_listParams.at(index)->getBlock();
 }
 
 CCommand::ParamType CCommandBtn::getParamType(int index) const

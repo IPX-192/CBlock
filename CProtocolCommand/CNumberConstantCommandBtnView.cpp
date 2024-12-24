@@ -4,9 +4,8 @@
 #include <QDebug>
 #include <climits>
 
-CNumberConstantCommandBtnView::CNumberConstantCommandBtnView() {}
-
-CNumberConstantCommandBtnView::NumberConstantBlockReprView(CConstantCommandBtn *blockRepr, QGraphicsItem *parent)
+CNumberConstantCommandBtnView::CNumberConstantCommandBtnView(CConstantCommandBtn *blockRepr, QGraphicsItem *parent)
+    :CCommandReprView(blockRepr, parent), _constantBlockRepr(blockRepr)
 {
     QFont font("Arial", 11);
     font.setPixelSize(11);
@@ -22,7 +21,7 @@ CNumberConstantCommandBtnView::NumberConstantBlockReprView(CConstantCommandBtn *
     _lineEdit->setValidator(_validator);
     _proxy = new QGraphicsProxyWidget;
     _proxy->setWidget(_lineEdit);
-    //_proxy->setPos(BlockRepr::MARGIN_HORIZONTAL*2, BlockRepr::MARGIN);
+    //_proxy->setPos(CCommandRepr::MARGIN_HORIZONTAL*2, CCommandRepr::MARGIN);
     _proxy->setParentItem(this);
 
     connect(_lineEdit, SIGNAL(textChanged(QString)), this, SLOT(numberChanged()));

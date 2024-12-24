@@ -14,7 +14,7 @@ CCommandParam::~CCommandParam()
     }
 }
 
-void CCommandParam::setBlock(CCommandBtn *block)
+void CCommandParam::setBlock(CCommandRepr *block)
 {
     m_CommandBtn = block;
 }

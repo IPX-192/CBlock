@@ -10,6 +10,8 @@
 #include <QDebug>
 #include "CCommand.h"
 
+class CCommandParam;
+
 //组合框
 class CCommandRepr : public QObject
 {
@@ -28,15 +30,14 @@ public:
     virtual CCommandRepr* copy();
 
 
-    QString getId() const { return _id; }
+    QString getId() const { return m_qstrID; }
 
 
     void setPosition(QPoint pos) { _position = pos; }
 
     QPoint getPosition() const { return _position; }
 
-
-    void setParent(CCommandRepr* parent) { _parent = parent; _holderParent = NULL; }
+    void setParent(CCommandRepr* parent) { _parent = parent; }
 
 
     CCommandRepr* getParent() const { return _parent; }
@@ -111,10 +112,10 @@ public:
     CCommand::ParamType getParamType(int index) const;
 
 
-    QStringList getParamDescriptions() const { return _paramLabels; }
+    QStringList getParamDescriptions() const { return m_strListParamLabels; }
 
 
-    QStringList getBodyDescriptions() const { return _bodyLabels; }
+    QStringList getBodyDescriptions() const { return m_strListBodyLabels; }
 
     QPoint getParamPosition(int index);
 
@@ -138,13 +139,13 @@ public:
     bool isLocked() const {return _isLocked;}
 
 
-    virtual bool isConstantCCommandRepr() const { return false; }
+    virtual bool isConstantBlockRepr() const { return false; }
 
 
-    virtual bool isVarCCommandRepr() const { return false; }
+    virtual bool isVarBlockRepr() const { return false; }
 
 
-    virtual bool isSpriteCCommandRepr() const { return false; }
+    virtual bool isSpriteBlockRepr() const { return false; }
 
 
     virtual bool isUserStatementRepr() const { return false; }
@@ -166,8 +167,8 @@ public:
     static const QSize HOLDER_SIZE;
 
 protected:
-    CCommandRepr(CCommand::ParamType type, QString name, bool locked = false, bool isVar = true);
-    CCommandRepr(CCommand::ParamType type, bool locked = false);
+    CCommandRepr(CCommand::ParamType type, QString name,bool isVar = true);
+    CCommandRepr(CCommand::ParamType type);
 
     void setParamLabels(QStringList paramLabels);
     void setParamLabels(QString paramLabels);
@@ -183,12 +184,14 @@ public slots:
     void deleteBlock();
 
 private:
-    QString _id;
+
+    CCommand::ParamType m_ReturnType;
+    QString m_qstrID;
     CCommandRepr* _parent{nullptr};
     CCommand::ParamType _returnType;
-    QStringList _paramLabels;
+    QStringList m_strListParamLabels;
     QList<CCommandParam*> _params;     //一个单独的块里面的参数
-    QStringList _bodyLabels;
+    QStringList m_strListBodyLabels;
     QList<CCommandRepr*> _bodies;   //一个块里面的语句是一个单独的块
     QPoint _position;
     CCommandRepr* _nextBlock{nullptr};

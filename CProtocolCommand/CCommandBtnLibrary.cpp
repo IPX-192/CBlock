@@ -3,8 +3,8 @@
 
 CCommandBtnLibrary::CCommandBtnLibrary() {
 
-    registerBlock(new CConstantCommandBtn(CCommand::STRING_EXPRESSION));
-    registerBlock(new CConstantCommandBtn(CCommand::NUMBER_EXPRESSION));
+    //registerBlock(new CConstantCommandBtn(CCommand::STRING_EXPRESSION));
+    //registerBlock(new CConstantCommandBtn(CCommand::NUMBER_EXPRESSION));
 }
 
 CCommandBtnLibrary::~CCommandBtnLibrary()
