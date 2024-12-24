@@ -17,6 +17,8 @@ class CCommandBtn : public QPushButton
 {
     Q_OBJECT
 public:
+
+
     CCommandBtn(CCommand* block);
 
     CCommandBtn(QString cat,QString text, QWidget *parent = 0);
@@ -121,7 +123,7 @@ private:
 
     QList<CCommandParam*> m_listParams;   //一个单独的块里面的参数
 
-    QList<CCommandBtn*> m_listBodies;   //一个块里面的语句是一个单独的块
+    QList<CCommandBtn*> m_listBodies;    //一个块里面的语句是一个单独的块
 };
 
 

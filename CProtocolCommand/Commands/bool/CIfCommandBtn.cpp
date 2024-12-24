@@ -50,12 +50,12 @@ void CIfCommandBtn::executeNextStep(CCommandExecuteThread &executionThread) cons
         //if no return value or false -> end execution
         if(value == NULL || !value->toBool())
         {
-            qDebug()<<u8"表达式是不成立的";
+            qDebug()<<u8"if表达式是不成立的";
             executionThread.endExecution(NULL);
             return;
         }
 
-        qDebug()<<u8"表达式是成立的";
+        qDebug()<<u8"if表达式是成立的";
         //if condition true -> execute body
         executionThread.setNextBlock(m_Body);
         m->setValue(2);

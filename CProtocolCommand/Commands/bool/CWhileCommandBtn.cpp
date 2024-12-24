@@ -54,6 +54,9 @@ void CWhileCommandBtn::executeNextStep(CCommandExecuteThread &executionThread) c
         //重要：while循环只需要判断这个条件是否为真
         if(value == NULL || !value->toBool())
         {
+
+
+            //qDebug()<<u8"while表达式是不成立的";
             executionThread.endExecution(NULL);
             return;
         }

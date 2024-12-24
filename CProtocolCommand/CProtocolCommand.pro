@@ -18,6 +18,8 @@ SOURCES += \
     CCommandExecuteThread.cpp \
     CCommandLibrary.cpp \
     CCommandParam.cpp \
+    CCommandRepr.cpp \
+    CCommandReprView.cpp \
     CCommandStackElement.cpp \
     CConstantCommand.cpp \
     CConstantCommandBtn.cpp \
@@ -59,6 +61,8 @@ HEADERS += \
     CCommandExecuteThread.h \
     CCommandLibrary.h \
     CCommandParam.h \
+    CCommandRepr.h \
+    CCommandReprView.h \
     CCommandStackElement.h \
     CConstantCommand.h \
     CConstantCommandBtn.h \

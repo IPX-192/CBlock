@@ -461,7 +461,7 @@ void CProtocolCommand::onCommandBtnClicked(QString strCat)
 
         CConstantCommandBtn * aa = new CConstantCommandBtn(CCommand::NUMBER_EXPRESSION);
 
-        aa->setValue(18);
+        aa->setValue(28);
 
         clickedButton->placeParam(aa->copy(),0);
 
