@@ -3,8 +3,8 @@
 
 CCommandBtnLibrary::CCommandBtnLibrary() {
 
-    //registerBlock(new CConstantCommandBtn(CCommand::STRING_EXPRESSION));
-    //registerBlock(new CConstantCommandBtn(CCommand::NUMBER_EXPRESSION));
+    registerBlock(new CConstantCommandBtn(CCommand::STRING_EXPRESSION));
+    registerBlock(new CConstantCommandBtn(CCommand::NUMBER_EXPRESSION));
 }
 
 CCommandBtnLibrary::~CCommandBtnLibrary()
@@ -12,7 +12,7 @@ CCommandBtnLibrary::~CCommandBtnLibrary()
 
 }
 
-bool CCommandBtnLibrary::registerBlock(CCommandBtn *blockRepr)
+bool CCommandBtnLibrary::registerBlock(CCommandRepr *blockRepr)
 {
     if(blockRepr == nullptr)
     {
@@ -26,9 +26,9 @@ bool CCommandBtnLibrary::registerBlock(CCommandBtn *blockRepr)
     m_listBlockReprs.append(blockRepr);
 }
 
-CCommandBtn *CCommandBtnLibrary::getBlockReprInstance(QString id) const
+CCommandRepr *CCommandBtnLibrary::getBlockReprInstance(QString id) const
 {
-    CCommandBtn* block = get(id);
+    CCommandRepr* block = get(id);
 
 
     if(block == nullptr)
@@ -45,7 +45,7 @@ QStringList CCommandBtnLibrary::createCategoryList()
 {
     QStringList list;
 
-    foreach (CCommandBtn* blockRepr, m_listBlockReprs) {
+    foreach (CCommandRepr* blockRepr, m_listBlockReprs) {
         QStringList s = blockRepr->getId().split("_");
         list.append(s.first());
     }
@@ -58,7 +58,7 @@ QStringList CCommandBtnLibrary::createCategoryList()
 
 bool CCommandBtnLibrary::contains(QString id)
 {
-    foreach (CCommandBtn* blockrepr, m_listBlockReprs) {
+    foreach (CCommandRepr* blockrepr, m_listBlockReprs) {
         if (blockrepr->getId() == id)
             return true;
     }
@@ -66,11 +66,11 @@ bool CCommandBtnLibrary::contains(QString id)
     return false;
 }
 
-QList<CCommandBtn *> CCommandBtnLibrary::getBlocksOfCategory(QString cat)
+QList<CCommandRepr *> CCommandBtnLibrary::getBlocksOfCategory(QString cat)
 {
-    QList<CCommandBtn*> list;
+    QList<CCommandRepr*> list;
 
-    foreach (CCommandBtn* blockRepr, m_listBlockReprs) {
+    foreach (CCommandRepr* blockRepr, m_listBlockReprs) {
         QStringList s = blockRepr->getId().split("_");
         if (s.first() == cat)
             list.append(blockRepr);
@@ -79,9 +79,9 @@ QList<CCommandBtn *> CCommandBtnLibrary::getBlocksOfCategory(QString cat)
     return list;
 }
 
-CCommandBtn *CCommandBtnLibrary::get(QString id) const
+CCommandRepr *CCommandBtnLibrary::get(QString id) const
 {
-    foreach (CCommandBtn* blockrepr, m_listBlockReprs) {
+    foreach (CCommandRepr* blockrepr, m_listBlockReprs) {
         if (blockrepr->getId() == id)
             return blockrepr;
     }

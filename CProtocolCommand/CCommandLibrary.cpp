@@ -15,7 +15,7 @@ CCommandLibrary::CCommandLibrary() {
     registerBlock(new CMultiplyCommand());
     registerBlock(new CNumberRassignment());
     registerBlock(new CPlusCommand());
-    registerBlock(new CStartCommand());
+    // registerBlock(new CStartCommand());
 
 }
 
@@ -64,7 +64,7 @@ CCommandBtnLibrary* CCommandLibrary::createBlockReprLibrary() const
     CCommandBtnLibrary* lib = new CCommandBtnLibrary;
 
     foreach (CCommand* block, m_listCommand) {
-        lib->registerBlock(new CCommandBtn(block));
+        lib->registerBlock(new CCommandRepr(block));
     }
 
     return lib;

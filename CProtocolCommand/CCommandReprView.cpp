@@ -26,7 +26,7 @@ CCommandReprView *CCommandReprView::newBlockReprView(CCommandRepr *blockRepr, QG
         }
         if(blockRepr->getReturnType() == CCommand::NUMBER_EXPRESSION)
         {
-            // return new CNumberConstantCommandBtnView((CConstantCommandBtn*)blockRepr, parent);
+            //return new CNumberConstantCommandBtnView((CConstantCommandBtn*)blockRepr, parent);
         }
     }
 

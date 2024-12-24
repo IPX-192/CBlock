@@ -4,6 +4,7 @@
 #include <QGraphicsLinearLayout>
 #include <QGraphicsGridLayout>
 #include <QDebug>
+#include "CCommandReprView.h"
 
 CProtocolCommand::CProtocolCommand(QWidget *parent)
     : QWidget(parent)
@@ -92,8 +93,8 @@ CProtocolCommand::~CProtocolCommand()
 
 void CProtocolCommand::initialize()
 {
-    CCommandBtn* eventCommandBtn = m_pCommandBtnLibrary->getBlockReprInstance("Start");
-    m_listCommands.append(eventCommandBtn);
+    //CCommandBtn* eventCommandBtn = m_pCommandBtnLibrary->getBlockReprInstance("Start");
+    //m_listCommands.append(eventCommandBtn);
 }
 
 void CProtocolCommand::resetCommandsList()
@@ -420,102 +421,84 @@ void CProtocolCommand::onCommandsUpdated()
 void CProtocolCommand::onCommandBtnClicked(QString strCat)
 {
 
-    CCommandBtn* clickedButton = m_pCommandBtnLibrary->getBlockReprInstance(strCat);
+    // CCommandBtn* clickedButton = m_pCommandBtnLibrary->getBlockReprInstance(strCat);
 
-    if(clickedButton == nullptr)
-    {
-        return;
-    }
+    // if(clickedButton == nullptr)
+    // {
+    //     return;
+    // }
 
-    clickedButton->setFixedSize(100, 45);
-    clickedButton->setStyleSheet("color: black;");
-    clickedButton->setText(strCat);
-    clickedButton->setLacked(true);
-
-
-    if( m_listCommands.size() > 0 &&  m_listCommands.first()->getId() == "Start")
-    {
-
-        m_listCommands.first()->placeNextStatement(clickedButton);
-    }
-
-    else
-    {
-        qDebug()<<"vvsdsada";
-    }
+    // clickedButton->setFixedSize(100, 45);
+    // clickedButton->setStyleSheet("color: black;");
+    // clickedButton->setText(strCat);
+    // clickedButton->setLacked(true);
 
 
-    //测试代码
-    if(strCat == ">")
-    {
-        foreach(CCommandBtn* block, m_listCommands) {
+    // if( m_listCommands.size() > 0 &&  m_listCommands.first()->getId() == "Start")
+    // {
+
+    //     m_listCommands.first()->placeNextStatement(clickedButton);
+    // }
+
+    // else
+    // {
+    //     qDebug()<<"vvsdsada";
+    // }
 
 
-            if(m_lastID == block->getId())
-            {
-                block->placeParam(clickedButton,0);
-                qDebug()<<"rrrrrrrr"<<block->getId();
-            }
-        }
+    // //测试代码
+    // if(strCat == ">")
+    // {
+    //     foreach(CCommandBtn* block, m_listCommands) {
 
 
-        CConstantCommandBtn * aa = new CConstantCommandBtn(CCommand::NUMBER_EXPRESSION);
-
-        aa->setValue(28);
-
-        //clickedButton->placeParam(aa->copy(),0);
-
-        CConstantCommandBtn * bb = new CConstantCommandBtn(CCommand::NUMBER_EXPRESSION);
-
-
-        bb->setValue(20);
+    //         if(m_lastID == block->getId())
+    //         {
+    //             block->placeParam(clickedButton,0);
+    //             qDebug()<<"rrrrrrrr"<<block->getId();
+    //         }
+    //     }
 
 
-        //clickedButton->placeParam(bb->copy(),1);
+    //     CConstantCommandBtn * aa = new CConstantCommandBtn(CCommand::NUMBER_EXPRESSION);
 
-        qDebug()<<"rrrrrrrr"<<clickedButton->getId();
+    //     aa->setValue(28);
 
-        // //添加参数
-        // if(m_listVars.size())
-        // {
+    //     //clickedButton->placeParam(aa->copy(),0);
+
+    //     CConstantCommandBtn * bb = new CConstantCommandBtn(CCommand::NUMBER_EXPRESSION);
 
 
-        // }
+    //     bb->setValue(20);
 
-    }
-    addCommand(clickedButton);
 
+    //     //clickedButton->placeParam(bb->copy(),1);
+
+    //     qDebug()<<"rrrrrrrr"<<clickedButton->getId();
+
+    //     // //添加参数
+    //     // if(m_listVars.size())
+    //     // {
+
+
+    //     // }
+
+    // }
+    // addCommand(clickedButton);
+
+    CCommandRepr* clickedButton = m_pCommandBtnLibrary->getBlockReprInstance(strCat);
+
+    CCommandReprView* brv = CCommandReprView::newBlockReprView(clickedButton);
+
+    m_CommandMainScene->addItem(brv);   //开始循环绘制物块
 }
 
 void CProtocolCommand::onCommandBtnClicked1(QString strCat)
 {
-    qDebug()<<"safasfsafase3" << strCat;
-
     m_lastID = strCat;
-
-    // foreach(CCommandBtn* block, m_listCommands) {
-
-
-    //     if(strCat == block->getId())
-    //     {
-
-    //     }
-    // }
-
-
 }
 
-// void CProtocolCommand::onCommandBtnClicked()
-// {
 
-//     CCommandBtn* clickedButton = qobject_cast<CCommandBtn*>(sender());
-
-//     if (clickedButton) {
-//         qDebug() << "Clicked button text: " << clickedButton->text();
-
-//         addCommand(clickedButton);
-//     }
-// }
 
 void CProtocolCommand::executionTick()
 {

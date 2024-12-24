@@ -22,6 +22,7 @@
 #include "CVarCommandBtn.h"
 #include "CVarCommand.h"
 #include "CSprite.h"
+#include "CCommandRepr.h"
 
 
 QT_BEGIN_NAMESPACE

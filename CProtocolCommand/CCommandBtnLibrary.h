@@ -3,7 +3,8 @@
 
 #include <QList>
 #include <QStringList>
-#include "CCommandBtn.h"
+#include "CCommandRepr.h"
+
 
 class CCommandBtnLibrary
 {
@@ -12,23 +13,23 @@ public:
 
     ~CCommandBtnLibrary();
 
-    bool registerBlock(CCommandBtn* blockRepr);
+    bool registerBlock(CCommandRepr* blockRepr);
 
-    CCommandBtn* getBlockReprInstance(QString id) const;
+    CCommandRepr* getBlockReprInstance(QString id) const;
 
 
     QStringList createCategoryList();
 
     bool contains(QString id);
 
-    QList<CCommandBtn*> getBlocksOfCategory(QString cat);
+    QList<CCommandRepr*> getBlocksOfCategory(QString cat);
 
 
-    CCommandBtn* get(QString id) const;
+    CCommandRepr* get(QString id) const;
 
 
 private:
-    QList<CCommandBtn*> m_listBlockReprs;
+    QList<CCommandRepr*> m_listBlockReprs;
 
 };
 
