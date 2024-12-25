@@ -1,5 +1,6 @@
 ﻿#include "CCommandRepr.h"
 #include "CCommandParam.h"
+#include "CProtocolCommand.h"
 #include <QPushButton>
 #include <QStyleOptionButton>
 #include <QPainter>
@@ -371,7 +372,12 @@ bool CCommandRepr::removeNextStatement()
 
 bool CCommandRepr::removeFromParent()
 {
+
+    // m_pProtocolCommand->removeCommand(this);
+
     return true;
+
+    //return _parent->remove(this);
 }
 
 bool CCommandRepr::remove(CCommandRepr* repr)
@@ -453,7 +459,7 @@ QSize CCommandRepr::getParamListSize()
 
 void CCommandRepr::revert()
 {
-    return;
+
 }
 
 void CCommandRepr::revertToParent()
@@ -668,6 +674,11 @@ void CCommandRepr::deleteBlock()
 CCommandRepr* CCommandRepr::copy()
 {
     return new CCommandRepr(*this);
+}
+
+void CCommandRepr::setHolderParent(CProtocolCommand *parent)
+{
+    m_pProtocolCommand = parent;
 }
 
 void CCommandRepr::setParamLabels(QStringList paramLabels)

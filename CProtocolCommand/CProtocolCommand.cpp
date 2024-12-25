@@ -12,14 +12,11 @@ CProtocolCommand::CProtocolCommand(QWidget *parent)
 {
     ui->setupUi(this);
 
-
+    m_pBlockCanvas = new CCommandCanvas(this);
     m_CommandMainScene = new QGraphicsScene();
 
     m_excuteHandler = new CCommandExcuteHandler();
-    ui->graphicsView_2->setScene(m_CommandMainScene);
-
-    m_CommandMainScene->clear();
-    connect(this,&CProtocolCommand::sigCommandsUpdated,this,&CProtocolCommand::onCommandsUpdated);
+    ui->graphicsView_2->setScene(m_pBlockCanvas);
 
 
     QGraphicsScene* scene = new QGraphicsScene(this);
@@ -97,31 +94,17 @@ void CProtocolCommand::initialize()
     //m_listCommands.append(eventCommandBtn);
 }
 
-void CProtocolCommand::resetCommandsList()
-{
-    // 先删除所有 QGraphicsProxyWidget
-    foreach (QGraphicsItem* item, m_CommandMainScene->items()) {
-        QGraphicsProxyWidget* proxyWidget = qgraphicsitem_cast<QGraphicsProxyWidget*>(item);
-        if (proxyWidget) {
-            QWidget* widget = proxyWidget->widget();
-            if (widget) {
-                widget->setParent(nullptr);  // 确保 widget 的父对象不会影响到删除
-            }
-            delete proxyWidget;  // 删除 QGraphicsProxyWidget
-        }
-    }
-
-    // 清理场景中的所有项
-    m_CommandMainScene->clear();
-}
-
-void CProtocolCommand::buildCommandsList()
-{
-
-}
-
 void CProtocolCommand::addCommand(CCommandRepr *commandBtn)
 {
+
+    qDebug()<<"asffffffff "<<m_listCommands.size();
+    if(commandBtn != nullptr)
+    {
+        m_listCommands.append(commandBtn);
+        commandBtn->setHolderParent(this);
+        m_pBlockCanvas->buildList();
+    }
+
     // if (commandBtn != nullptr && !m_listCommands.contains(commandBtn)) {
 
     //     // connect(commandBtn, &CCommandBtn::sigClicked, this, &CProtocolCommand::onCommandBtnClicked1);
@@ -140,12 +123,12 @@ void CProtocolCommand::addCommand(CCommandRepr *commandBtn)
 
 void CProtocolCommand::removeCommand(CCommandRepr *commandBtn)
 {
-    // for(int i = 0; i < m_listCommands.size(); i++) {
-    //     if(m_listCommands[i] == commandBtn) {
-    //         m_listCommands.removeAt(i);
-    //         emit onCommandsUpdated();
-    //     }
-    // }
+    for(int i = 0; i < m_listCommands.size(); i++) {
+        if(m_listCommands[i] == commandBtn) {
+            m_listCommands.removeAt(i);
+            m_pBlockCanvas->buildList();
+        }
+    }
 }
 
 void CProtocolCommand::createSprite()
@@ -413,11 +396,6 @@ CVarCommand *CProtocolCommand::compileVarBlock(CCommandBtn *blockRepr)
     return new CVarCommand(((CVarCommandBtn*)blockRepr)->getVarName(), dataType);
 }
 
-void CProtocolCommand::onCommandsUpdated()
-{
-    buildCommandsList();
-}
-
 void CProtocolCommand::onCommandBtnClicked(QString strCat)
 {
 
@@ -504,7 +482,7 @@ void CProtocolCommand::onCommandBtnClicked(QString strCat)
     y+= 50;
     brv->setPos(0,y);
 
-    m_CommandMainScene->addItem(brv);   //开始循环绘制物块
+    m_pBlockCanvas->addItem(brv);   //开始循环绘制物块
 }
 
 void CProtocolCommand::onCommandBtnClicked1(QString strCat)

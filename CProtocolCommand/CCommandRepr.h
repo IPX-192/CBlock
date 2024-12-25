@@ -11,6 +11,7 @@
 #include "CCommand.h"
 
 class CCommandParam;
+class CProtocolCommand;
 
 //组合框
 class CCommandRepr : public QObject
@@ -41,6 +42,8 @@ public:
 
 
     CCommandRepr* getParent() const { return _parent; }
+
+    void setHolderParent(CProtocolCommand* parent);
 
 
     virtual QSize getTotalSize();
@@ -196,6 +199,8 @@ private:
     bool _lastRemovedWasParam{false};
     int _lastRemovedIndex;
     CCommandRepr* _lastRemoved{nullptr};
+    CProtocolCommand* m_pProtocolCommand{nullptr};
+
     bool _isLocked{false};
 
     QRect getFontRect(QString string);

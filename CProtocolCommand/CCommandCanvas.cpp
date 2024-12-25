@@ -31,6 +31,7 @@ void CCommandCanvas::buildList()
     resetList();
 
     foreach(CCommandRepr* block, m_pProtocolCommand->getBlocks()) {
+
         CCommandReprView* blockView = CCommandReprView::newBlockReprView(block);
         _blocks.append(blockView);
         blockView->setPos(block->getPosition());
@@ -66,6 +67,7 @@ void CCommandCanvas::dropEvent(QGraphicsSceneDragDropEvent *event)
         QPoint position = event->scenePos().toPoint() - mime->getDragInfo()->getTopLeft();
 
         mime->getDragInfo()->getBlockRepr()->setPosition(position);
+        mime->getDragInfo()->getBlockRepr()->setHolderParent(m_pProtocolCommand);
         m_pProtocolCommand->addCommand(mime->getDragInfo()->getBlockRepr());
 
         mime->getDragInfo()->setDropSuccessful(true);

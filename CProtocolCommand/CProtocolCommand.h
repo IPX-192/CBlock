@@ -23,6 +23,7 @@
 #include "CVarCommand.h"
 #include "CSprite.h"
 #include "CCommandRepr.h"
+#include "CCommandCanvas.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -54,11 +55,6 @@ public:
     ~CProtocolCommand();
 
     void initialize();
-
-    //复位命令设置区
-    void resetCommandsList();
-
-    void buildCommandsList();
 
     void addCommand(CCommandRepr* commandBtn);
 
@@ -103,7 +99,7 @@ signals:
     void sigSendSignal(const CSignal &signal);
 
 private slots:
-    void onCommandsUpdated();
+
 
     //void onCommandBtnClicked();
 
@@ -154,6 +150,8 @@ private:
 
 
     CSprite*   m_Sprite{nullptr};
+
+    CCommandCanvas* m_pBlockCanvas{nullptr};
 
 
     //控制的变量区
