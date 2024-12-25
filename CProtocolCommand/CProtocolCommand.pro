@@ -14,6 +14,7 @@ SOURCES += \
     CCommand.cpp \
     CCommandBtn.cpp \
     CCommandBtnLibrary.cpp \
+    CCommandCanvas.cpp \
     CCommandExcuteHandler.cpp \
     CCommandExecuteThread.cpp \
     CCommandLibrary.cpp \
@@ -59,6 +60,7 @@ HEADERS += \
     CCommand.h \
     CCommandBtn.h \
     CCommandBtnLibrary.h \
+    CCommandCanvas.h \
     CCommandExcuteHandler.h \
     CCommandExecuteThread.h \
     CCommandLibrary.h \

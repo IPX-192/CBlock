@@ -329,7 +329,7 @@ void CCommandReprView::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         else
         {
             qDebug()<<"vsdsadasfsafafafa4 ";
-            mime->getDragInfo()->getBlockRepr()->revert();
+           mime->getDragInfo()->getBlockRepr()->revert();
         }
 
     }

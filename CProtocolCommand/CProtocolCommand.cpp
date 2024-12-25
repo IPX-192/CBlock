@@ -120,32 +120,32 @@ void CProtocolCommand::buildCommandsList()
 
 }
 
-void CProtocolCommand::addCommand(CCommandBtn *commandBtn)
+void CProtocolCommand::addCommand(CCommandRepr *commandBtn)
 {
-    if (commandBtn != nullptr && !m_listCommands.contains(commandBtn)) {
+    // if (commandBtn != nullptr && !m_listCommands.contains(commandBtn)) {
 
-        // connect(commandBtn, &CCommandBtn::sigClicked, this, &CProtocolCommand::onCommandBtnClicked1);
+    //     // connect(commandBtn, &CCommandBtn::sigClicked, this, &CProtocolCommand::onCommandBtnClicked1);
 
-        m_listCommands.append(commandBtn);
+    //     m_listCommands.append(commandBtn);
 
-        int x = 0;
-        int y = m_listCommands.size() * 50;
-        QGraphicsProxyWidget* proxy = m_CommandMainScene->addWidget(commandBtn);
-        proxy->setPos(x, y);
+    //     int x = 0;
+    //     int y = m_listCommands.size() * 50;
+    //     QGraphicsProxyWidget* proxy = m_CommandMainScene->addWidget(commandBtn);
+    //     proxy->setPos(x, y);
 
-        connect(commandBtn, &CCommandBtn::sigClicked, this, &CProtocolCommand::onCommandBtnClicked1);
-        //emit onCommandsUpdated();
-    }
+    //     connect(commandBtn, &CCommandBtn::sigClicked, this, &CProtocolCommand::onCommandBtnClicked1);
+    //     //emit onCommandsUpdated();
+    // }
 }
 
-void CProtocolCommand::removeCommand(CCommandBtn *commandBtn)
+void CProtocolCommand::removeCommand(CCommandRepr *commandBtn)
 {
-    for(int i = 0; i < m_listCommands.size(); i++) {
-        if(m_listCommands[i] == commandBtn) {
-            m_listCommands.removeAt(i);
-            emit onCommandsUpdated();
-        }
-    }
+    // for(int i = 0; i < m_listCommands.size(); i++) {
+    //     if(m_listCommands[i] == commandBtn) {
+    //         m_listCommands.removeAt(i);
+    //         emit onCommandsUpdated();
+    //     }
+    // }
 }
 
 void CProtocolCommand::createSprite()
@@ -171,36 +171,36 @@ void CProtocolCommand::createSprite()
 
 void CProtocolCommand::compileSprite(CSprite *sprite)
 {
-    foreach (CCommandBtn* blockRepr, m_listCommands) {
-        //ignore non-event blocks
-        if(blockRepr->getReturnType() == CCommand::EVENT) {
-            qDebug()<<u8"有命令块";
-            sprite->addBlock(compileEventBlock(blockRepr));
-        }
-        else
-        {
-            qDebug()<<u8"没有命令块";
-        }
-    }
+    // foreach (CCommandBtn* blockRepr, m_listCommands) {
+    //     //ignore non-event blocks
+    //     if(blockRepr->getReturnType() == CCommand::EVENT) {
+    //         qDebug()<<u8"有命令块";
+    //         sprite->addBlock(compileEventBlock(blockRepr));
+    //     }
+    //     else
+    //     {
+    //         qDebug()<<u8"没有命令块";
+    //     }
+    // }
 
 
-    //增加变量
-    foreach (CVarCommandBtn* varBlockRepr, m_listVars) {
+    // //增加变量
+    // foreach (CVarCommandBtn* varBlockRepr, m_listVars) {
 
-        if(isListVar(varBlockRepr))
-        {
-            sprite->getVarTable()->addList(new SimpleValueList(varBlockRepr->getVarName(), getDataType(varBlockRepr)));
-        }
+    //     if(isListVar(varBlockRepr))
+    //     {
+    //         sprite->getVarTable()->addList(new SimpleValueList(varBlockRepr->getVarName(), getDataType(varBlockRepr)));
+    //     }
 
-        else
-        {
-            CVarIable* aa  = new SimpleVariable(varBlockRepr->getVarName(), getDataType(varBlockRepr));
-            if(aa != nullptr)
-            {
-                sprite->getVarTable()->addVariable(aa);
-            }
-        }
-    }
+    //     else
+    //     {
+    //         CVarIable* aa  = new SimpleVariable(varBlockRepr->getVarName(), getDataType(varBlockRepr));
+    //         if(aa != nullptr)
+    //         {
+    //             sprite->getVarTable()->addVariable(aa);
+    //         }
+    //     }
+    // }
 }
 
 CEventCommand *CProtocolCommand::compileEventBlock(CCommandBtn *blockRepr)
@@ -294,12 +294,12 @@ CCommand *CProtocolCommand::compileParam(CCommandBtn *blockRepr)
 void CProtocolCommand::addVariable(CVarCommandBtn *var)
 {
 
-    var->setFixedSize(30, 30);
-    var->setStyleSheet("color: black;");
-    var->setText(var->getVarName());
-    addCommand(var);
+    // var->setFixedSize(30, 30);
+    // var->setStyleSheet("color: black;");
+    // var->setText(var->getVarName());
+    // addCommand(var);
 
-    m_listVars.append(var);
+    // m_listVars.append(var);
 
 }
 

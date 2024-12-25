@@ -60,13 +60,15 @@ public:
 
     void buildCommandsList();
 
-    void addCommand(CCommandBtn* commandBtn);
+    void addCommand(CCommandRepr* commandBtn);
 
-    void removeCommand(CCommandBtn* commandBtn);
+    void removeCommand(CCommandRepr* commandBtn);
 
     void createSprite();
 
     void compileSprite(CSprite* sprite);
+
+    QList<CCommandRepr*> getBlocks() const {return m_listCommands;}
 
     CEventCommand* compileEventBlock(CCommandBtn* blockRepr);
 
@@ -129,7 +131,7 @@ private:
 
     ButtonInfo buttonInfos[10];  // 作为成员变量定义按钮信息数组
 
-    QList<CCommandBtn*> m_listCommands;
+    QList<CCommandRepr*> m_listCommands;
 
     QList<CVarCommandBtn*> m_listVars;
 
