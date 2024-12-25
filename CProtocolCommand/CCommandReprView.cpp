@@ -13,6 +13,7 @@
 #include <QDebug>
 
 #include "CCommand.h"
+#include "CNumberConstantCommandBtnView.h"
 
 
 CCommandReprView *CCommandReprView::newBlockReprView(CCommandRepr *blockRepr, QGraphicsItem *parent)
@@ -22,11 +23,10 @@ CCommandReprView *CCommandReprView::newBlockReprView(CCommandRepr *blockRepr, QG
     {
         if(blockRepr->getReturnType() == CCommand::STRING_EXPRESSION)
         {
-
         }
         if(blockRepr->getReturnType() == CCommand::NUMBER_EXPRESSION)
         {
-            //return new CNumberConstantCommandBtnView((CConstantCommandBtn*)blockRepr, parent);
+            return new CNumberConstantCommandBtnView((CConstantCommandBtn*)blockRepr, parent);
         }
     }
 
@@ -36,7 +36,9 @@ CCommandReprView *CCommandReprView::newBlockReprView(CCommandRepr *blockRepr, QG
 
 CCommandReprView::CCommandReprView(CCommandRepr* blockRepr, QGraphicsItem *parent) : QGraphicsItem(parent), _blockRepr(blockRepr), _nextStatement(NULL)
 {
-    setCursor(QCursor(Qt::OpenHandCursor));
+
+    //设置鼠标光标变成手掌
+    //setCursor(QCursor(Qt::OpenHandCursor));
 
     init();
 
@@ -229,6 +231,11 @@ void CCommandReprView::resetHolders()
     }
 }
 
+void CCommandReprView::setCursorPixmap(QDrag *drag, QPoint position)
+{
+
+}
+
 void CCommandReprView::updateBlock()
 {
     prepareGeometryChange();
@@ -261,35 +268,91 @@ void CCommandReprView::updateBlock()
     _shape.addPolygon(_polygon);
 }
 
-
 void CCommandReprView::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+    qDebug()<<u8"鼠标按下物块" << event->pos();
 
+    if (event->button() != Qt::LeftButton) {
+        event->ignore();
+        return;
+    }
+    setCursor(QCursor(Qt::ClosedHandCursor));
 }
 
 void CCommandReprView::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
+    qDebug()<<u8"鼠标移动物块";
 
+
+    bool isLocked = _blockRepr->isLocked();
+
+    // Create a drag object with mimetype data.
+    QDrag* drag = new QDrag(event->widget());
+    BlockMimeData* mime = new BlockMimeData();
+    drag->setMimeData(mime);
+    mime->getDragInfo()->setTopLeft(event->pos().toPoint());
+
+    //remove block from scene if blockrepr is not locked
+    if(!isLocked)
+    {
+        qDebug()<<"vsdsadasfsafafafa1 ";
+        scene()->removeItem(this);
+    }
+
+    //set drag pixmap
+    setCursorPixmap(drag, event->pos().toPoint());
+
+    //add (copy of) this block to the drag
+    if(isLocked) {
+        qDebug()<<"vsdsadasfsafafafa2 ";
+        mime->getDragInfo()->setBlockRepr(_blockRepr->copy());
+        mime->getDragInfo()->getBlockRepr()->setLock(false);
+    }
+    else {
+        mime->getDragInfo()->setBlockRepr(_blockRepr);
+        //remove BlockRepr from its parent
+        _blockRepr->removeFromParent();
+    }
+
+    //Start the drag operation.
+    drag->exec();
+
+    //check if drop was successful
+    if(!mime->getDragInfo()->getDropSuccessful()) {
+
+        if(isLocked)
+        {
+            //拖了没拖走
+            delete mime->getDragInfo()->getBlockRepr();
+        }
+
+        else
+        {
+            qDebug()<<"vsdsadasfsafafafa4 ";
+            mime->getDragInfo()->getBlockRepr()->revert();
+        }
+
+    }
 }
 
 void CCommandReprView::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-
+    setCursor(QCursor(Qt::OpenHandCursor));
 }
 
 void CCommandReprView::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
 {
-
+    QGraphicsItem::dragEnterEvent(event);
 }
 
 void CCommandReprView::dropEvent(QGraphicsSceneDragDropEvent *event)
 {
-
+    QGraphicsItem::dropEvent(event);
 }
 
 void CCommandReprView::dragLeaveEvent(QGraphicsSceneDragDropEvent *event)
 {
-
+    QGraphicsItem::dragLeaveEvent(event);
 }
 
 void CCommandReprView::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)

@@ -162,5 +162,7 @@ private:
 
     SimpleVarTable* m_GlobalVars;
 
+    int y = 0;
+
 };
 #endif // CPROTOCOLCOMMAND_H

@@ -6,9 +6,36 @@
 #include <QDrag>
 #include <QColor>
 #include <QGraphicsSceneContextMenuEvent>
+#include <QMimeData>
 
 #include "CCommandRepr.h"
 #include "CCommandReprviewholder.h"
+#include "CDragInfo.h"
+
+class BlockMimeData : public QMimeData
+{
+    Q_OBJECT
+
+public:
+    /**
+     * @brief Constructor
+     */
+    BlockMimeData() {_dragInfo = new CDragInfo();}
+
+    /**
+     * @brief Destructor
+     */
+    ~BlockMimeData() { delete _dragInfo;}
+
+    /**
+     * @brief Returns the DragInfo
+     * @return The DragInfo containing information about this drag
+     */
+    CDragInfo* getDragInfo() const {return _dragInfo;}
+
+private:
+    CDragInfo* _dragInfo;
+};
 
 class BlockColors
 {

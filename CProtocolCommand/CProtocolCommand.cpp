@@ -46,7 +46,7 @@ CProtocolCommand::CProtocolCommand(QWidget *parent)
 
     buttonInfos[7] = {">", 32, 200};
     buttonInfos[8] = {"<", 100, 150};
-    buttonInfos[9] = {"+=", 100, 200};
+    buttonInfos[9] = {"Number_Number", 100, 200};
 
     int row = 0;
     int col = 0;
@@ -486,9 +486,23 @@ void CProtocolCommand::onCommandBtnClicked(QString strCat)
     // }
     // addCommand(clickedButton);
 
-    CCommandRepr* clickedButton = m_pCommandBtnLibrary->getBlockReprInstance(strCat);
+    CCommandRepr* clickedButton = nullptr;
+    if(strCat == "Number_Number")
+    {
+        qDebug()<<"gggggggggggggggggrrrr ";
+        clickedButton = new CConstantCommandBtn(CCommand::NUMBER_EXPRESSION);
+    }
+    else
+    {
+        clickedButton = m_pCommandBtnLibrary->getBlockReprInstance(strCat);
+    }
+
+
 
     CCommandReprView* brv = CCommandReprView::newBlockReprView(clickedButton);
+
+    y+= 50;
+    brv->setPos(0,y);
 
     m_CommandMainScene->addItem(brv);   //开始循环绘制物块
 }

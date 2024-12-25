@@ -106,7 +106,7 @@ public:
     CCommandRepr* getNextStatement() { return _nextBlock; }
 
 
-    CCommand::ParamType getReturnType() const { return _returnType; }
+    CCommand::ParamType getReturnType() const { return m_ReturnType; }
 
 
     CCommand::ParamType getParamType(int index) const;
@@ -184,11 +184,9 @@ public slots:
     void deleteBlock();
 
 private:
-
-    CCommand::ParamType m_ReturnType;
     QString m_qstrID;
     CCommandRepr* _parent{nullptr};
-    CCommand::ParamType _returnType;
+    CCommand::ParamType m_ReturnType;
     QStringList m_strListParamLabels;
     QList<CCommandParam*> _params;     //一个单独的块里面的参数
     QStringList m_strListBodyLabels;
@@ -198,7 +196,7 @@ private:
     bool _lastRemovedWasParam{false};
     int _lastRemovedIndex;
     CCommandRepr* _lastRemoved{nullptr};
-    bool _isLocked;
+    bool _isLocked{false};
 
     QRect getFontRect(QString string);
     QSize getParamListSize();

@@ -28,7 +28,7 @@ CCommandRepr::CCommandRepr(CCommand *block)
     CCommandRepr::FONT.setPixelSize(11);
 
     m_qstrID = block->getId();
-    _returnType = block->getReturnType();
+    m_ReturnType = block->getReturnType();
     m_strListParamLabels = block->getParamDescription().split("%p");
     for (int i = 0; i < m_strListParamLabels.size(); ++i) {
         m_strListParamLabels.replace(i, m_strListParamLabels.at(i).trimmed());
@@ -55,7 +55,7 @@ CCommandRepr::CCommandRepr(const CCommandRepr& repr)
     CCommandRepr::FONT.setPixelSize(11);
 
     m_qstrID = repr.getId();
-    _returnType = repr.getReturnType();
+    m_ReturnType = repr.getReturnType();
     m_strListParamLabels = repr.getParamDescriptions();
     m_strListBodyLabels = repr.getBodyDescriptions();
 
@@ -508,7 +508,7 @@ void CCommandRepr::calculateTotalSize()
         QSize s = _nextBlock->getTotalSize();
         total += QSize(0, s.height());
         total.setWidth(max(total.width(), s.width()));
-    } else if (_returnType == CCommand::VOID || _returnType == CCommand::EVENT) {
+    } else if (m_ReturnType == CCommand::VOID || m_ReturnType == CCommand::EVENT) {
         QSize s = HOLDER_SIZE;
         total += QSize(0, s.height());
         total.setWidth(max(total.width(), s.width()));
@@ -548,7 +548,7 @@ void CCommandRepr::calculateSize()
         total += QSize(0, FOOTER_HEIGHT);
     }
 
-    if (_returnType == CCommand::VOID || _returnType == CCommand::EVENT)
+    if (m_ReturnType == CCommand::VOID || m_ReturnType == CCommand::EVENT)
         total += QSize(LEFT_GUTTER, 0);
     else
         total += QSize(2, 0);

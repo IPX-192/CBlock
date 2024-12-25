@@ -21,7 +21,7 @@ CNumberConstantCommandBtnView::CNumberConstantCommandBtnView(CConstantCommandBtn
     _lineEdit->setValidator(_validator);
     _proxy = new QGraphicsProxyWidget;
     _proxy->setWidget(_lineEdit);
-    //_proxy->setPos(CCommandRepr::MARGIN_HORIZONTAL*2, CCommandRepr::MARGIN);
+    _proxy->setPos(CCommandRepr::MARGIN_HORIZONTAL*2, CCommandRepr::MARGIN);
     _proxy->setParentItem(this);
 
     connect(_lineEdit, SIGNAL(textChanged(QString)), this, SLOT(numberChanged()));

@@ -24,6 +24,7 @@ SOURCES += \
     CCommandStackElement.cpp \
     CConstantCommand.cpp \
     CConstantCommandBtn.cpp \
+    CDragInfo.cpp \
     CEventCommand.cpp \
     CExpressionCommand.cpp \
     CNumberConstantCommandBtnView.cpp \
@@ -68,6 +69,7 @@ HEADERS += \
     CCommandStackElement.h \
     CConstantCommand.h \
     CConstantCommandBtn.h \
+    CDragInfo.h \
     CEventCommand.h \
     CExpressionCommand.h \
     CNumberConstantCommandBtnView.h \
