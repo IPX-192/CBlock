@@ -58,7 +58,7 @@ public:
 
     void addCommand(CCommandRepr* commandBtn);
 
-    void removeCommand(CCommandRepr* commandBtn);
+    bool removeCommand(CCommandRepr* commandBtn);
 
     void createSprite();
 
@@ -66,13 +66,13 @@ public:
 
     QList<CCommandRepr*> getBlocks() const {return m_listCommands;}
 
-    CEventCommand* compileEventBlock(CCommandBtn* blockRepr);
+    CEventCommand* compileEventBlock(CCommandRepr* blockRepr);
 
-    CStatementCommand* compileBody(CCommandBtn *blockRepr);
+    CStatementCommand* compileBody(CCommandRepr *blockRepr);
 
-    CStatementCommand* compileStatement(CCommandBtn *blockRepr);
+    CStatementCommand* compileStatement(CCommandRepr *blockRepr);
 
-    CCommand* compileParam(CCommandBtn *blockRepr);
+    CCommand* compileParam(CCommandRepr *blockRepr);
 
     void addVariable(CVarCommandBtn* var);
 
@@ -81,15 +81,15 @@ public:
 
     bool isListVar(CVarCommandBtn* varBlockRepr);
 
-    CValue::DataType getDataType(CCommandBtn* blockRepr);
+    CValue::DataType getDataType(CCommandRepr* blockRepr);
 
 
     //编译常量和变量的表达式
-    CExpressionCommand* compileExpression(CCommandBtn* blockRepr);
+    CExpressionCommand* compileExpression(CCommandRepr* blockRepr);
 
-    CExpressionCommand* compileSpecialCaseExpression(CCommandBtn* blockRepr);
+    CExpressionCommand* compileSpecialCaseExpression(CCommandRepr* blockRepr);
 
-    CVarCommand* compileVarBlock(CCommandBtn* blockRepr);
+    CVarCommand* compileVarBlock(CCommandRepr* blockRepr);
 
 
 signals:
@@ -109,9 +109,6 @@ private slots:
     void onCommandBtnClicked1(QString strCat);
 
     //开始按钮
-
-    void executionTick();
-
 
     void on_btn_Start_clicked();
 
@@ -162,7 +159,7 @@ private:
 
     SimpleVarTable* m_GlobalVars;
 
-    int y = 0;
+    int y = 50;
 
 };
 #endif // CPROTOCOLCOMMAND_H

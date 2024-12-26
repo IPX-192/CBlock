@@ -1,4 +1,4 @@
-#ifndef CCOMMANDLIBRARY_H
+﻿#ifndef CCOMMANDLIBRARY_H
 #define CCOMMANDLIBRARY_H
 
 #include <QList>
@@ -18,6 +18,7 @@
 #include "Commands/number/CNumberRassignment.h"
 #include "Commands/number/CPlusCommand.h"
 #include "CCommandRepr.h"
+#include "CStartCommand.h"
 
 
 class CCommandBtnLibrary;

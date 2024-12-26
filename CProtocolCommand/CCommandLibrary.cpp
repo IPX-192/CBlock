@@ -1,4 +1,4 @@
-#include "CCommandLibrary.h"
+﻿#include "CCommandLibrary.h"
 #include "CCommandBtnLibrary.h"
 #include "CCommand.h"
 
@@ -15,7 +15,7 @@ CCommandLibrary::CCommandLibrary() {
     registerBlock(new CMultiplyCommand());
     registerBlock(new CNumberRassignment());
     registerBlock(new CPlusCommand());
-    // registerBlock(new CStartCommand());
+    registerBlock(new CStartCommand());
 
 }
 

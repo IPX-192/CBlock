@@ -34,11 +34,11 @@ CCommandReprView *CCommandReprView::newBlockReprView(CCommandRepr *blockRepr, QG
     return new CCommandReprView(blockRepr, parent);
 }
 
-CCommandReprView::CCommandReprView(CCommandRepr* blockRepr, QGraphicsItem *parent) : QGraphicsItem(parent), _blockRepr(blockRepr), _nextStatement(NULL)
+CCommandReprView::CCommandReprView(CCommandRepr* blockRepr, QGraphicsItem *parent) : QGraphicsItem(parent), _blockRepr(blockRepr), _nextStatement(nullptr)
 {
 
     //设置鼠标光标变成手掌
-    //setCursor(QCursor(Qt::OpenHandCursor));
+    setCursor(QCursor(Qt::OpenHandCursor));
 
     init();
 
@@ -99,7 +99,7 @@ void CCommandReprView::init()
 
     //set holder on nextStatement
     if(_blockRepr->getReturnType() == CCommand::VOID || _blockRepr->getReturnType() == CCommand::EVENT || _blockRepr->getReturnType() == CCommand::FUNCTION_START) {
-        // _nextStatement = new BlockReprViewHolder(CCommand::VOID, -1, false, this);
+        _nextStatement = new BlockReprViewHolder(CCommand::VOID, -1, false, this);
         _isNextStatementHolder = true;
     }
 
@@ -189,13 +189,13 @@ void CCommandReprView::resetHolders()
     //reset params
     for(int i = 0; i < _blockRepr->getNumParams(); i++) {
         //change holder to block
-        if(_blockRepr->getParam(i) != NULL && _isParamHolder[i]) {
+        if(_blockRepr->getParam(i) != nullptr && _isParamHolder[i]) {
             delete _params[i];
             _params[i] = newBlockReprView(_blockRepr->getParam(i), this);
             _isParamHolder[i] = false;
         }
         //change block to holder
-        else if(_blockRepr->getParam(i) == NULL && !_isParamHolder[i]) {
+        else if(_blockRepr->getParam(i) == nullptr && !_isParamHolder[i]) {
             delete _params[i];
             _params[i] = new BlockReprViewHolder(_blockRepr->getParamType(i), i, true, this);
             _isParamHolder[i] = true;
@@ -204,12 +204,12 @@ void CCommandReprView::resetHolders()
 
     //reset bodies
     for(int i = 0; i < _blockRepr->getNumBodies(); i++) {
-        if(_blockRepr->getBody(i) != NULL && _isBodyHolder[i]) {
+        if(_blockRepr->getBody(i) != nullptr && _isBodyHolder[i]) {
             delete _bodies[i];
             _bodies[i] = newBlockReprView(_blockRepr->getBody(i), this);
             _isBodyHolder[i] = false;
         }
-        else if(_blockRepr->getBody(i) == NULL && !_isBodyHolder[i]) {
+        else if(_blockRepr->getBody(i) == nullptr && !_isBodyHolder[i]) {
             delete _bodies[i];
             _bodies[i] = new BlockReprViewHolder(CCommand::VOID, i, false, this);
             _isBodyHolder[i] = true;
@@ -218,12 +218,12 @@ void CCommandReprView::resetHolders()
 
     //reset nextStatement
     if(_blockRepr->getReturnType() == CCommand::VOID || _blockRepr->getReturnType() == CCommand::EVENT || _blockRepr->getReturnType() == CCommand::FUNCTION_START) {
-        if(_blockRepr->getNextStatement() != NULL && _isNextStatementHolder) {
+        if(_blockRepr->getNextStatement() != nullptr && _isNextStatementHolder) {
             delete _nextStatement;
             _nextStatement = newBlockReprView(_blockRepr->getNextStatement(), this);
             _isNextStatementHolder = false;
         }
-        else if(_blockRepr->getNextStatement() == NULL && !_isNextStatementHolder) {
+        else if(_blockRepr->getNextStatement() == nullptr && !_isNextStatementHolder) {
             delete _nextStatement;
             _nextStatement = new BlockReprViewHolder(CCommand::VOID, -1, false, this);
             _isNextStatementHolder = true;
@@ -233,6 +233,28 @@ void CCommandReprView::resetHolders()
 
 void CCommandReprView::setCursorPixmap(QDrag *drag, QPoint position)
 {
+    QGraphicsScene* originalScene = scene();
+    if(originalScene != nullptr)
+    {
+        originalScene->removeItem(this);
+    }
+    //create pixmap under cursor
+    QGraphicsScene sc;
+    sc.addItem(this);
+    QPixmap pixmap(sc.sceneRect().size().width(), sc.sceneRect().size().height());
+    pixmap.fill(Qt::transparent);
+    QPainter painter(&pixmap);
+    painter.setRenderHint(QPainter::Antialiasing);
+    sc.render(&painter);
+    sc.removeItem(this);
+    drag->setPixmap(pixmap);
+    drag->setHotSpot(position);
+
+    //set item back on scene
+    if(originalScene != nullptr)
+    {
+        originalScene->addItem(this);
+    }
 
 }
 
@@ -258,7 +280,7 @@ void CCommandReprView::updateBlock()
     }
 
     //nextStatement
-    if(_nextStatement != NULL)
+    if(_nextStatement != nullptr)
     {
         _nextStatement->setPos(_blockRepr->getNextStatementPosition());
     }
@@ -303,12 +325,15 @@ void CCommandReprView::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     setCursorPixmap(drag, event->pos().toPoint());
 
     //add (copy of) this block to the drag
-    if(isLocked) {
+    if(isLocked)
+    {
         qDebug()<<"vsdsadasfsafafafa2 ";
         mime->getDragInfo()->setBlockRepr(_blockRepr->copy());
         mime->getDragInfo()->getBlockRepr()->setLock(false);
     }
-    else {
+    else
+    {
+        qDebug()<<"vsdsadasfsafafafa3 ";
         mime->getDragInfo()->setBlockRepr(_blockRepr);
         //remove BlockRepr from its parent
         _blockRepr->removeFromParent();
@@ -329,7 +354,7 @@ void CCommandReprView::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         else
         {
             qDebug()<<"vsdsadasfsafafafa4 ";
-           mime->getDragInfo()->getBlockRepr()->revert();
+            mime->getDragInfo()->getBlockRepr()->revert();
         }
 
     }

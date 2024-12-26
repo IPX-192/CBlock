@@ -1,9 +1,9 @@
 #ifndef CVARCOMMANDBTN_H
 #define CVARCOMMANDBTN_H
 
-#include "CCommandBtn.h"
+#include "CCommandRepr.h"
 
-class CVarCommandBtn : public CCommandBtn
+class CVarCommandBtn : public CCommandRepr
 {
     Q_OBJECT
 public:

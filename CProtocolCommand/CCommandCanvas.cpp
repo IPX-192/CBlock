@@ -1,4 +1,4 @@
-#include "CCommandCanvas.h"
+﻿#include "CCommandCanvas.h"
 #include "CProtocolCommand.h"
 #include <QGraphicsSceneDragDropEvent>
 #include <QDebug>
@@ -32,8 +32,14 @@ void CCommandCanvas::buildList()
 
     foreach(CCommandRepr* block, m_pProtocolCommand->getBlocks()) {
 
+        if(block->getReturnType() == CCommand::EVENT)
+        {
+           continue;
+        }
+
         CCommandReprView* blockView = CCommandReprView::newBlockReprView(block);
         _blocks.append(blockView);
+
         blockView->setPos(block->getPosition());
         addItem((QGraphicsItem*)blockView);
     }
@@ -44,6 +50,7 @@ void CCommandCanvas::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
     QGraphicsScene::dragMoveEvent(event);
     event->accept();
     event->setDropAction(Qt::MoveAction);
+
 }
 
 void CCommandCanvas::dragEnterEvent(QGraphicsSceneDragDropEvent *event)

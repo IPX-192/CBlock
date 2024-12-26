@@ -44,7 +44,7 @@ CCommandRepr::CCommandRepr(CCommand *block)
     }
 
     for (int i = 0; i < block->getNumBodies(); ++i) {
-        _bodies.append(NULL);
+        _bodies.append(nullptr);
     }
 
     calculateSizes(true, true, true);
@@ -52,6 +52,7 @@ CCommandRepr::CCommandRepr(CCommand *block)
 }
 
 CCommandRepr::CCommandRepr(const CCommandRepr& repr)
+    :_parent(repr.getParent())
 {
     CCommandRepr::FONT.setPixelSize(11);
 
@@ -62,7 +63,7 @@ CCommandRepr::CCommandRepr(const CCommandRepr& repr)
 
     for (int i = 0; i < repr.getNumParams(); i++) {
         CCommandParam* p = new CCommandParam(repr.getParamType(i));
-        if(repr.getParam(i) != NULL) {
+        if(repr.getParam(i) != nullptr) {
             CCommandRepr* newParam = repr.getParam(i)->copy();
             newParam->setParent(this);
             p->setBlock(newParam);
@@ -73,19 +74,19 @@ CCommandRepr::CCommandRepr(const CCommandRepr& repr)
     for (int i = 0; i < repr.getNumBodies(); ++i) {
         CCommandRepr* body = repr.getBody(i);
 
-        if (body == NULL)
-            _bodies.append(NULL);
+        if (body == nullptr)
+            _bodies.append(nullptr);
         else {
             CCommandRepr* newBody = body->copy();
             newBody->setParent(this);
             _bodies.append(newBody);
         }
     }
-    if (repr._nextBlock != NULL) {
+    if (repr._nextBlock != nullptr) {
         _nextBlock = repr._nextBlock->copy();
         _nextBlock->setParent(this);
     } else
-        _nextBlock = NULL;
+        _nextBlock = nullptr;
     _isLocked = repr._isLocked;
     _position = repr._position;
     calculateSizes(true, true, true);
@@ -150,16 +151,16 @@ CCommandRepr::CCommandRepr(CCommand::ParamType type)
 
 CCommandRepr::~CCommandRepr()
 {
-    if (_nextBlock != NULL)
+    if (_nextBlock != nullptr)
         delete _nextBlock;
 
     foreach (CCommandRepr* b, _bodies) {
-        if (b != NULL)
+        if (b != nullptr)
             delete b;
     }
 
     foreach (CCommandParam* p, _params) {
-        if (p != NULL)
+        if (p != nullptr)
             delete p;
     }
 }
@@ -189,7 +190,7 @@ QSize CCommandRepr::getBodyDescriptionSize(int index)
 
 QSize CCommandRepr::getBodySize(int index)
 {
-    if (_bodies.at(index) == NULL)
+    if (_bodies.at(index) == nullptr)
         return HOLDER_SIZE;
 
     return _bodies.at(index)->getTotalSize();
@@ -255,7 +256,7 @@ QPoint CCommandRepr::getNextStatementPosition()
 
 bool CCommandRepr::doesBodyFit(CCommandRepr* repr, int index)
 {
-    if(repr == NULL)
+    if(repr == nullptr)
         return false;
 
     return (repr->getReturnType() == CCommand::VOID);
@@ -263,7 +264,7 @@ bool CCommandRepr::doesBodyFit(CCommandRepr* repr, int index)
 
 bool CCommandRepr::placeBody(CCommandRepr* repr, int index)
 {
-    if(repr == NULL)
+    if(repr == nullptr)
         return false;
 
     if (!doesBodyFit(repr, index))
@@ -279,7 +280,7 @@ bool CCommandRepr::placeBody(CCommandRepr* repr, int index)
 
 bool CCommandRepr::doesParamFit(CCommandRepr* repr, int index)
 {
-    if(repr == NULL)
+    if(repr == nullptr)
         return false;
 
     CCommand::ParamType expected = _params.at(index)->getParamType();
@@ -299,7 +300,7 @@ bool CCommandRepr::doesParamFit(CCommandRepr* repr, int index)
 
 bool CCommandRepr::placeParam(CCommandRepr* repr, int index)
 {
-    if(repr == NULL)
+    if(repr == nullptr)
         return false;
 
     if (!doesParamFit(repr, index))
@@ -316,11 +317,14 @@ bool CCommandRepr::placeParam(CCommandRepr* repr, int index)
 //重要，设置下一个物块的方法在这里
 bool CCommandRepr::placeNextStatement(CCommandRepr* repr)
 {
-    if(repr == NULL)
+    if(repr == nullptr)
         return false;
 
     if (!doesBodyFit(repr, -1))
+    {
+        qDebug()<<u8"类型不对";
         return false;
+    }
 
     //这里是读取xml文件中设置下一个物块的方法
     _nextBlock = repr;
@@ -337,7 +341,7 @@ bool CCommandRepr::removeBody(int index)
     _lastRemovedIndex = index;
     _lastRemoved = _bodies.at(index);
 
-    _bodies.replace(index, NULL);
+    _bodies.replace(index, nullptr);
 
     emitBlockUpdated(false, true, false);
 
@@ -350,7 +354,7 @@ bool CCommandRepr::removeParam(int index)
     _lastRemovedIndex = index;
     _lastRemoved = _params.at(index)->getBlock();
 
-    _params.at(index)->setBlock(NULL);
+    _params.at(index)->setBlock(nullptr);
 
     emitBlockUpdated(true, false, false);
 
@@ -363,7 +367,7 @@ bool CCommandRepr::removeNextStatement()
     _lastRemovedIndex = -1;
     _lastRemoved = _nextBlock;
 
-    _nextBlock = NULL;
+    _nextBlock = nullptr;
 
     emitBlockUpdated(false, false, true);
 
@@ -372,12 +376,13 @@ bool CCommandRepr::removeNextStatement()
 
 bool CCommandRepr::removeFromParent()
 {
+    if (_parent == nullptr && m_pProtocolCommand == nullptr)
+        return true;
 
-    // m_pProtocolCommand->removeCommand(this);
+    if (_parent == nullptr)
+        return m_pProtocolCommand->removeCommand(this);
 
-    return true;
-
-    //return _parent->remove(this);
+    return _parent->remove(this);
 }
 
 bool CCommandRepr::remove(CCommandRepr* repr)
@@ -428,7 +433,7 @@ int CCommandRepr::getNumParams() const
 CCommandRepr* CCommandRepr::getBody(int index) const
 {
     if (index < 0 || index >= _bodies.size())
-        return NULL;
+        return nullptr;
 
     return _bodies.at(index);
 }
@@ -436,7 +441,7 @@ CCommandRepr* CCommandRepr::getBody(int index) const
 CCommandRepr* CCommandRepr::getParam(int index) const
 {
     if (index < 0 || index >= _params.size())
-        return NULL;
+        return nullptr;
 
     return _params.at(index)->getBlock();
 }
@@ -459,12 +464,19 @@ QSize CCommandRepr::getParamListSize()
 
 void CCommandRepr::revert()
 {
+    if (_parent == nullptr && m_pProtocolCommand == nullptr)
+        return;
 
+    if (_parent == nullptr) {
+        m_pProtocolCommand->addCommand(this);
+        return;
+    }
+    _parent->revertToParent();
 }
 
 void CCommandRepr::revertToParent()
 {
-    if (_lastRemoved == NULL)
+    if (_lastRemoved == nullptr)
         return;
 
     if (_lastRemovedWasParam)
@@ -481,7 +493,7 @@ void CCommandRepr::emitBlockUpdated(bool param, bool body, bool next) {
 
     emit blockUpdated();
 
-    if(_parent != NULL)
+    if(_parent != nullptr)
         _parent->emitBlockUpdated(true, true, true);
 }
 
@@ -510,11 +522,14 @@ void CCommandRepr::calculateTotalSize()
     QSize total = getSize();
 
     // next block
-    if (_nextBlock != NULL) {
+    if (_nextBlock != nullptr)
+    {
         QSize s = _nextBlock->getTotalSize();
         total += QSize(0, s.height());
         total.setWidth(max(total.width(), s.width()));
-    } else if (m_ReturnType == CCommand::VOID || m_ReturnType == CCommand::EVENT) {
+    }
+    else if (m_ReturnType == CCommand::VOID || m_ReturnType == CCommand::EVENT)
+    {
         QSize s = HOLDER_SIZE;
         total += QSize(0, s.height());
         total.setWidth(max(total.width(), s.width()));
@@ -541,7 +556,7 @@ void CCommandRepr::calculateSize()
     // bodies
     foreach(CCommandRepr* body, _bodies) {
         QSize s;
-        if (body == NULL)
+        if (body == nullptr)
             s = HOLDER_SIZE;
         else
             s = body->getTotalSize();
@@ -573,7 +588,7 @@ void CCommandRepr::calculateParamListSize()
 
         if (i < _params.size()) {
             CCommandRepr* block = _params.at(i)->getBlock();
-            if (block != NULL) {
+            if (block != nullptr) {
                 params += QSize(block->getTotalSize().width() + MARGIN_HORIZONTAL, 0);
                 params.setHeight(max(params.height(), 2 * MARGIN + block->getTotalSize().height()));
             } else {
@@ -616,13 +631,13 @@ void CCommandRepr::calculateParamPositions()
 
             QPoint result;
             result.setX(params.width());
-            if (block != NULL)
+            if (block != nullptr)
                 result.setY(getParamListSize().height()/2 - block->getTotalSize().height()/2);
             else
                 result.setY(getParamListSize().height()/2 - HOLDER_SIZE.height()/2);
             _paramPositions.append(result);
 
-            if (block != NULL) {
+            if (block != nullptr) {
                 params += QSize(block->getTotalSize().width() + MARGIN_HORIZONTAL, 0);
                 params.setHeight(max(params.height(), 2 * MARGIN + block->getTotalSize().height()));
             } else {
@@ -649,7 +664,7 @@ void CCommandRepr::calculateParamLabelPositions()
         if (i < _params.size()) {
             CCommandRepr* block = _params.at(i)->getBlock();
 
-            if (block != NULL) {
+            if (block != nullptr) {
                 params += QSize(block->getTotalSize().width() + MARGIN_HORIZONTAL, 0);
                 params.setHeight(max(params.height(), 2 * MARGIN + block->getTotalSize().height()));
             } else {
@@ -678,6 +693,7 @@ CCommandRepr* CCommandRepr::copy()
 
 void CCommandRepr::setHolderParent(CProtocolCommand *parent)
 {
+    _parent = nullptr;
     m_pProtocolCommand = parent;
 }
 
@@ -697,7 +713,7 @@ void CCommandRepr::setParamTypes(QList<CCommand::ParamType> paramTypes)
 {
     //delete params
     foreach (CCommandParam* p, _params) {
-        if (p != NULL)
+        if (p != nullptr)
             delete p;
     }
     _params.clear();

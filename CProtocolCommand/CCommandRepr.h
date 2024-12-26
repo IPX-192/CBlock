@@ -40,7 +40,6 @@ public:
 
     void setParent(CCommandRepr* parent) { _parent = parent; }
 
-
     CCommandRepr* getParent() const { return _parent; }
 
     void setHolderParent(CProtocolCommand* parent);

@@ -1,4 +1,4 @@
-#ifndef CCOMMANDCANVAS_H
+﻿#ifndef CCOMMANDCANVAS_H
 #define CCOMMANDCANVAS_H
 
 #include <QGraphicsScene>

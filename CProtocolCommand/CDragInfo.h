@@ -31,7 +31,7 @@ public:
 
 
 private:
-    CCommandRepr* _blockRepr;
+    CCommandRepr* _blockRepr{nullptr};
 
     bool _dropSuccessful{false};
 

@@ -18,6 +18,11 @@ CProtocolCommand::CProtocolCommand(QWidget *parent)
     m_excuteHandler = new CCommandExcuteHandler();
     ui->graphicsView_2->setScene(m_pBlockCanvas);
 
+    QRectF initialRect(0, 0, 720, 550); // 设置初始矩形大小为500x500
+
+    //重要：画布固定大小才能固定坐标系
+    m_pBlockCanvas->setSceneRect(initialRect);
+
 
     QGraphicsScene* scene = new QGraphicsScene(this);
     ui->graphicsView->setScene(scene);
@@ -60,7 +65,6 @@ CProtocolCommand::CProtocolCommand(QWidget *parent)
 
         proxy->setPos(info.x,info.y);
         //layout->addItem(proxy,row,col); // 添加子部件
-        qDebug() << "Setting position: " << info.x << info.y;
 
         // 更新行列索引
         col++;
@@ -72,10 +76,6 @@ CProtocolCommand::CProtocolCommand(QWidget *parent)
         // 使用lambda表达式来连接按钮点击信号和自定义的槽函数逻辑，打印按钮文字
         connect(commandBtn, &CCommandBtn::sigClicked, this, &CProtocolCommand::onCommandBtnClicked);
     }
-
-    //layout->setSpacing(30);
-    //widget->setLayout(layout);
-
 
     m_pCommandBtnLibrary = m_CommandLibrary.createBlockReprLibrary();
 
@@ -90,45 +90,42 @@ CProtocolCommand::~CProtocolCommand()
 
 void CProtocolCommand::initialize()
 {
-    //CCommandBtn* eventCommandBtn = m_pCommandBtnLibrary->getBlockReprInstance("Start");
-    //m_listCommands.append(eventCommandBtn);
+    CCommandRepr* eventCommandBtn = m_pCommandBtnLibrary->getBlockReprInstance("Start");
+    if(eventCommandBtn != nullptr)
+    {
+        m_listCommands.append(eventCommandBtn);
+    }
 }
 
 void CProtocolCommand::addCommand(CCommandRepr *commandBtn)
 {
-
-    qDebug()<<"asffffffff "<<m_listCommands.size();
     if(commandBtn != nullptr)
     {
         m_listCommands.append(commandBtn);
         commandBtn->setHolderParent(this);
         m_pBlockCanvas->buildList();
+
+        if( m_listCommands.first()->getReturnType() == CCommand::EVENT)
+        {
+            if(m_listCommands.first()->getNextStatement() == nullptr && commandBtn->getReturnType() == CCommand::VOID)
+            {
+                qDebug()<<u8"添加的首个物块是   "<< commandBtn->getId();
+                m_listCommands.first()->placeNextStatement(commandBtn);
+            }
+        }
     }
-
-    // if (commandBtn != nullptr && !m_listCommands.contains(commandBtn)) {
-
-    //     // connect(commandBtn, &CCommandBtn::sigClicked, this, &CProtocolCommand::onCommandBtnClicked1);
-
-    //     m_listCommands.append(commandBtn);
-
-    //     int x = 0;
-    //     int y = m_listCommands.size() * 50;
-    //     QGraphicsProxyWidget* proxy = m_CommandMainScene->addWidget(commandBtn);
-    //     proxy->setPos(x, y);
-
-    //     connect(commandBtn, &CCommandBtn::sigClicked, this, &CProtocolCommand::onCommandBtnClicked1);
-    //     //emit onCommandsUpdated();
-    // }
 }
 
-void CProtocolCommand::removeCommand(CCommandRepr *commandBtn)
+bool CProtocolCommand::removeCommand(CCommandRepr *commandBtn)
 {
     for(int i = 0; i < m_listCommands.size(); i++) {
         if(m_listCommands[i] == commandBtn) {
             m_listCommands.removeAt(i);
             m_pBlockCanvas->buildList();
+            return true;
         }
     }
+    return false;
 }
 
 void CProtocolCommand::createSprite()
@@ -154,39 +151,39 @@ void CProtocolCommand::createSprite()
 
 void CProtocolCommand::compileSprite(CSprite *sprite)
 {
-    // foreach (CCommandBtn* blockRepr, m_listCommands) {
-    //     //ignore non-event blocks
-    //     if(blockRepr->getReturnType() == CCommand::EVENT) {
-    //         qDebug()<<u8"有命令块";
-    //         sprite->addBlock(compileEventBlock(blockRepr));
-    //     }
-    //     else
-    //     {
-    //         qDebug()<<u8"没有命令块";
-    //     }
-    // }
+    foreach (CCommandRepr* blockRepr, m_listCommands) {
+        //ignore non-event blocks
+        if(blockRepr->getReturnType() == CCommand::EVENT) {
+            qDebug()<<u8"有命令块";
+            sprite->addBlock(compileEventBlock(blockRepr));
+        }
+        else
+        {
+            qDebug()<<u8"没有命令块";
+        }
+    }
 
 
-    // //增加变量
-    // foreach (CVarCommandBtn* varBlockRepr, m_listVars) {
+    //增加变量
+    foreach (CVarCommandBtn* varBlockRepr, m_listVars) {
 
-    //     if(isListVar(varBlockRepr))
-    //     {
-    //         sprite->getVarTable()->addList(new SimpleValueList(varBlockRepr->getVarName(), getDataType(varBlockRepr)));
-    //     }
+        if(isListVar(varBlockRepr))
+        {
+            sprite->getVarTable()->addList(new SimpleValueList(varBlockRepr->getVarName(), getDataType(varBlockRepr)));
+        }
 
-    //     else
-    //     {
-    //         CVarIable* aa  = new SimpleVariable(varBlockRepr->getVarName(), getDataType(varBlockRepr));
-    //         if(aa != nullptr)
-    //         {
-    //             sprite->getVarTable()->addVariable(aa);
-    //         }
-    //     }
-    // }
+        else
+        {
+            CVarIable* aa  = new SimpleVariable(varBlockRepr->getVarName(), getDataType(varBlockRepr));
+            if(aa != nullptr)
+            {
+                sprite->getVarTable()->addVariable(aa);
+            }
+        }
+    }
 }
 
-CEventCommand *CProtocolCommand::compileEventBlock(CCommandBtn *blockRepr)
+CEventCommand *CProtocolCommand::compileEventBlock(CCommandRepr *blockRepr)
 {
     CEventCommand* block = (CEventCommand*)m_CommandLibrary.getBlockInstance(blockRepr->getId());   //这个id是指这个物块的名字，比如空格还是回车之类的
     if(block == NULL) {
@@ -200,16 +197,14 @@ CEventCommand *CProtocolCommand::compileEventBlock(CCommandBtn *blockRepr)
     return block;
 }
 
-CStatementCommand* CProtocolCommand::compileBody(CCommandBtn *blockRepr)
+CStatementCommand* CProtocolCommand::compileBody(CCommandRepr *blockRepr)
 {
     CStatementsCommand* statements = new CStatementsCommand();
 
     int i = 0;
     if(blockRepr == nullptr)
     {
-        qDebug()<<"vvvvvvvvvvvvvvvvvvvvvvvv12";
         return statements;
-
     }
 
     do {
@@ -222,7 +217,7 @@ CStatementCommand* CProtocolCommand::compileBody(CCommandBtn *blockRepr)
     return statements;
 }
 
-CStatementCommand* CProtocolCommand::compileStatement(CCommandBtn *blockRepr)
+CStatementCommand* CProtocolCommand::compileStatement(CCommandRepr *blockRepr)
 {
 
     if(blockRepr == nullptr)
@@ -249,7 +244,7 @@ CStatementCommand* CProtocolCommand::compileStatement(CCommandBtn *blockRepr)
     return statement;
 }
 
-CCommand *CProtocolCommand::compileParam(CCommandBtn *blockRepr)
+CCommand *CProtocolCommand::compileParam(CCommandRepr *blockRepr)
 {
     if(blockRepr == nullptr)
     {
@@ -277,12 +272,10 @@ CCommand *CProtocolCommand::compileParam(CCommandBtn *blockRepr)
 void CProtocolCommand::addVariable(CVarCommandBtn *var)
 {
 
-    // var->setFixedSize(30, 30);
-    // var->setStyleSheet("color: black;");
-    // var->setText(var->getVarName());
-    // addCommand(var);
 
-    // m_listVars.append(var);
+    addCommand(var);
+
+    m_listVars.append(var);
 
 }
 
@@ -298,7 +291,7 @@ bool CProtocolCommand::isListVar(CVarCommandBtn *varBlockRepr)
     return (rtrn == CCommand::BOOLEAN_LIST || rtrn == CCommand::NUMBER_LIST || rtrn == CCommand::STRING_LIST);
 }
 
-CValue::DataType CProtocolCommand::getDataType(CCommandBtn *blockRepr)
+CValue::DataType CProtocolCommand::getDataType(CCommandRepr *blockRepr)
 {
     CValue::DataType dataType = CValue::BOOLEAN;
 
@@ -314,7 +307,7 @@ CValue::DataType CProtocolCommand::getDataType(CCommandBtn *blockRepr)
     return dataType;
 }
 
-CExpressionCommand *CProtocolCommand::compileExpression(CCommandBtn *blockRepr)
+CExpressionCommand *CProtocolCommand::compileExpression(CCommandRepr *blockRepr)
 {
     if(blockRepr == nullptr)
     {
@@ -337,7 +330,7 @@ CExpressionCommand *CProtocolCommand::compileExpression(CCommandBtn *blockRepr)
 
 }
 
-CExpressionCommand *CProtocolCommand::compileSpecialCaseExpression(CCommandBtn *blockRepr)
+CExpressionCommand *CProtocolCommand::compileSpecialCaseExpression(CCommandRepr *blockRepr)
 {
     qDebug()<<u8"<<<<<<<<<<<     compileSpecialCaseExpression";
     if(blockRepr == NULL)
@@ -381,7 +374,7 @@ CExpressionCommand *CProtocolCommand::compileSpecialCaseExpression(CCommandBtn *
     return NULL;
 }
 
-CVarCommand *CProtocolCommand::compileVarBlock(CCommandBtn *blockRepr)
+CVarCommand *CProtocolCommand::compileVarBlock(CCommandRepr *blockRepr)
 {
     CValue::DataType dataType = CValue::BOOLEAN;
 
@@ -398,76 +391,9 @@ CVarCommand *CProtocolCommand::compileVarBlock(CCommandBtn *blockRepr)
 
 void CProtocolCommand::onCommandBtnClicked(QString strCat)
 {
-
-    // CCommandBtn* clickedButton = m_pCommandBtnLibrary->getBlockReprInstance(strCat);
-
-    // if(clickedButton == nullptr)
-    // {
-    //     return;
-    // }
-
-    // clickedButton->setFixedSize(100, 45);
-    // clickedButton->setStyleSheet("color: black;");
-    // clickedButton->setText(strCat);
-    // clickedButton->setLacked(true);
-
-
-    // if( m_listCommands.size() > 0 &&  m_listCommands.first()->getId() == "Start")
-    // {
-
-    //     m_listCommands.first()->placeNextStatement(clickedButton);
-    // }
-
-    // else
-    // {
-    //     qDebug()<<"vvsdsada";
-    // }
-
-
-    // //测试代码
-    // if(strCat == ">")
-    // {
-    //     foreach(CCommandBtn* block, m_listCommands) {
-
-
-    //         if(m_lastID == block->getId())
-    //         {
-    //             block->placeParam(clickedButton,0);
-    //             qDebug()<<"rrrrrrrr"<<block->getId();
-    //         }
-    //     }
-
-
-    //     CConstantCommandBtn * aa = new CConstantCommandBtn(CCommand::NUMBER_EXPRESSION);
-
-    //     aa->setValue(28);
-
-    //     //clickedButton->placeParam(aa->copy(),0);
-
-    //     CConstantCommandBtn * bb = new CConstantCommandBtn(CCommand::NUMBER_EXPRESSION);
-
-
-    //     bb->setValue(20);
-
-
-    //     //clickedButton->placeParam(bb->copy(),1);
-
-    //     qDebug()<<"rrrrrrrr"<<clickedButton->getId();
-
-    //     // //添加参数
-    //     // if(m_listVars.size())
-    //     // {
-
-
-    //     // }
-
-    // }
-    // addCommand(clickedButton);
-
     CCommandRepr* clickedButton = nullptr;
     if(strCat == "Number_Number")
     {
-        qDebug()<<"gggggggggggggggggrrrr ";
         clickedButton = new CConstantCommandBtn(CCommand::NUMBER_EXPRESSION);
     }
     else
@@ -475,26 +401,21 @@ void CProtocolCommand::onCommandBtnClicked(QString strCat)
         clickedButton = m_pCommandBtnLibrary->getBlockReprInstance(strCat);
     }
 
+    if(m_listCommands.size())
+    {
+        //y += m_listCommands.last()->getTotalSize();
+    }
 
-
-    CCommandReprView* brv = CCommandReprView::newBlockReprView(clickedButton);
-
-    y+= 50;
-    brv->setPos(0,y);
-
-    m_pBlockCanvas->addItem(brv);   //开始循环绘制物块
+    if(clickedButton != nullptr)
+    {
+        clickedButton->setPosition(QPoint(50,y));
+        addCommand(clickedButton);
+    }
 }
 
 void CProtocolCommand::onCommandBtnClicked1(QString strCat)
 {
     m_lastID = strCat;
-}
-
-
-
-void CProtocolCommand::executionTick()
-{
-    qDebug()<<"asfasfasfasffffffff";
 }
 
 void CProtocolCommand::on_btn_Start_clicked()
