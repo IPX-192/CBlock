@@ -7,7 +7,7 @@ CCommandExcuteHandler::CCommandExcuteHandler() {
     m_bRunning = false;
     m_bWorking = false;
     m_qTimer = new QTimer();
-    m_qTimer->setInterval(50);
+    m_qTimer->setInterval(10);
 
     connect(m_qTimer, SIGNAL(timeout()), this, SLOT(onExecutionTick()));
 
@@ -25,8 +25,9 @@ CCommandExcuteHandler::~CCommandExcuteHandler()
 
 void CCommandExcuteHandler::start()
 {
+    _prevDrawTime = QDateTime::currentDateTime();
+    _prevExecutionTime = QDateTime::currentDateTime();
     m_bRunning = true;
-
     m_qTimer->start();
 }
 
@@ -80,7 +81,6 @@ void CCommandExcuteHandler::onExecutionTick()
 
     if(m_bWorking)
     {
-
         return;
     }
 
@@ -88,10 +88,17 @@ void CCommandExcuteHandler::onExecutionTick()
 
     //QDateTime currentTime = QDateTime::currentDateTime();
 
+    if(EXECUTION_TICK_INTERVAL <= _prevExecutionTime.msecsTo(QDateTime::currentDateTime()))
+    {
+        executeThreads();          //控制事件的信号,所有对物块的操作都在这里面
+        _prevExecutionTime = _prevExecutionTime.addMSecs(EXECUTION_TICK_INTERVAL);
+    }
 
-    executeThreads();          //控制事件的信号,所有对物块的操作都在这里面
-    //emit executionTicked();
-
+    if(DRAW_TICK_INTERVAL <= _prevDrawTime.msecsTo(QDateTime::currentDateTime()))
+    {
+        emit sigDrawingTicked();      //控制绘画的信号
+        _prevDrawTime = _prevDrawTime.addMSecs(DRAW_TICK_INTERVAL);
+    }
 
     m_bWorking = false;
 }

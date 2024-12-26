@@ -13,8 +13,6 @@ CProtocolCommand::CProtocolCommand(QWidget *parent)
     ui->setupUi(this);
 
     m_pBlockCanvas = new CCommandCanvas(this);
-    m_CommandMainScene = new QGraphicsScene();
-
     m_excuteHandler = new CCommandExcuteHandler();
     ui->graphicsView_2->setScene(m_pBlockCanvas);
 
@@ -80,11 +78,39 @@ CProtocolCommand::CProtocolCommand(QWidget *parent)
     m_pCommandBtnLibrary = m_CommandLibrary.createBlockReprLibrary();
 
     initialize();
+    //createSprite();
 
+    // if(m_Sprite)
+    // {
+    //     m_pBlockCanvas->setBackgroundBrush(QBrush(m_Sprite->getBlockSceneBackgroundColor()));
+    // }
 }
 
 CProtocolCommand::~CProtocolCommand()
 {
+    qDeleteAll(m_listCommands);
+    qDeleteAll(m_listVars);
+    qDeleteAll(m_listSprites);
+    if(m_excuteHandler)
+    {
+        delete m_excuteHandler;
+        m_excuteHandler = nullptr;
+    }
+    if(m_pCommandBtnLibrary)
+    {
+        delete m_pCommandBtnLibrary;
+        m_pCommandBtnLibrary = nullptr;
+    }
+    if(m_Sprite)
+    {
+        delete m_Sprite;
+        m_Sprite = nullptr;
+    }
+    if(m_pBlockCanvas)
+    {
+        delete m_pBlockCanvas;
+        m_pBlockCanvas = nullptr;
+    }
     delete ui;
 }
 
@@ -95,6 +121,8 @@ void CProtocolCommand::initialize()
     {
         m_listCommands.append(eventCommandBtn);
     }
+
+    connect(m_excuteHandler, &CCommandExcuteHandler::sigDrawingTicked, this, &CProtocolCommand::onTickReceived);
 }
 
 void CProtocolCommand::addCommand(CCommandRepr *commandBtn)
@@ -387,6 +415,20 @@ CVarCommand *CProtocolCommand::compileVarBlock(CCommandRepr *blockRepr)
         dataType = CValue::NUMBER;
     }
     return new CVarCommand(((CVarCommandBtn*)blockRepr)->getVarName(), dataType);
+}
+
+void CProtocolCommand::onTickReceived()
+{
+    if(m_bWorking)
+    {
+        return;
+    }
+    m_bWorking = true;
+    if(m_Sprite)
+    {
+        m_pBlockCanvas->setBackgroundBrush(QBrush(m_Sprite->getBlockSceneBackgroundColor()));
+    }
+    m_bWorking = false;
 }
 
 void CProtocolCommand::onCommandBtnClicked(QString strCat)

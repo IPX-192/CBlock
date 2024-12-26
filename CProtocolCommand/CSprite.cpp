@@ -7,6 +7,7 @@
 CSprite::CSprite(SimpleVarTable *globalVars)
 {
     m_SpriteVars = new SpriteVarTable(globalVars);
+    m_Color.setRgb(173, 216, 230);
 }
 
 CSprite::~CSprite()
@@ -37,4 +38,14 @@ void CSprite::sendSignal(const CSignal &signal)
         qDebug()<<"sfafasfasfasfafa "<<b->getId();
         b->sendSignal(signal, this);
     }
+}
+
+void CSprite::setBlockSceneBackgroundColor(QColor color)
+{
+    m_Color = color;
+}
+
+QColor CSprite::getBlockSceneBackgroundColor()
+{
+    return m_Color;
 }

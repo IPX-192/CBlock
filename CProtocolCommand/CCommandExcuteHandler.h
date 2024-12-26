@@ -13,6 +13,11 @@ class CCommandExcuteHandler : public QObject
     Q_OBJECT
 
 public:
+
+    static const int EXECUTION_TICK_INTERVAL = 5;
+
+    static const int DRAW_TICK_INTERVAL = 500;
+
     CCommandExcuteHandler();
 
     ~CCommandExcuteHandler();
@@ -48,6 +53,10 @@ private:
     QTimer* m_qTimer;
     bool m_bRunning;
     bool m_bWorking;
+
+
+    QDateTime _prevExecutionTime;
+    QDateTime _prevDrawTime;
 };
 
 #endif // CCOMMANDEXCUTEHANDLER_H

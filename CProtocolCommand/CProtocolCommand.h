@@ -103,6 +103,7 @@ private slots:
 
     //void onCommandBtnClicked();
 
+    void onTickReceived();
 
     void onCommandBtnClicked(QString strCat);
 
@@ -132,10 +133,7 @@ private:
 
     int m_iIndex;
 
-
     QString m_lastID{""};
-
-    QGraphicsScene* m_CommandMainScene{nullptr};
 
     CCommandExcuteHandler* m_excuteHandler{nullptr};
 
@@ -149,6 +147,8 @@ private:
     CSprite*   m_Sprite{nullptr};
 
     CCommandCanvas* m_pBlockCanvas{nullptr};
+
+    bool m_bWorking{false};
 
 
     //控制的变量区

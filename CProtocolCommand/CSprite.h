@@ -3,9 +3,11 @@
 
 //控制的对象类
 
+#include <QColor>
 #include <QString>
 #include "CVarTable.h"
 #include "CEventCommand.h"
+using namespace Qt;
 
 class CCommandExcuteHandler;
 
@@ -26,6 +28,10 @@ public:
 
     void sendSignal(const CSignal &signal);
 
+    void setBlockSceneBackgroundColor(QColor color);
+
+    QColor getBlockSceneBackgroundColor();
+
 private:
     SpriteVarTable* m_SpriteVars;
 
@@ -37,6 +43,8 @@ private:
     int m_iValue{0};
     QString m_strValue{""};
     bool m_bValue{false};
+
+    QColor m_Color;
 
 };
 
