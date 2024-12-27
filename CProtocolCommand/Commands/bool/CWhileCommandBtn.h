@@ -11,7 +11,7 @@ public:
 
     virtual ~CWhileCommandBtn();
 
-    virtual QString getId() const {return QString("Control_WhileBlock");}
+    virtual QString getId() const {return QString("while");}
 
     virtual QList<ParamType> getParamTypes() const;
 

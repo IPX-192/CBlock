@@ -31,6 +31,7 @@ SOURCES += \
     CNumberConstantCommandBtnView.cpp \
     CObjectRepr.cpp \
     CSprite.cpp \
+    CStringConstantBlockReprView.cpp \
     CVarIable.cpp \
     Commands/bool/CForCommandBtn.cpp \
     Commands/bool/CIfCommandBtn.cpp \
@@ -53,6 +54,7 @@ SOURCES += \
     Commands/number/CMultiplyCommand.cpp \
     Commands/number/CNumberRassignment.cpp \
     Commands/number/CPlusCommand.cpp \
+    Commands/sprite/CBlockSceneBGColorCommand.cpp \
     main.cpp \
     CProtocolCommand.cpp
 
@@ -77,6 +79,7 @@ HEADERS += \
     CNumberConstantCommandBtnView.h \
     CObjectRepr.h \
     CSprite.h \
+    CStringConstantBlockReprView.h \
     CVarIable.h \
     Commands/bool/CForCommandBtn.h \
     Commands/bool/CIfCommandBtn.h \
@@ -99,7 +102,8 @@ HEADERS += \
     Commands/number/CMinusCommand.h \
     Commands/number/CMultiplyCommand.h \
     Commands/number/CNumberRassignment.h \
-    Commands/number/CPlusCommand.h
+    Commands/number/CPlusCommand.h \
+    Commands/sprite/CBlockSceneBGColorCommand.h
 
 FORMS += \
     CProtocolCommand.ui

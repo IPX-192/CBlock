@@ -1,13 +1,13 @@
 #include "CVarCommandBtn.h"
 
-CVarCommandBtn::CVarCommandBtn(CCommand::ParamType returnType, QString varName)
-    : CCommandRepr(returnType, varName), m_qstrVarName(varName)
+CVarCommandBtn::CVarCommandBtn(CCommand::ParamType returnType, QString varName, bool locked)
+    : CCommandRepr(returnType, varName, locked), m_qstrVarName(varName)
 {
 
 }
 
 CVarCommandBtn::CVarCommandBtn(const CVarCommandBtn &block)
-    : CCommandRepr(block.getReturnType(), block.getVarName()), m_qstrVarName(block.m_qstrVarName)
+    : CCommandRepr(block.getReturnType(), block.getVarName(), block.isLocked()), m_qstrVarName(block.m_qstrVarName)
 {
 
 }

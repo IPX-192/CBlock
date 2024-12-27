@@ -2,6 +2,7 @@
 #include "CMessage.h"
 #include "CCommandExecuteThread.h"
 #include <QColor>
+#include <QDebug>
 
 CIfCommandBtn::CIfCommandBtn() {}
 
@@ -44,8 +45,6 @@ void CIfCommandBtn::executeNextStep(CCommandExecuteThread &executionThread) cons
         return;
     }
 
-    CSprite* sprite = executionThread.getSprite();
-
     //check condition and run body if condition evaluated true
     if(m->getValue() == 1)
     {
@@ -53,12 +52,6 @@ void CIfCommandBtn::executeNextStep(CCommandExecuteThread &executionThread) cons
         //if no return value or false -> end execution
         if(value == NULL || !value->toBool())
         {
-            if(sprite != NULL) {
-
-                sprite->setBlockSceneBackgroundColor(QColor(128,128,128));
-
-            }
-
             qDebug()<<u8"if表达式是不成立的";
             executionThread.endExecution(NULL);
             return;
@@ -69,12 +62,6 @@ void CIfCommandBtn::executeNextStep(CCommandExecuteThread &executionThread) cons
         executionThread.setNextBlock(m_Body);
         m->setValue(2);
         return;
-    }
-
-    if(sprite != NULL) {
-
-        sprite->setBlockSceneBackgroundColor(QColor(255,0,0));
-
     }
 
     //end execution

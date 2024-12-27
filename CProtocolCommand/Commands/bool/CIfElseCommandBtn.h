@@ -12,11 +12,11 @@ public:
 
     ~CIfElseCommandBtn();
 
-    virtual QString getId() const {return QString("Control_IfElseBlock");}
+    virtual QString getId() const {return QString("if_else");}
 
     virtual QList<ParamType> getParamTypes() const;
 
-    virtual int getNumBodies() const {return 1;}
+    virtual int getNumBodies() const {return 2;}
 
     virtual QString getParamDescription() const {return QObject::tr("If") + QString(" %p");}
 
@@ -29,11 +29,6 @@ public:
     virtual bool addBody(CStatementCommand* body, int index);
 
     virtual CCommand* newInstance() const {return new CIfElseCommandBtn();}
-
-
-
-
-
 
 
 private:

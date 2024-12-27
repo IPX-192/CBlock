@@ -1,7 +1,6 @@
 ﻿#ifndef CIFCOMMANDBTN_H
 #define CIFCOMMANDBTN_H
 
-#include "CCommandBtn.h"
 #include "CStatementCommand.h"
 #include "CExpressionCommand.h"
 

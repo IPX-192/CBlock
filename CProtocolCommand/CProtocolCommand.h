@@ -119,17 +119,19 @@ private slots:
 
     void on_pushButton_Boolean_clicked();
 
+    void on_pushButton_Color_clicked();
+
 private:
     Ui::CProtocolCommand *ui;
 
 
-    ButtonInfo buttonInfos[10];  // 作为成员变量定义按钮信息数组
+    ButtonInfo buttonInfos[13];  // 作为成员变量定义按钮信息数组
 
     QList<CCommandRepr*> m_listCommands;
 
-    QList<CVarCommandBtn*> m_listVars;
+    QList<CVarCommandBtn*> m_listVars;   //这个应该放在具体的对象中
 
-    QList<CSprite*> m_listSprites;     //这个是控制的那个对象，就是小蜜蜂
+    QList<CSprite*> m_listSprites;       //这个是控制的那个对象
 
     int m_iIndex;
 
@@ -148,6 +150,8 @@ private:
 
     CCommandCanvas* m_pBlockCanvas{nullptr};
 
+    QGraphicsScene* m_VarScene{nullptr};
+
     bool m_bWorking{false};
 
 
@@ -159,7 +163,8 @@ private:
 
     SimpleVarTable* m_GlobalVars;
 
-    int y = 50;
+    int x = 20;
+    int y = 20;
 
 };
 #endif // CPROTOCOLCOMMAND_H

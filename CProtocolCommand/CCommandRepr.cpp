@@ -24,7 +24,8 @@ const int CCommandRepr::FOOTER_WIDTH = 50;
 const QSize CCommandRepr::HOLDER_SIZE = QSize(48, 14);
 
 class CCommandParam;
-CCommandRepr::CCommandRepr(CCommand *block)
+CCommandRepr::CCommandRepr(CCommand *block,bool locked)
+    :_isLocked(locked)
 {
     CCommandRepr::FONT.setPixelSize(11);
 
@@ -93,7 +94,8 @@ CCommandRepr::CCommandRepr(const CCommandRepr& repr)
     calculatePositions(true, true, true);
 }
 
-CCommandRepr::CCommandRepr(CCommand::ParamType type, QString name, bool isVar)
+CCommandRepr::CCommandRepr(CCommand::ParamType type, QString name, bool locked, bool isVar)
+    :_isLocked(locked)
 {
     CCommandRepr::FONT.setPixelSize(11);
 
@@ -120,7 +122,8 @@ CCommandRepr::CCommandRepr(CCommand::ParamType type, QString name, bool isVar)
     calculatePositions(true, true, true);
 }
 
-CCommandRepr::CCommandRepr(CCommand::ParamType type)
+CCommandRepr::CCommandRepr(CCommand::ParamType type, bool locked)
+    :_isLocked(locked)
 {
     CCommandRepr::FONT.setPixelSize(11);
     if(type == CCommand::STRING_EXPRESSION)

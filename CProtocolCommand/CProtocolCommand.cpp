@@ -3,6 +3,8 @@
 #include <QPushButton>
 #include <QGraphicsLinearLayout>
 #include <QGraphicsGridLayout>
+#include <QColorDialog>
+#include <QPalette>
 #include <QDebug>
 #include "CCommandReprView.h"
 
@@ -25,51 +27,34 @@ CProtocolCommand::CProtocolCommand(QWidget *parent)
     QGraphicsScene* scene = new QGraphicsScene(this);
     ui->graphicsView->setScene(scene);
 
-
-    QGraphicsWidget *widget = new QGraphicsWidget;
-    //QGraphicsGridLayout *layout = new QGraphicsGridLayout(widget);
-
-
-    // 将 QGraphicsWidget 添加到场景中
-    //scene->addItem(widget);
+    m_VarScene = new QGraphicsScene(this);
+    ui->graphicsView_3->setScene(m_VarScene);
 
 
     // 初始化按钮信息数组
     buttonInfos[0] = {"if", 32,0};
     buttonInfos[1] = {"else", 32, 50};
     buttonInfos[2] = {"while", 100, 0};
-    buttonInfos[3] = {"for", 100, 50};
+    buttonInfos[3] = {"if_else", 100, 50};
 
     buttonInfos[4] = {"+", 32, 100};
     buttonInfos[5] = {"-", 32, 150};
-    buttonInfos[6] = {"=", 100, 100};
+    buttonInfos[6] = {"*", 100, 100};
+    buttonInfos[7] = {"/", 32, 200};
+    buttonInfos[8] = {"=", 100, 150};
 
-    buttonInfos[7] = {">", 32, 200};
-    buttonInfos[8] = {"<", 100, 150};
-    buttonInfos[9] = {"Number_Number", 100, 200};
+    buttonInfos[9]  = {">", 100, 200};
+    buttonInfos[10] = {"<", 32, 250};
+    buttonInfos[11] = {"value", 100, 250};
+    buttonInfos[12] = {"set_color", 32, 300};
 
-    int row = 0;
-    int col = 0;
-
-    int i = 0;
-    //widget->setPos(0, 0);
     for (const auto& info : buttonInfos) {
-
-
         CCommandBtn* commandBtn = new CCommandBtn(info.text,info.text);
         commandBtn->setFixedSize(65, 45);
         commandBtn->setStyleSheet("color: black;");
         QGraphicsProxyWidget* proxy = scene ->addWidget(commandBtn);
 
         proxy->setPos(info.x,info.y);
-        //layout->addItem(proxy,row,col); // 添加子部件
-
-        // 更新行列索引
-        col++;
-        if (col >= 2) {
-            col = 0;
-            row++;
-        }
 
         // 使用lambda表达式来连接按钮点击信号和自定义的槽函数逻辑，打印按钮文字
         connect(commandBtn, &CCommandBtn::sigClicked, this, &CProtocolCommand::onCommandBtnClicked);
@@ -91,11 +76,11 @@ CProtocolCommand::~CProtocolCommand()
     qDeleteAll(m_listCommands);
     qDeleteAll(m_listVars);
     qDeleteAll(m_listSprites);
-    if(m_excuteHandler)
-    {
-        delete m_excuteHandler;
-        m_excuteHandler = nullptr;
-    }
+    // if(m_excuteHandler)
+    // {
+    //     delete m_excuteHandler;
+    //     m_excuteHandler = nullptr;
+    // }
     if(m_pCommandBtnLibrary)
     {
         delete m_pCommandBtnLibrary;
@@ -299,11 +284,18 @@ CCommand *CProtocolCommand::compileParam(CCommandRepr *blockRepr)
 
 void CProtocolCommand::addVariable(CVarCommandBtn *var)
 {
-
-
-    addCommand(var);
-
     m_listVars.append(var);
+    m_VarScene->clear();
+
+    QPoint pos(0, 0);
+    foreach (CVarCommandBtn* var, m_listVars) {
+        CCommandReprView* brv = CCommandReprView::newBlockReprView(var);
+        brv->setPos(pos);
+        m_VarScene->addItem(brv);
+        pos += QPoint(0, var->getTotalSize().height() + 15);
+    }
+
+    m_VarScene->setSceneRect(-10, -10, m_VarScene->itemsBoundingRect().toRect().size().width(), m_VarScene->itemsBoundingRect().toRect().size().height());
 
 }
 
@@ -426,6 +418,7 @@ void CProtocolCommand::onTickReceived()
     m_bWorking = true;
     if(m_Sprite)
     {
+        qDebug()<<"sfafafa" << m_Sprite->getBlockSceneBackgroundColor();
         m_pBlockCanvas->setBackgroundBrush(QBrush(m_Sprite->getBlockSceneBackgroundColor()));
     }
     m_bWorking = false;
@@ -434,24 +427,34 @@ void CProtocolCommand::onTickReceived()
 void CProtocolCommand::onCommandBtnClicked(QString strCat)
 {
     CCommandRepr* clickedButton = nullptr;
-    if(strCat == "Number_Number")
+    if(strCat == "value")
     {
-        clickedButton = new CConstantCommandBtn(CCommand::NUMBER_EXPRESSION);
+        clickedButton = new CConstantCommandBtn(CCommand::NUMBER_EXPRESSION,false);
     }
     else
     {
         clickedButton = m_pCommandBtnLibrary->getBlockReprInstance(strCat);
-    }
-
-    if(m_listCommands.size())
-    {
-        //y += m_listCommands.last()->getTotalSize();
+        clickedButton->setLock(false);
     }
 
     if(clickedButton != nullptr)
     {
-        clickedButton->setPosition(QPoint(50,y));
+        clickedButton->setPosition(QPoint(x,y));
         addCommand(clickedButton);
+    }
+
+    if(m_listCommands.size())
+    {
+        if( y + 80 <= 500)
+        {
+            y += 80;
+        }
+        else
+        {
+            y = 20;
+
+            x += 80;
+        }
     }
 }
 
@@ -481,18 +484,8 @@ void CProtocolCommand::on_btn_Start_clicked()
 void CProtocolCommand::on_pushButton_Nunber_clicked()
 {
 
-    // CCommandBtn* clickedButton = new CCommandBtn("num","num");
-
-    // clickedButton->setFixedSize(30, 30);
-    // clickedButton->setStyleSheet("color: black;");
-
-    // addCommand(clickedButton);
-
-    QString strVarName = "num";
-
-    addVariable(new CVarCommandBtn(CCommand::NUMBER_VAR,strVarName));
-
-
+    QString strVarName = "num_" + QString::number(m_listVars.size());
+    addVariable(new CVarCommandBtn(CCommand::NUMBER_VAR,strVarName,true));
 
 }
 
@@ -506,5 +499,47 @@ void CProtocolCommand::on_pushButton_Text_clicked()
 void CProtocolCommand::on_pushButton_Boolean_clicked()
 {
 
+}
+
+void CProtocolCommand::on_pushButton_Color_clicked()
+{
+
+    QColor color = QColorDialog::getColor(Qt::white, nullptr);
+    if (color.isValid()) {
+        // 获取选择颜色的RGB分量
+        int red = color.red();
+        int green = color.green();
+        int blue = color.blue();
+
+        QString rgbStr = QString("%1,%2,%3").arg(red).arg(green).arg(blue);
+
+        // 设置按钮的背景颜色为选择的颜色
+        QPalette palette = ui->pushButton_Color->palette();
+        palette.setColor(QPalette::Button, color);
+        ui->pushButton_Color->setPalette(palette);
+
+        CConstantCommandBtn* colorCommand = new CConstantCommandBtn(CCommand::STRING_EXPRESSION);
+        if(colorCommand != nullptr)
+        {
+            colorCommand->setValue(rgbStr);
+            colorCommand->setPosition(QPoint(x,y));
+            addCommand(colorCommand);
+        }
+
+        if(m_listCommands.size())
+        {
+            if( y + 80 <= 500)
+            {
+                y += 80;
+            }
+            else
+            {
+                y = 20;
+
+                x += 80;
+            }
+        }
+
+    }
 }
 

@@ -19,7 +19,7 @@ class CCommandRepr : public QObject
     Q_OBJECT
 public:
 
-    CCommandRepr(CCommand* block);
+    CCommandRepr(CCommand* block,bool locked);
 
 
     CCommandRepr(const CCommandRepr& repr);
@@ -153,7 +153,6 @@ public:
     virtual bool isUserStatementRepr() const { return false; }
 
 
-
     static QFont FONT;
 
     static const int MARGIN;
@@ -169,8 +168,8 @@ public:
     static const QSize HOLDER_SIZE;
 
 protected:
-    CCommandRepr(CCommand::ParamType type, QString name,bool isVar = true);
-    CCommandRepr(CCommand::ParamType type);
+    CCommandRepr(CCommand::ParamType type, QString name, bool locked = false, bool isVar = true);
+    CCommandRepr(CCommand::ParamType type, bool locked);
 
     void setParamLabels(QStringList paramLabels);
     void setParamLabels(QString paramLabels);
@@ -192,7 +191,7 @@ private:
     QStringList m_strListParamLabels;
     QList<CCommandParam*> _params;     //一个单独的块里面的参数
     QStringList m_strListBodyLabels;
-    QList<CCommandRepr*> _bodies;   //一个块里面的语句是一个单独的块
+    QList<CCommandRepr*> _bodies;      //一个块里面的语句是一个单独的块
     QPoint _position;
     CCommandRepr* _nextBlock{nullptr};
     bool _lastRemovedWasParam{false};

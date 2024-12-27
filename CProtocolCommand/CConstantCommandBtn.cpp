@@ -4,8 +4,8 @@
 #include <QDebug>
 
 
-CConstantCommandBtn::CConstantCommandBtn(CCommand::ParamType returnType)
-    : CCommandRepr(returnType), m_Value(0)
+CConstantCommandBtn::CConstantCommandBtn(CCommand::ParamType returnType, bool locked)
+    : CCommandRepr(returnType,locked), m_Value(0)
 {
     if(returnType == CCommand::STRING_EXPRESSION)
     {
@@ -14,18 +14,21 @@ CConstantCommandBtn::CConstantCommandBtn(CCommand::ParamType returnType)
 
 }
 
-CConstantCommandBtn::CConstantCommandBtn(const CConstantCommandBtn &block): CCommandRepr(block.getReturnType()), m_Value(block.getValue())
+CConstantCommandBtn::CConstantCommandBtn(const CConstantCommandBtn &block): CCommandRepr(block.getReturnType(), block.isLocked()), m_Value(block.getValue())
 {
 
 }
-
-
 
 CCommandRepr *CConstantCommandBtn::copy()
 {
     return new CConstantCommandBtn(*this);
 }
 
+void CConstantCommandBtn::setValue(QVariant value)
+{
+    m_Value = value;
+    emitBlockUpdated(true, true, true);
+}
 
 QSize CConstantCommandBtn::getTotalSize()
 {

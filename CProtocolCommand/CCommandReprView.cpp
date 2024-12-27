@@ -14,6 +14,7 @@
 
 #include "CCommand.h"
 #include "CNumberConstantCommandBtnView.h"
+#include "CStringConstantBlockReprView.h"
 
 
 CCommandReprView *CCommandReprView::newBlockReprView(CCommandRepr *blockRepr, QGraphicsItem *parent)
@@ -23,6 +24,7 @@ CCommandReprView *CCommandReprView::newBlockReprView(CCommandRepr *blockRepr, QG
     {
         if(blockRepr->getReturnType() == CCommand::STRING_EXPRESSION)
         {
+            return new CStringConstantBlockReprView((CConstantCommandBtn*)blockRepr, parent);
         }
         if(blockRepr->getReturnType() == CCommand::NUMBER_EXPRESSION)
         {

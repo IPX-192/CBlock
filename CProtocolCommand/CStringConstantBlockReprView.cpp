@@ -1,0 +1,31 @@
+﻿#include "CStringConstantBlockReprView.h"
+#include "CConstantCommandBtn.h"
+
+#include <QDebug>
+#include <climits>
+
+CStringConstantBlockReprView::CStringConstantBlockReprView(CConstantCommandBtn *blockRepr, QGraphicsItem *parent)
+    :CCommandReprView(blockRepr, parent), _constantBlockRepr(blockRepr)
+{
+
+    QFont font("Arial", 11);
+    font.setPixelSize(11);
+    _lineEdit = new QLineEdit(_constantBlockRepr->getValue().toString());
+    _lineEdit->setFont(font);
+    _lineEdit->resize(60, 17);
+    QPalette palette;
+    palette.setBrush(QPalette::Background, Qt::transparent);
+    _lineEdit->setPalette(palette);
+    _lineEdit->setAutoFillBackground(false);
+    _proxy = new QGraphicsProxyWidget;
+    _proxy->setWidget(_lineEdit);
+    _proxy->setPos(CCommandRepr::MARGIN_HORIZONTAL*2, CCommandRepr::MARGIN);
+    _proxy->setParentItem(this);
+
+    connect(_lineEdit, SIGNAL(textChanged(QString)), this, SLOT(stringChanged()));
+}
+
+void CStringConstantBlockReprView::stringChanged()
+{
+    _constantBlockRepr->setValue(QVariant(_lineEdit->text()));
+}

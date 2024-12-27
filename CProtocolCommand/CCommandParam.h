@@ -2,7 +2,6 @@
 #define CCOMMANDPARAM_H
 
 #include "CCommand.h"
-class CCommandBtn;
 class CCommandRepr;
 
 class CCommandParam
@@ -15,7 +14,6 @@ public:
 
     CCommand::ParamType getParamType() const { return m_ParamType; }
 
-    //待删除
     void setBlock(CCommandRepr* block);
 
 

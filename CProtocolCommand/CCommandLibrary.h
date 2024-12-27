@@ -17,6 +17,7 @@
 #include "Commands/number/CMultiplyCommand.h"
 #include "Commands/number/CNumberRassignment.h"
 #include "Commands/number/CPlusCommand.h"
+#include "Commands/sprite/CBlockSceneBGColorCommand.h"
 #include "CCommandRepr.h"
 #include "CStartCommand.h"
 

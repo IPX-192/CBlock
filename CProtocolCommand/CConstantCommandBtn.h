@@ -9,7 +9,7 @@ class CConstantCommandBtn : public CCommandRepr
 public:
 
 
-    CConstantCommandBtn(CCommand::ParamType returnType);
+    CConstantCommandBtn(CCommand::ParamType returnType, bool locked = false);
 
     CConstantCommandBtn(const CConstantCommandBtn& block);
 
@@ -19,7 +19,7 @@ public:
 
     QVariant getValue() const {return m_Value;}
 
-    void setValue(QVariant value) {m_Value = value;}
+    void setValue(QVariant value);
 
     virtual QSize getTotalSize();
     virtual QSize getSize();

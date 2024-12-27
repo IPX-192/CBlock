@@ -7,7 +7,7 @@ class CVarCommandBtn : public CCommandRepr
 {
     Q_OBJECT
 public:
-    CVarCommandBtn(CCommand::ParamType returnType, QString varName);
+    CVarCommandBtn(CCommand::ParamType returnType, QString varName, bool locked = false);
 
     CVarCommandBtn(const CVarCommandBtn& block);
 
