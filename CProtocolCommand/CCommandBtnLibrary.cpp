@@ -1,10 +1,10 @@
 ﻿#include "CCommandBtnLibrary.h"
-#include "CConstantCommandBtn.h"
+#include "CConstantCommandRepr.h"
 
 CCommandBtnLibrary::CCommandBtnLibrary() {
 
-    registerBlock(new CConstantCommandBtn(CCommand::STRING_EXPRESSION));
-    registerBlock(new CConstantCommandBtn(CCommand::NUMBER_EXPRESSION));
+    registerBlock(new CConstantCommandRepr(CCommand::STRING_EXPRESSION));
+    registerBlock(new CConstantCommandRepr(CCommand::NUMBER_EXPRESSION));
 }
 
 CCommandBtnLibrary::~CCommandBtnLibrary()

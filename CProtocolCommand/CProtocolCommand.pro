@@ -24,14 +24,15 @@ SOURCES += \
     CCommandReprviewholder.cpp \
     CCommandStackElement.cpp \
     CConstantCommand.cpp \
-    CConstantCommandBtn.cpp \
+    CConstantCommandRepr.cpp \
     CDragInfo.cpp \
     CEventCommand.cpp \
     CExpressionCommand.cpp \
     CNumberConstantCommandBtnView.cpp \
-    CObjectRepr.cpp \
     CSprite.cpp \
+    CSpriteRepr.cpp \
     CStringConstantBlockReprView.cpp \
+    CVarCommandRepr.cpp \
     CVarIable.cpp \
     Commands/bool/CForCommandBtn.cpp \
     Commands/bool/CIfCommandBtn.cpp \
@@ -47,7 +48,6 @@ SOURCES += \
     CStatementsCommand.cpp \
     CValue.cpp \
     CVarCommand.cpp \
-    CVarCommandBtn.cpp \
     CVarTable.cpp \
     Commands/number/CLessThanNumberCommand.cpp \
     Commands/number/CMinusCommand.cpp \
@@ -72,14 +72,15 @@ HEADERS += \
     CCommandReprviewholder.h \
     CCommandStackElement.h \
     CConstantCommand.h \
-    CConstantCommandBtn.h \
+    CConstantCommandRepr.h \
     CDragInfo.h \
     CEventCommand.h \
     CExpressionCommand.h \
     CNumberConstantCommandBtnView.h \
-    CObjectRepr.h \
     CSprite.h \
+    CSpriteRepr.h \
     CStringConstantBlockReprView.h \
+    CVarCommandRepr.h \
     CVarIable.h \
     Commands/bool/CForCommandBtn.h \
     Commands/bool/CIfCommandBtn.h \
@@ -96,7 +97,6 @@ HEADERS += \
     CStatementsCommand.h \
     CValue.h \
     CVarCommand.h \
-    CVarCommandBtn.h \
     CVarTable.h \
     Commands/number/CLessThanNumberCommand.h \
     Commands/number/CMinusCommand.h \

@@ -6,7 +6,7 @@
 #include <QDoubleValidator>
 #include "CCommandReprView.h"
 
-class CConstantCommandBtn;
+class CConstantCommandRepr;
 
 class CStringConstantBlockReprView : public CCommandReprView
 {
@@ -14,14 +14,14 @@ class CStringConstantBlockReprView : public CCommandReprView
 public:
     CStringConstantBlockReprView();
 
-    CStringConstantBlockReprView(CConstantCommandBtn* blockRepr, QGraphicsItem *parent = 0);
+    CStringConstantBlockReprView(CConstantCommandRepr* blockRepr, QGraphicsItem *parent = 0);
 
 public slots:
 
     void stringChanged();
 
 private:
-    CConstantCommandBtn* _constantBlockRepr;
+    CConstantCommandRepr* _constantBlockRepr;
     QLineEdit* _lineEdit;
     QGraphicsProxyWidget* _proxy;
 };

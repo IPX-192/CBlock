@@ -5,14 +5,14 @@
 #include <QDoubleValidator>
 #include "CCommandReprView.h"
 
-class CConstantCommandBtn;
+class CConstantCommandRepr;
 class CNumberConstantCommandBtnView : public CCommandReprView
 {
     Q_OBJECT
 public:
     CNumberConstantCommandBtnView();
 
-    CNumberConstantCommandBtnView(CConstantCommandBtn* blockRepr, QGraphicsItem *parent = 0);
+    CNumberConstantCommandBtnView(CConstantCommandRepr* blockRepr, QGraphicsItem *parent = 0);
 
 public slots:
     /**
@@ -21,7 +21,7 @@ public slots:
     void numberChanged();
 
 private:
-    CConstantCommandBtn* _constantBlockRepr;
+    CConstantCommandRepr* _constantBlockRepr;
     QLineEdit* _lineEdit;
     QGraphicsProxyWidget* _proxy;
     QDoubleValidator* _validator;

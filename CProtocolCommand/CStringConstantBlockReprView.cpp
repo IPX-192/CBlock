@@ -1,10 +1,10 @@
 ﻿#include "CStringConstantBlockReprView.h"
-#include "CConstantCommandBtn.h"
+#include "CConstantCommandRepr.h"
 
 #include <QDebug>
 #include <climits>
 
-CStringConstantBlockReprView::CStringConstantBlockReprView(CConstantCommandBtn *blockRepr, QGraphicsItem *parent)
+CStringConstantBlockReprView::CStringConstantBlockReprView(CConstantCommandRepr *blockRepr, QGraphicsItem *parent)
     :CCommandReprView(blockRepr, parent), _constantBlockRepr(blockRepr)
 {
 

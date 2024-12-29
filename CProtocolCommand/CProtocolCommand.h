@@ -18,10 +18,11 @@
 #include "CStatementCommand.h"
 #include "CExpressionCommand.h"
 #include "CConstantCommand.h"
-#include "CConstantCommandBtn.h"
-#include "CVarCommandBtn.h"
+#include "CConstantCommandRepr.h"
+#include "CVarCommandRepr.h"
 #include "CVarCommand.h"
 #include "CSprite.h"
+#include "CSpriteRepr.h"
 #include "CCommandRepr.h"
 #include "CCommandCanvas.h"
 
@@ -74,12 +75,12 @@ public:
 
     CCommand* compileParam(CCommandRepr *blockRepr);
 
-    void addVariable(CVarCommandBtn* var);
+    void addVariable(CVarCommandRepr* var);
 
-    void removeVariable(CVarCommandBtn* var);
+    void removeVariable(CVarCommandRepr* var);
 
 
-    bool isListVar(CVarCommandBtn* varBlockRepr);
+    bool isListVar(CVarCommandRepr* varBlockRepr);
 
     CValue::DataType getDataType(CCommandRepr* blockRepr);
 
@@ -129,7 +130,7 @@ private:
 
     QList<CCommandRepr*> m_listCommands;
 
-    QList<CVarCommandBtn*> m_listVars;   //这个应该放在具体的对象中
+    QList<CVarCommandRepr*> m_listVars;   //这个应该放在具体的对象中
 
     QList<CSprite*> m_listSprites;       //这个是控制的那个对象
 
@@ -147,6 +148,8 @@ private:
 
 
     CSprite*   m_Sprite{nullptr};
+
+    QList<CSpriteRepr*> m_listSpriteReprs;
 
     CCommandCanvas* m_pBlockCanvas{nullptr};
 

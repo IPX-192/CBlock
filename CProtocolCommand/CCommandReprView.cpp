@@ -24,11 +24,11 @@ CCommandReprView *CCommandReprView::newBlockReprView(CCommandRepr *blockRepr, QG
     {
         if(blockRepr->getReturnType() == CCommand::STRING_EXPRESSION)
         {
-            return new CStringConstantBlockReprView((CConstantCommandBtn*)blockRepr, parent);
+            return new CStringConstantBlockReprView((CConstantCommandRepr*)blockRepr, parent);
         }
         if(blockRepr->getReturnType() == CCommand::NUMBER_EXPRESSION)
         {
-            return new CNumberConstantCommandBtnView((CConstantCommandBtn*)blockRepr, parent);
+            return new CNumberConstantCommandBtnView((CConstantCommandRepr*)blockRepr, parent);
         }
     }
 

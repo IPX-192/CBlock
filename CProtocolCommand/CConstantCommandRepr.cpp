@@ -1,10 +1,10 @@
-#include "CConstantCommandBtn.h"
+#include "CConstantCommandRepr.h"
 #include <QGraphicsProxyWidget>
 #include <QLineEdit>
 #include <QDebug>
 
 
-CConstantCommandBtn::CConstantCommandBtn(CCommand::ParamType returnType, bool locked)
+CConstantCommandRepr::CConstantCommandRepr(CCommand::ParamType returnType, bool locked)
     : CCommandRepr(returnType,locked), m_Value(0)
 {
     if(returnType == CCommand::STRING_EXPRESSION)
@@ -14,33 +14,33 @@ CConstantCommandBtn::CConstantCommandBtn(CCommand::ParamType returnType, bool lo
 
 }
 
-CConstantCommandBtn::CConstantCommandBtn(const CConstantCommandBtn &block): CCommandRepr(block.getReturnType(), block.isLocked()), m_Value(block.getValue())
+CConstantCommandRepr::CConstantCommandRepr(const CConstantCommandRepr &block): CCommandRepr(block.getReturnType(), block.isLocked()), m_Value(block.getValue())
 {
 
 }
 
-CCommandRepr *CConstantCommandBtn::copy()
+CCommandRepr *CConstantCommandRepr::copy()
 {
-    return new CConstantCommandBtn(*this);
+    return new CConstantCommandRepr(*this);
 }
 
-void CConstantCommandBtn::setValue(QVariant value)
+void CConstantCommandRepr::setValue(QVariant value)
 {
     m_Value = value;
     emitBlockUpdated(true, true, true);
 }
 
-QSize CConstantCommandBtn::getTotalSize()
+QSize CConstantCommandRepr::getTotalSize()
 {
     return getSize();
 }
 
-QSize CConstantCommandBtn::getSize()
+QSize CConstantCommandRepr::getSize()
 {
     return getHeaderSize();
 }
 
-QSize CConstantCommandBtn::getHeaderSize()
+QSize CConstantCommandRepr::getHeaderSize()
 {
     QFont font("Arial", 11);
     font.setPixelSize(11);

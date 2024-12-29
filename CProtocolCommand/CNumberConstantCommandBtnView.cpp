@@ -1,10 +1,10 @@
 ﻿#include "CNumberConstantCommandBtnView.h"
-#include "CConstantCommandBtn.h"
+#include "CConstantCommandRepr.h"
 
 #include <QDebug>
 #include <climits>
 
-CNumberConstantCommandBtnView::CNumberConstantCommandBtnView(CConstantCommandBtn *blockRepr, QGraphicsItem *parent)
+CNumberConstantCommandBtnView::CNumberConstantCommandBtnView(CConstantCommandRepr *blockRepr, QGraphicsItem *parent)
     :CCommandReprView(blockRepr, parent), _constantBlockRepr(blockRepr)
 {
     QFont font("Arial", 11);

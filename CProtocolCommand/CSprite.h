@@ -36,7 +36,7 @@ private:
     SpriteVarTable* m_SpriteVars;
 
 
-    QList<CEventCommand*> m_qlistEventCommand;           //这个精灵有几个事件物块
+    QList<CEventCommand*> m_qlistEventCommand;
     CCommandExcuteHandler* m_pExcuteHandler{nullptr};
 
 

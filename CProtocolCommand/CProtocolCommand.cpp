@@ -63,6 +63,8 @@ CProtocolCommand::CProtocolCommand(QWidget *parent)
     m_pCommandBtnLibrary = m_CommandLibrary.createBlockReprLibrary();
 
     initialize();
+
+    m_listSpriteReprs.append(new CSpriteRepr("test"));
     //createSprite();
 
     // if(m_Sprite)
@@ -76,6 +78,11 @@ CProtocolCommand::~CProtocolCommand()
     qDeleteAll(m_listCommands);
     qDeleteAll(m_listVars);
     qDeleteAll(m_listSprites);
+
+    m_listCommands.clear();
+    m_listVars.clear();
+
+
     // if(m_excuteHandler)
     // {
     //     delete m_excuteHandler;
@@ -144,6 +151,12 @@ bool CProtocolCommand::removeCommand(CCommandRepr *commandBtn)
 void CProtocolCommand::createSprite()
 {
     m_GlobalVars = new SimpleVarTable;
+
+    if(m_Sprite != nullptr)
+    {
+        delete m_Sprite;
+        m_Sprite = nullptr;
+    }
     //模拟一个控制的对象
     m_Sprite = new CSprite(m_GlobalVars);
 
@@ -152,7 +165,7 @@ void CProtocolCommand::createSprite()
 
     QString strVarName = "test";
 
-    //addVariable(new CVarCommandBtn(CCommand::NUMBER_VAR,strVarName));
+    //addVariable(new CVarCommandRepr(CCommand::NUMBER_VAR,strVarName));
 
 
     if(m_Sprite)
@@ -178,7 +191,7 @@ void CProtocolCommand::compileSprite(CSprite *sprite)
 
 
     //增加变量
-    foreach (CVarCommandBtn* varBlockRepr, m_listVars) {
+    foreach (CVarCommandRepr* varBlockRepr, m_listVars) {
 
         if(isListVar(varBlockRepr))
         {
@@ -282,13 +295,22 @@ CCommand *CProtocolCommand::compileParam(CCommandRepr *blockRepr)
     return nullptr;
 }
 
-void CProtocolCommand::addVariable(CVarCommandBtn *var)
+void CProtocolCommand::addVariable(CVarCommandRepr *var)
 {
+
+    foreach (CSpriteRepr* varRepr, m_listSpriteReprs)
+    {
+        if(varRepr->getName() == "test")
+        {
+            varRepr->addVariable(var);
+        }
+    }
+
     m_listVars.append(var);
     m_VarScene->clear();
 
     QPoint pos(0, 0);
-    foreach (CVarCommandBtn* var, m_listVars) {
+    foreach (CVarCommandRepr* var, m_listVars) {
         CCommandReprView* brv = CCommandReprView::newBlockReprView(var);
         brv->setPos(pos);
         m_VarScene->addItem(brv);
@@ -299,12 +321,12 @@ void CProtocolCommand::addVariable(CVarCommandBtn *var)
 
 }
 
-void CProtocolCommand::removeVariable(CVarCommandBtn *var)
+void CProtocolCommand::removeVariable(CVarCommandRepr *var)
 {
     m_listVars.removeAll(var);
 }
 
-bool CProtocolCommand::isListVar(CVarCommandBtn *varBlockRepr)
+bool CProtocolCommand::isListVar(CVarCommandRepr *varBlockRepr)
 {
     CCommand::ParamType rtrn = varBlockRepr->getReturnType();
 
@@ -373,12 +395,12 @@ CExpressionCommand *CProtocolCommand::compileSpecialCaseExpression(CCommandRepr 
     if(blockRepr->isConstantBlockRepr()) {
         if(blockRepr->getReturnType() == CCommand::STRING_EXPRESSION)
         {
-            return new CConstantCommand(new StringValue(((CConstantCommandBtn*)blockRepr)->getValue().toString()));
+            return new CConstantCommand(new StringValue(((CConstantCommandRepr*)blockRepr)->getValue().toString()));
         }
 
         if(blockRepr->getReturnType() == CCommand::NUMBER_EXPRESSION)
         {
-            return new CConstantCommand(new NumberValue(((CConstantCommandBtn*)blockRepr)->getValue().toDouble()));
+            return new CConstantCommand(new NumberValue(((CConstantCommandRepr*)blockRepr)->getValue().toDouble()));
         }
     }
 
@@ -406,7 +428,7 @@ CVarCommand *CProtocolCommand::compileVarBlock(CCommandRepr *blockRepr)
     {
         dataType = CValue::NUMBER;
     }
-    return new CVarCommand(((CVarCommandBtn*)blockRepr)->getVarName(), dataType);
+    return new CVarCommand(((CVarCommandRepr*)blockRepr)->getVarName(), dataType);
 }
 
 void CProtocolCommand::onTickReceived()
@@ -429,7 +451,7 @@ void CProtocolCommand::onCommandBtnClicked(QString strCat)
     CCommandRepr* clickedButton = nullptr;
     if(strCat == "value")
     {
-        clickedButton = new CConstantCommandBtn(CCommand::NUMBER_EXPRESSION,false);
+        clickedButton = new CConstantCommandRepr(CCommand::NUMBER_EXPRESSION,false);
     }
     else
     {
@@ -485,7 +507,7 @@ void CProtocolCommand::on_pushButton_Nunber_clicked()
 {
 
     QString strVarName = "num_" + QString::number(m_listVars.size());
-    addVariable(new CVarCommandBtn(CCommand::NUMBER_VAR,strVarName,true));
+    addVariable(new CVarCommandRepr(CCommand::NUMBER_VAR,strVarName,true));
 
 }
 
@@ -518,7 +540,7 @@ void CProtocolCommand::on_pushButton_Color_clicked()
         palette.setColor(QPalette::Button, color);
         ui->pushButton_Color->setPalette(palette);
 
-        CConstantCommandBtn* colorCommand = new CConstantCommandBtn(CCommand::STRING_EXPRESSION);
+        CConstantCommandRepr* colorCommand = new CConstantCommandRepr(CCommand::STRING_EXPRESSION);
         if(colorCommand != nullptr)
         {
             colorCommand->setValue(rgbStr);

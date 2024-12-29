@@ -1,17 +1,17 @@
-#ifndef CCONSTANTCOMMANDBTN_H
-#define CCONSTANTCOMMANDBTN_H
+#ifndef CCONSTANTCOMMANDREPR_H
+#define CCONSTANTCOMMANDREPR_H
 
 #include "CCommandBtn.h"
 #include "CCommandRepr.h"
 
-class CConstantCommandBtn : public CCommandRepr
+class CConstantCommandRepr : public CCommandRepr
 {
 public:
 
 
-    CConstantCommandBtn(CCommand::ParamType returnType, bool locked = false);
+    CConstantCommandRepr(CCommand::ParamType returnType, bool locked = false);
 
-    CConstantCommandBtn(const CConstantCommandBtn& block);
+    CConstantCommandRepr(const CConstantCommandRepr& block);
 
     virtual CCommandRepr* copy();
 
@@ -29,4 +29,4 @@ private:
     QVariant m_Value;
 };
 
-#endif // CCONSTANTCOMMANDBTN_H
+#endif // CCONSTANTCOMMANDREPR_H
