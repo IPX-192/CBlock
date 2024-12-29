@@ -40,16 +40,12 @@ void CCommandExecuteThread::executeNext()
     {
         return;
     }
-    qDebug()<<u8"几个里面的块" <<m_stackCommandStack.size() <<"vvvvvvvvv "<< m_stackCommandStack.top()->getBlock()->getId();
-
     m_bKeepTopBlock = true;
     m_NextBlock = nullptr;
 
     m_stackCommandStack.top()->getBlock()->executeNextStep(*this);  //重要：执行物块代码的是这里，最顶部的物块这里是实例化的x和y。
 
     //if top block ended execution -> pop block
-
-    qDebug()<<"vdddddddddd "<<m_bKeepTopBlock;
 
     if(!m_bKeepTopBlock)
         delete m_stackCommandStack.pop();

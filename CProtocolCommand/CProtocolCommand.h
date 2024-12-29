@@ -126,7 +126,7 @@ private:
     Ui::CProtocolCommand *ui;
 
 
-    ButtonInfo buttonInfos[13];  // 作为成员变量定义按钮信息数组
+    ButtonInfo buttonInfos[14];  // 作为成员变量定义按钮信息数组
 
     QList<CCommandRepr*> m_listCommands;
 

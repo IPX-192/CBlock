@@ -47,6 +47,7 @@ CProtocolCommand::CProtocolCommand(QWidget *parent)
     buttonInfos[10] = {"<", 32, 250};
     buttonInfos[11] = {"value", 100, 250};
     buttonInfos[12] = {"set_color", 32, 300};
+    buttonInfos[13] = {u8"赋值", 100, 300};
 
     for (const auto& info : buttonInfos) {
         CCommandBtn* commandBtn = new CCommandBtn(info.text,info.text);
@@ -200,6 +201,7 @@ void CProtocolCommand::compileSprite(CSprite *sprite)
 
         else
         {
+            qDebug()<<"asdasdffffff "<<varBlockRepr->getVarName();
             CVarIable* aa  = new SimpleVariable(varBlockRepr->getVarName(), getDataType(varBlockRepr));
             if(aa != nullptr)
             {
@@ -453,14 +455,19 @@ void CProtocolCommand::onCommandBtnClicked(QString strCat)
     {
         clickedButton = new CConstantCommandRepr(CCommand::NUMBER_EXPRESSION,false);
     }
+    else if(strCat == "赋值")
+    {
+        clickedButton = m_pCommandBtnLibrary->getBlockReprInstance("Set");
+    }
     else
     {
         clickedButton = m_pCommandBtnLibrary->getBlockReprInstance(strCat);
-        clickedButton->setLock(false);
+
     }
 
     if(clickedButton != nullptr)
     {
+        clickedButton->setLock(false);
         clickedButton->setPosition(QPoint(x,y));
         addCommand(clickedButton);
     }

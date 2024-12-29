@@ -54,7 +54,6 @@ private:
 
     QString m_qstrName;
 
-
     CValue* m_Value;
 
     CValue::DataType m_DataType;

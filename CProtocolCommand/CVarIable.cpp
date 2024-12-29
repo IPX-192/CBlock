@@ -8,6 +8,7 @@ CVarIable::~CVarIable()
 }
 
 SimpleVariable::SimpleVariable(QString name, CValue::DataType type, bool locked)
+    :m_qstrName(name),m_DataType(type),m_bLocked(locked)
 {
     if (type == CValue::NUMBER)
         m_Value = new NumberValue(0.0);
