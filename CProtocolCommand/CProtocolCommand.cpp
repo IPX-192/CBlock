@@ -442,8 +442,16 @@ void CProtocolCommand::onTickReceived()
     m_bWorking = true;
     if(m_Sprite)
     {
-        qDebug()<<"sfafafa" << m_Sprite->getBlockSceneBackgroundColor();
         m_pBlockCanvas->setBackgroundBrush(QBrush(m_Sprite->getBlockSceneBackgroundColor()));
+        QList<CVarIable*> vars = m_Sprite->getVarTable()->getSpriteVars()->getVariables();
+
+        for (int i = 0; i < vars.size(); ++i) {
+
+            qDebug()<<"fsfasfafasfafas1 "<<vars.at(i)->getName();
+
+            qDebug()<<"fsfasfafasfafas2 "<<vars.at(i)->getValue()->toString();
+
+        }
     }
     m_bWorking = false;
 }
@@ -455,7 +463,7 @@ void CProtocolCommand::onCommandBtnClicked(QString strCat)
     {
         clickedButton = new CConstantCommandRepr(CCommand::NUMBER_EXPRESSION,false);
     }
-    else if(strCat == "赋值")
+    else if(strCat == u8"赋值")
     {
         clickedButton = m_pCommandBtnLibrary->getBlockReprInstance("Set");
     }

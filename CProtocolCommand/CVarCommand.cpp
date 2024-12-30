@@ -1,4 +1,5 @@
 #include "CVarCommand.h"
+#include "CCommandExecuteThread.h"
 
 CCommand::ParamType CVarCommand::getReturnType() const
 {
@@ -17,7 +18,19 @@ CCommand::ParamType CVarCommand::getReturnType() const
 
 void CVarCommand::executeNextStep(CCommandExecuteThread &executionThread) const
 {
+    CValue* val = executionThread.getVarTable()->getValue(m_qstrVarName);
 
+    if(val != NULL && val->getDataType() == m_DataType)
+    {
+        val = val->copy();
+    }
+
+    else
+    {
+        val = NULL;
+    }
+
+    executionThread.endExecution(val);
 }
 
 void CVarCommand::setValue(CValue *value, CVarTable &varTable) const
@@ -26,5 +39,5 @@ void CVarCommand::setValue(CValue *value, CVarTable &varTable) const
         return;
 
     //给变量设值
-   // varTable.setValue(m_qstrVarName, value);
+    varTable.setValue(m_qstrVarName, value);
 }

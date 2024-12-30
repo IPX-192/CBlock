@@ -22,7 +22,7 @@ CNumberRassignment::~CNumberRassignment()
 QList<CCommand::ParamType> CNumberRassignment::getParamTypes() const
 {
     QList<CCommand::ParamType> params;
-    params.append(CCommand::NUMBER_EXPRESSION);
+    params.append(CCommand::NUMBER_VAR);
     params.append(CCommand::NUMBER_EXPRESSION);
     return params;
 }
@@ -51,7 +51,14 @@ void CNumberRassignment::executeNextStep(CCommandExecuteThread &executionThread)
 
     if(m->getValue() == 1)
     {
-
+        CValue* rv = executionThread.getReturnValue();
+        //这个是精灵的属性赋值的
+        if(rv != NULL && executionThread.getVarTable() != NULL)
+        {
+            m_VarCommand->setValue(rv->copy(), *executionThread.getVarTable());
+        }
+        executionThread.endExecution(NULL);
+        return;
     }
 
     executionThread.endExecution(nullptr);
@@ -64,7 +71,8 @@ bool CNumberRassignment::addParameter(CCommand *parameter, int index)
         return false;
     }
 
-    if(index == 0 && parameter->getReturnType() == CCommand::NUMBER_VAR) {
+    if(index == 0 && parameter->getReturnType() == CCommand::NUMBER_VAR)
+    {
         m_VarCommand = (CVarCommand*)parameter;
         return true;
     }
