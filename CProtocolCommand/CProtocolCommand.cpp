@@ -32,10 +32,10 @@ CProtocolCommand::CProtocolCommand(QWidget *parent)
 
 
     // 初始化按钮信息数组
-    buttonInfos[0] = {"if", 32,0};
+    buttonInfos[0] = {"if", 32,0, "qrc:/img/If.png",};
     buttonInfos[1] = {"else", 32, 50};
     buttonInfos[2] = {"while", 100, 0};
-    buttonInfos[3] = {"if_else", 100, 50};
+    buttonInfos[3] = {"if_else", 100, 50,"qrc:/img/qrc:/img/else.png.png"};
 
     buttonInfos[4] = {"+", 32, 100};
     buttonInfos[5] = {"-", 32, 150};
@@ -50,7 +50,7 @@ CProtocolCommand::CProtocolCommand(QWidget *parent)
     buttonInfos[13] = {u8"赋值", 100, 300};
 
     for (const auto& info : buttonInfos) {
-        CCommandBtn* commandBtn = new CCommandBtn(info.text,info.text);
+        CCommandBtn* commandBtn = new CCommandBtn(info.text,info.text,info.img);
         commandBtn->setFixedSize(65, 45);
         commandBtn->setStyleSheet("color: black;");
         QGraphicsProxyWidget* proxy = scene ->addWidget(commandBtn);
@@ -529,6 +529,12 @@ void CProtocolCommand::on_pushButton_Nunber_clicked()
 
 void CProtocolCommand::on_pushButton_Text_clicked()
 {
+    QString aa = "if";
+
+    CCommandRepr* clickedButton = m_pCommandBtnLibrary->getBlockReprInstance("if");
+
+    clickedButton->setPosition(QPoint(x,y));
+    addCommand(clickedButton);
 
 }
 

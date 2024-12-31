@@ -33,12 +33,23 @@ CCommandBtn::CCommandBtn(CCommand *block)
     }
 }
 
-CCommandBtn::CCommandBtn(QString cat, QString text, QWidget *parent):
+CCommandBtn::CCommandBtn(QString cat, QString text, QString icon,QWidget *parent):
     QPushButton(text, parent), m_qstrCat(cat)
 {
 
     m_qstrID = cat;
     connect(this, &CCommandBtn::clicked, this, &CCommandBtn::onBtnClicked);
+
+    // 新增部分，设置按钮的贴图
+
+    QPixmap pixmap(icon);
+    if (!pixmap.isNull())
+    {
+        QIcon buttonIcon(pixmap);
+        this->setIcon(buttonIcon);
+        this->setIconSize(pixmap.size());  // 设置图标大小为图片本身大小，可按需调整
+    }
+
 }
 
 CCommandBtn::CCommandBtn(const CCommandBtn &repr)

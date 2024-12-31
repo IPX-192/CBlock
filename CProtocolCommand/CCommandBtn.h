@@ -10,6 +10,9 @@
 #include <QFont>
 #include <QList>
 #include <QDebug>
+#include <QPixmap>
+#include <QIcon>
+#include <QSize>
 #include "CCommand.h"
 
 class CCommandParam;
@@ -21,7 +24,7 @@ public:
 
     CCommandBtn(CCommand* block);
 
-    CCommandBtn(QString cat,QString text, QWidget *parent = 0);
+    CCommandBtn(QString cat,QString text, QString icon = "",QWidget *parent = 0);
 
     CCommandBtn(const CCommandBtn& repr);
 

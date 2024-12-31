@@ -38,6 +38,7 @@ struct ButtonInfo {
     const char* text;
     int x;
     int y;
+    QString img = "";
     bool bAdd = false;
 };
 

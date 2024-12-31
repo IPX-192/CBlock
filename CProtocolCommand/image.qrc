@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>img/else.png</file>
+        <file>img/If.png</file>
+    </qresource>
+</RCC>

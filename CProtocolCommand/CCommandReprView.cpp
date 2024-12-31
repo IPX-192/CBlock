@@ -61,22 +61,31 @@ CCommandReprView::~CCommandReprView()
 
 void CCommandReprView::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    //draw polygon
-    painter->setBrush(QBrush(BlockColors::getColor(_blockRepr->getReturnType())));
-    painter->setPen(QPen(QBrush(BlockColors::getColor(_blockRepr->getReturnType()).darker(200)), 1));
-    painter->drawPolygon(_polygon);
-
-    //draw descriptions
-    painter->setPen(Qt::black);
-    painter->setFont(CCommandRepr::FONT);
-
-    for(int i = 0; i < _blockRepr->getParamDescriptions().size(); i++)
+    if(_blockRepr->getId() == "if")
     {
-        painter->drawText(_blockRepr->getParamDescriptionPosition(i), _blockRepr->getParamDescriptions().at(i));
+        qDebug()<<"fafaqqqqqqqqq11111111";
+         painter->drawPolygon(_polygon);
+
     }
-    for(int i = 0; i < _blockRepr->getBodyDescriptions().size(); i++)
+    else
     {
-        painter->drawText(_blockRepr->getBodyDescriptionPosition(i), _blockRepr->getBodyDescriptions().at(i));
+        //draw polygon
+        painter->setBrush(QBrush(BlockColors::getColor(_blockRepr->getReturnType())));
+        painter->setPen(QPen(QBrush(BlockColors::getColor(_blockRepr->getReturnType()).darker(200)), 1));
+        painter->drawPolygon(_polygon);
+
+        //draw descriptions
+        painter->setPen(Qt::black);
+        painter->setFont(CCommandRepr::FONT);
+
+        for(int i = 0; i < _blockRepr->getParamDescriptions().size(); i++)
+        {
+            painter->drawText(_blockRepr->getParamDescriptionPosition(i), _blockRepr->getParamDescriptions().at(i));
+        }
+        for(int i = 0; i < _blockRepr->getBodyDescriptions().size(); i++)
+        {
+            painter->drawText(_blockRepr->getBodyDescriptionPosition(i), _blockRepr->getBodyDescriptions().at(i));
+        }
     }
 
 }
@@ -262,6 +271,8 @@ void CCommandReprView::setCursorPixmap(QDrag *drag, QPoint position)
 
 void CCommandReprView::updateBlock()
 {
+
+
     prepareGeometryChange();
 
     resetHolders();
