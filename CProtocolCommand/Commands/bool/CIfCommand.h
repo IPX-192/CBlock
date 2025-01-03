@@ -1,25 +1,25 @@
-#ifndef CWHILECOMMANDBTN_H
-#define CWHILECOMMANDBTN_H
+﻿#ifndef CIFCOMMAND_H
+#define CIFCOMMAND_H
 
 #include "CStatementCommand.h"
 #include "CExpressionCommand.h"
 
-class CWhileCommandBtn : public CStatementCommand
+class CIfCommand : public CStatementCommand
 {
 public:
-    CWhileCommandBtn(){}
+    CIfCommand();
 
-    virtual ~CWhileCommandBtn();
+    ~CIfCommand();
 
-    virtual QString getId() const {return QString("while");}
+    virtual QString getId() const {return QString("if");}
 
     virtual QList<ParamType> getParamTypes() const;
 
     virtual int getNumBodies() const {return 1;}
 
-    virtual QString getParamDescription() const {return QObject::tr("While") + QString(" %p");}
+    virtual QString getParamDescription() const {return QObject::tr("If") + QString(" %p");}
 
-    virtual QString getBodiesDescription() const {return QObject::tr("Do") + QString(" %b");}
+    virtual QString getBodiesDescription() const {return QObject::tr("Then") + QString(" %b");}
 
     virtual void executeNextStep(CCommandExecuteThread& executionThread) const;
 
@@ -27,7 +27,11 @@ public:
 
     virtual bool addBody(CStatementCommand* body, int index);
 
-    virtual CCommand* newInstance() const {return new CWhileCommandBtn();}
+    virtual CCommand* newInstance() const {return new CIfCommand();}
+
+
+
+
 
 
 
@@ -36,4 +40,4 @@ private:
     CStatementCommand* m_Body{nullptr};         //下一个执行块
 };
 
-#endif // CWHILECOMMANDBTN_H
+#endif // CIFCOMMAND_H

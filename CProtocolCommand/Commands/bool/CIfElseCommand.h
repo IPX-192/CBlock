@@ -1,16 +1,16 @@
-#ifndef CIFELSECOMMANDBTN_H
-#define CIFELSECOMMANDBTN_H
+﻿#ifndef CIFELSECOMMAND_H
+#define CIFELSECOMMAND_H
 
 #include "CCommandBtn.h"
 #include "CStatementCommand.h"
 #include "CExpressionCommand.h"
 
-class CIfElseCommandBtn: public CStatementCommand
+class CIfElseCommand: public CStatementCommand
 {
 public:
-    CIfElseCommandBtn();
+    CIfElseCommand();
 
-    ~CIfElseCommandBtn();
+    ~CIfElseCommand();
 
     virtual QString getId() const {return QString("if_else");}
 
@@ -28,7 +28,7 @@ public:
 
     virtual bool addBody(CStatementCommand* body, int index);
 
-    virtual CCommand* newInstance() const {return new CIfElseCommandBtn();}
+    virtual CCommand* newInstance() const {return new CIfElseCommand();}
 
 
 private:
@@ -37,4 +37,4 @@ private:
     CStatementCommand* m_ElseBody;
 };
 
-#endif // CIFELSECOMMANDBTN_H
+#endif // CIFELSECOMMAND_H

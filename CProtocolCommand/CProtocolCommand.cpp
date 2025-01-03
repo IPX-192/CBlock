@@ -27,31 +27,38 @@ CProtocolCommand::CProtocolCommand(QWidget *parent)
     QGraphicsScene* scene = new QGraphicsScene(this);
     ui->graphicsView->setScene(scene);
 
+    QRectF initialRect1(0, 0, 152, 347); // 设置初始矩形大小为500x500
+
+    //重要：画布固定大小才能固定坐标系
+    scene->setSceneRect(initialRect);
+
+
     m_VarScene = new QGraphicsScene(this);
     ui->graphicsView_3->setScene(m_VarScene);
 
 
     // 初始化按钮信息数组
-    buttonInfos[0] = {"if", 32,0, "qrc:/img/If.png",};
-    buttonInfos[1] = {"else", 32, 50};
-    buttonInfos[2] = {"while", 100, 0};
-    buttonInfos[3] = {"if_else", 100, 50,"qrc:/img/qrc:/img/else.png.png"};
+    buttonInfos[0] = {"if",11,30, ":/img/If.png",};
+    buttonInfos[1] = {"else",81, 30};
+    buttonInfos[2] = {"while", 11, 75};
+    buttonInfos[3] = {"if_else", 81, 75,":/img/else.png"};
 
-    buttonInfos[4] = {"+", 32, 100};
-    buttonInfos[5] = {"-", 32, 150};
-    buttonInfos[6] = {"*", 100, 100};
-    buttonInfos[7] = {"/", 32, 200};
-    buttonInfos[8] = {"=", 100, 150};
+    buttonInfos[4] = {"+",11, 120};
+    buttonInfos[5] = {"-",11, 165};
+    buttonInfos[6] = {"*", 81, 120};
+    buttonInfos[7] = {"/",81, 165};
+    buttonInfos[8] = {"=", 11, 210};
 
-    buttonInfos[9]  = {">", 100, 200};
-    buttonInfos[10] = {"<", 32, 250};
-    buttonInfos[11] = {"value", 100, 250};
-    buttonInfos[12] = {"set_color", 32, 300};
-    buttonInfos[13] = {u8"赋值", 100, 300};
+    buttonInfos[9]  = {">", 11, 255};
+    buttonInfos[10] = {"<",81, 210};
+
+    buttonInfos[11] = {"value", 81, 255};
+    buttonInfos[12] = {"set_color",11, 300};
+    buttonInfos[13] = {u8"赋值", 81, 300};
 
     for (const auto& info : buttonInfos) {
         CCommandBtn* commandBtn = new CCommandBtn(info.text,info.text,info.img);
-        commandBtn->setFixedSize(65, 45);
+        commandBtn->setFixedSize(60, 35);
         commandBtn->setStyleSheet("color: black;");
         QGraphicsProxyWidget* proxy = scene ->addWidget(commandBtn);
 

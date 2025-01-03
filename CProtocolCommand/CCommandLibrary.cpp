@@ -4,9 +4,9 @@
 
 CCommandLibrary::CCommandLibrary() {
 
-    registerBlock(new CIfCommandBtn());
-    registerBlock(new CIfElseCommandBtn());
-    registerBlock(new CWhileCommandBtn());
+    registerBlock(new CIfCommand());
+    registerBlock(new CIfElseCommand());
+    registerBlock(new CWhileCommand());
     registerBlock(new CDivideCommand());
     registerBlock(new CEqualNumberCommand());
     registerBlock(new CGreaterThanNumberCommand());
@@ -17,6 +17,7 @@ CCommandLibrary::CCommandLibrary() {
     registerBlock(new CPlusCommand());
     registerBlock(new CStartCommand());
     registerBlock(new CBlockSceneBGColorCommand());
+    registerBlock(new CElseCommand());
 
 }
 

@@ -5,10 +5,11 @@
 #include <QString>
 #include "CCommand.h"
 
-#include "Commands/bool/CIfCommandBtn.h"
-#include "Commands/bool/CIfElseCommandBtn.h"
-#include "Commands/bool/CWhileCommandBtn.h"
+#include "Commands/bool/CIfCommand.h"
+#include "Commands/bool/CIfElseCommand.h"
+#include "Commands/bool/CWhileCommand.h"
 #include "Commands/bool/CForCommandBtn.h"
+#include "Commands/bool/CElseCommand.h"
 #include "Commands/number/CDivideCommand.h"
 #include "Commands/number/CEqualNumberCommand.h"
 #include "Commands/number/CGreaterThanNumberCommand.h"

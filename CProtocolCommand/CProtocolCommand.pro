@@ -34,10 +34,11 @@ SOURCES += \
     CStringConstantBlockReprView.cpp \
     CVarCommandRepr.cpp \
     CVarIable.cpp \
+    Commands/bool/CElseCommand.cpp \
     Commands/bool/CForCommandBtn.cpp \
-    Commands/bool/CIfCommandBtn.cpp \
-    Commands/bool/CIfElseCommandBtn.cpp \
-    Commands/bool/CWhileCommandBtn.cpp \
+    Commands/bool/CIfCommand.cpp \
+    Commands/bool/CIfElseCommand.cpp \
+    Commands/bool/CWhileCommand.cpp \
     Commands/number/CDivideCommand.cpp \
     Commands/number/CEqualNumberCommand.cpp \
     Commands/number/CGreaterThanNumberCommand.cpp \
@@ -82,10 +83,11 @@ HEADERS += \
     CStringConstantBlockReprView.h \
     CVarCommandRepr.h \
     CVarIable.h \
+    Commands/bool/CElseCommand.h \
     Commands/bool/CForCommandBtn.h \
-    Commands/bool/CIfCommandBtn.h \
-    Commands/bool/CIfElseCommandBtn.h \
-    Commands/bool/CWhileCommandBtn.h \
+    Commands/bool/CIfCommand.h \
+    Commands/bool/CIfElseCommand.h \
+    Commands/bool/CWhileCommand.h \
     Commands/number/CDivideCommand.h \
     Commands/number/CEqualNumberCommand.h \
     Commands/number/CGreaterThanNumberCommand.h \

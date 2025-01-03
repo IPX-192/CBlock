@@ -1,38 +1,42 @@
-#include "CWhileCommandBtn.h"
+﻿#include "CIfCommand.h"
 #include "CMessage.h"
 #include "CCommandExecuteThread.h"
+#include <QColor>
+#include <QDebug>
 
+CIfCommand::CIfCommand() {}
 
-CWhileCommandBtn::~CWhileCommandBtn()
+CIfCommand::~CIfCommand()
 {
     if(m_Condition != nullptr)
     {
         delete m_Condition;
-        m_Condition = nullptr;
     }
     if(m_Body != nullptr)
     {
         delete m_Body;
-        m_Body = nullptr;
     }
 }
 
-QList<CCommand::ParamType> CWhileCommandBtn::getParamTypes() const
+QList<CCommand::ParamType> CIfCommand::getParamTypes() const
 {
     QList<CCommand::ParamType> params;
     params.append(CCommand::BOOLEAN_EXPRESSION);
     return params;
 }
 
-void CWhileCommandBtn::executeNextStep(CCommandExecuteThread &executionThread) const
+void CIfCommand::executeNextStep(CCommandExecuteThread &executionThread) const
 {
     //check if block is valid for execution
-    if(m_Condition == NULL || m_Body == NULL)
-        executionThread.endExecution(NULL);
+    if(m_Condition == nullptr || m_Body == nullptr)
+    {
+        executionThread.endExecution(nullptr);
+        return;
+    }
 
     //get message
     IntMessage* m = (IntMessage*)executionThread.getMessage();
-    if(m == NULL)
+    if(m == nullptr)
     {
         m = new IntMessage(0);
         executionThread.setMessage(m);
@@ -51,51 +55,44 @@ void CWhileCommandBtn::executeNextStep(CCommandExecuteThread &executionThread) c
     {
         CValue* value = (CValue*) executionThread.getReturnValue();
         //if no return value or false -> end execution
-        //重要：while循环只需要判断这个条件是否为真
-        if(value == NULL || !value->toBool())
+        if(value == nullptr || !value->toBool())
         {
-
-
-            //qDebug()<<u8"while表达式是不成立的";
-            executionThread.endExecution(NULL);
+            qDebug()<<u8"if表达式是不成立的";
+            executionThread.endExecution(nullptr);
             return;
         }
 
+        qDebug()<<u8"if表达式是成立的";
         //if condition true -> execute body
         executionThread.setNextBlock(m_Body);
-        m->setValue(0);
+        m->setValue(2);
         return;
     }
 
     //end execution
-    executionThread.endExecution(NULL);
+    executionThread.endExecution(nullptr);
 }
 
-bool CWhileCommandBtn::addParameter(CCommand *parameter, int index)
+bool CIfCommand::addParameter(CCommand *parameter, int index)
 {
-    if(index != 0 || parameter == NULL)
+    if(index != 0 || parameter == nullptr)
     {
         return false;
     }
-
     if(parameter->getReturnType() != CCommand::BOOLEAN_EXPRESSION && parameter->getReturnType() != CCommand::BOOLEAN_VAR)
     {
         return false;
     }
-
     m_Condition = (CExpressionCommand*)parameter;
-
     return true;
 }
 
-bool CWhileCommandBtn::addBody(CStatementCommand *body, int index)
+bool CIfCommand::addBody(CStatementCommand *body, int index)
 {
-    if(index != 0 || body == NULL)
+    if(index != 0 || body == nullptr)
+    {
         return false;
-
+    }
     m_Body = body;
-
     return true;
 }
-
-

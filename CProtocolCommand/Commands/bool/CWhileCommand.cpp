@@ -1,33 +1,34 @@
-#include "CIfElseCommandBtn.h"
+#include "CWhileCommand.h"
 #include "CMessage.h"
 #include "CCommandExecuteThread.h"
 
-CIfElseCommandBtn::CIfElseCommandBtn() {}
 
-CIfElseCommandBtn::~CIfElseCommandBtn()
+CWhileCommand::~CWhileCommand()
 {
-    if(m_Condition != NULL)
+    if(m_Condition != nullptr)
+    {
         delete m_Condition;
-    if(m_IfBody != NULL)
-        delete m_IfBody;
-    if(m_ElseBody != NULL)
-        delete m_ElseBody;
+        m_Condition = nullptr;
+    }
+    if(m_Body != nullptr)
+    {
+        delete m_Body;
+        m_Body = nullptr;
+    }
 }
 
-QList<CCommand::ParamType> CIfElseCommandBtn::getParamTypes() const
+QList<CCommand::ParamType> CWhileCommand::getParamTypes() const
 {
     QList<CCommand::ParamType> params;
     params.append(CCommand::BOOLEAN_EXPRESSION);
     return params;
 }
 
-void CIfElseCommandBtn::executeNextStep(CCommandExecuteThread &executionThread) const
+void CWhileCommand::executeNextStep(CCommandExecuteThread &executionThread) const
 {
     //check if block is valid for execution
-    if(m_Condition == NULL || m_IfBody == NULL || m_ElseBody == NULL) {
+    if(m_Condition == NULL || m_Body == NULL)
         executionThread.endExecution(NULL);
-        return;
-    }
 
     //get message
     IntMessage* m = (IntMessage*)executionThread.getMessage();
@@ -50,24 +51,19 @@ void CIfElseCommandBtn::executeNextStep(CCommandExecuteThread &executionThread) 
     {
         CValue* value = (CValue*) executionThread.getReturnValue();
         //if no return value or false -> end execution
-        if(value == NULL)
+        //重要：while循环只需要判断这个条件是否为真
+        if(value == NULL || !value->toBool())
         {
+
+
+            //qDebug()<<u8"while表达式是不成立的";
             executionThread.endExecution(NULL);
             return;
         }
-        else if (value->toBool())
-        {
-            //if condition true -> execute if body
-            executionThread.setNextBlock(m_IfBody);
-            m->setValue(2);
-        }
-        else if (!value->toBool())
-        {
-            //if condition false -> execute else body
-            executionThread.setNextBlock(m_ElseBody);
-            m->setValue(2);
-        }
 
+        //if condition true -> execute body
+        executionThread.setNextBlock(m_Body);
+        m->setValue(0);
         return;
     }
 
@@ -75,28 +71,31 @@ void CIfElseCommandBtn::executeNextStep(CCommandExecuteThread &executionThread) 
     executionThread.endExecution(NULL);
 }
 
-bool CIfElseCommandBtn::addParameter(CCommand *parameter, int index)
+bool CWhileCommand::addParameter(CCommand *parameter, int index)
 {
     if(index != 0 || parameter == NULL)
+    {
         return false;
+    }
 
     if(parameter->getReturnType() != CCommand::BOOLEAN_EXPRESSION && parameter->getReturnType() != CCommand::BOOLEAN_VAR)
+    {
         return false;
+    }
 
     m_Condition = (CExpressionCommand*)parameter;
 
     return true;
 }
 
-bool CIfElseCommandBtn::addBody(CStatementCommand *body, int index)
+bool CWhileCommand::addBody(CStatementCommand *body, int index)
 {
-    if(index < 0 || index > 1 || body == NULL)
+    if(index != 0 || body == NULL)
         return false;
 
-    if (index == 0)
-        m_IfBody = body;
-    else if (index == 1)
-        m_ElseBody = body;
+    m_Body = body;
 
     return true;
 }
+
+

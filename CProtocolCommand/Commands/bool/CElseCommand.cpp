@@ -1,37 +1,43 @@
-﻿#include "CIfCommandBtn.h"
+﻿#include "CElseCommand.h"
 #include "CMessage.h"
 #include "CCommandExecuteThread.h"
 #include <QColor>
 #include <QDebug>
 
-CIfCommandBtn::CIfCommandBtn() {}
 
-CIfCommandBtn::~CIfCommandBtn()
+CElseCommand::CElseCommand() {}
+
+CElseCommand::~CElseCommand()
 {
-    if(m_Condition != NULL)
+    if(m_Condition != nullptr)
+    {
         delete m_Condition;
-    if(m_Body != NULL)
+    }
+    if(m_Body != nullptr)
+    {
         delete m_Body;
+    }
 }
 
-QList<CCommand::ParamType> CIfCommandBtn::getParamTypes() const
+QList<CCommand::ParamType> CElseCommand::getParamTypes() const
 {
     QList<CCommand::ParamType> params;
     params.append(CCommand::BOOLEAN_EXPRESSION);
     return params;
 }
 
-void CIfCommandBtn::executeNextStep(CCommandExecuteThread &executionThread) const
+void CElseCommand::executeNextStep(CCommandExecuteThread &executionThread) const
 {
     //check if block is valid for execution
-    if(m_Condition == NULL || m_Body == NULL) {
-        executionThread.endExecution(NULL);
+    if(m_Condition == nullptr || m_Body == nullptr)
+    {
+        executionThread.endExecution(nullptr);
         return;
     }
 
     //get message
     IntMessage* m = (IntMessage*)executionThread.getMessage();
-    if(m == NULL)
+    if(m == nullptr)
     {
         m = new IntMessage(0);
         executionThread.setMessage(m);
@@ -50,14 +56,14 @@ void CIfCommandBtn::executeNextStep(CCommandExecuteThread &executionThread) cons
     {
         CValue* value = (CValue*) executionThread.getReturnValue();
         //if no return value or false -> end execution
-        if(value == NULL || !value->toBool())
+        if(value == nullptr || !value->toBool())
         {
-            qDebug()<<u8"if表达式是不成立的";
-            executionThread.endExecution(NULL);
+            qDebug()<<u8"else表达式是不成立的";
+            executionThread.endExecution(nullptr);
             return;
         }
 
-        qDebug()<<u8"if表达式是成立的";
+        qDebug()<<u8"else表达式是成立的";
         //if condition true -> execute body
         executionThread.setNextBlock(m_Body);
         m->setValue(2);
@@ -65,28 +71,29 @@ void CIfCommandBtn::executeNextStep(CCommandExecuteThread &executionThread) cons
     }
 
     //end execution
-    executionThread.endExecution(NULL);
+    executionThread.endExecution(nullptr);
 }
 
-bool CIfCommandBtn::addParameter(CCommand *parameter, int index)
+bool CElseCommand::addParameter(CCommand *parameter, int index)
 {
-    if(index != 0 || parameter == NULL)
+    if(index != 0 || parameter == nullptr)
+    {
         return false;
-
+    }
     if(parameter->getReturnType() != CCommand::BOOLEAN_EXPRESSION && parameter->getReturnType() != CCommand::BOOLEAN_VAR)
+    {
         return false;
-
+    }
     m_Condition = (CExpressionCommand*)parameter;
-
     return true;
 }
 
-bool CIfCommandBtn::addBody(CStatementCommand *body, int index)
+bool CElseCommand::addBody(CStatementCommand *body, int index)
 {
-    if(index != 0 || body == NULL)
+    if(index != 0 || body == nullptr)
+    {
         return false;
-
+    }
     m_Body = body;
-
     return true;
 }
