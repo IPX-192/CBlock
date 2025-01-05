@@ -61,13 +61,13 @@ CCommandReprView::~CCommandReprView()
 
 void CCommandReprView::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    if(_blockRepr->getId() == "if")
-    {
-        qDebug()<<"fafaqqqqqqqqq11111111";
-         painter->drawPolygon(_polygon);
+    // if(_blockRepr->getId() == "if")
+    // {
+    //     qDebug()<<"fafaqqqqqqqqq11111111";
+    //      painter->drawPolygon(_polygon);
 
-    }
-    else
+    // }
+    // else
     {
         //draw polygon
         painter->setBrush(QBrush(BlockColors::getColor(_blockRepr->getReturnType())));

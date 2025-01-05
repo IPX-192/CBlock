@@ -141,6 +141,23 @@ void CProtocolCommand::addCommand(CCommandRepr *commandBtn)
                 m_listCommands.first()->placeNextStatement(commandBtn);
             }
         }
+
+        for (int index = 0; index < m_listCommands.size(); ++index) {
+            QString element = m_listCommands.at(index)->getId();
+            if (element == "else") {
+                for (int prevIndex = index - 1; prevIndex >= 0; --prevIndex) {
+                    QString prevElement = m_listCommands.at(prevIndex)->getId();
+                    if (prevElement.startsWith("if")) {
+                        qDebug()<<u8"找到了上一个if";
+
+                        CCommandRepr* test = m_listCommands.at(prevIndex)->getParam(0);
+                        m_listCommands.at(index)->placeParam(m_listCommands.at(prevIndex)->getParam(0),0);
+
+                        break;
+                    }
+                }
+            }
+        }
     }
 }
 
