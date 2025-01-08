@@ -23,7 +23,7 @@
 #include "CStartCommand.h"
 
 
-class CCommandBtnLibrary;
+class CCommandReprLibrary;
 class CCommandLibrary
 {
 public:
@@ -33,7 +33,7 @@ public:
 
     CCommand* getBlockInstance(QString id) const;
 
-    CCommandBtnLibrary* createBlockReprLibrary() const;
+    CCommandReprLibrary* createBlockReprLibrary() const;
 
     bool contains(QString id);
 

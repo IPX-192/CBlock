@@ -1,5 +1,5 @@
 ﻿#include "CCommandLibrary.h"
-#include "CCommandBtnLibrary.h"
+#include "CCommandReprLibrary.h"
 #include "CCommand.h"
 
 CCommandLibrary::CCommandLibrary() {
@@ -61,9 +61,9 @@ CCommand *CCommandLibrary::getBlockInstance(QString id) const
 
 }
 
-CCommandBtnLibrary* CCommandLibrary::createBlockReprLibrary() const
+CCommandReprLibrary* CCommandLibrary::createBlockReprLibrary() const
 {
-    CCommandBtnLibrary* lib = new CCommandBtnLibrary;
+    CCommandReprLibrary* lib = new CCommandReprLibrary;
 
     foreach (CCommand* block, m_listCommand) {
         lib->registerBlock(new CCommandRepr(block,true));

@@ -13,7 +13,7 @@
 #include "CCommand.h"
 #include "CCommandBtn.h"
 #include "CCommandLibrary.h"
-#include "CCommandBtnLibrary.h"
+#include "CCommandReprLibrary.h"
 #include "CStatementsCommand.h"
 #include "CStatementCommand.h"
 #include "CExpressionCommand.h"
@@ -143,7 +143,7 @@ private:
 
     CCommandLibrary m_CommandLibrary;
 
-    CCommandBtnLibrary* m_pCommandBtnLibrary{nullptr};
+    CCommandReprLibrary* m_pCommandBtnLibrary{nullptr};
 
     CCommandBtn *m_curCommandBtn{nullptr};
 

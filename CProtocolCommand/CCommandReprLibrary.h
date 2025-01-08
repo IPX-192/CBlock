@@ -1,17 +1,17 @@
-﻿#ifndef CCOMMANDBTNLIBRARY_H
-#define CCOMMANDBTNLIBRARY_H
+#ifndef CCOMMANDREPRLIBRARY_H
+#define CCOMMANDREPRLIBRARY_H
 
 #include <QList>
 #include <QStringList>
 #include "CCommandRepr.h"
 
 
-class CCommandBtnLibrary
+class CCommandReprLibrary
 {
 public:
-    CCommandBtnLibrary();
+    CCommandReprLibrary();
 
-    ~CCommandBtnLibrary();
+    ~CCommandReprLibrary();
 
     bool registerBlock(CCommandRepr* blockRepr);
 
@@ -33,4 +33,4 @@ private:
 
 };
 
-#endif // CCOMMANDBTNLIBRARY_H
+#endif // CCOMMANDREPRLIBRARY_H

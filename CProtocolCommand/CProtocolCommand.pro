@@ -13,13 +13,13 @@ CONFIG += c++17
 SOURCES += \
     CCommand.cpp \
     CCommandBtn.cpp \
-    CCommandBtnLibrary.cpp \
     CCommandCanvas.cpp \
     CCommandExcuteHandler.cpp \
     CCommandExecuteThread.cpp \
     CCommandLibrary.cpp \
     CCommandParam.cpp \
     CCommandRepr.cpp \
+    CCommandReprLibrary.cpp \
     CCommandReprView.cpp \
     CCommandReprviewholder.cpp \
     CCommandStackElement.cpp \
@@ -62,13 +62,13 @@ SOURCES += \
 HEADERS += \
     CCommand.h \
     CCommandBtn.h \
-    CCommandBtnLibrary.h \
     CCommandCanvas.h \
     CCommandExcuteHandler.h \
     CCommandExecuteThread.h \
     CCommandLibrary.h \
     CCommandParam.h \
     CCommandRepr.h \
+    CCommandReprLibrary.h \
     CCommandReprView.h \
     CCommandReprviewholder.h \
     CCommandStackElement.h \

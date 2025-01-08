@@ -1,18 +1,18 @@
-﻿#include "CCommandBtnLibrary.h"
+﻿#include "CCommandReprLibrary.h"
 #include "CConstantCommandRepr.h"
 
-CCommandBtnLibrary::CCommandBtnLibrary() {
+CCommandReprLibrary::CCommandReprLibrary() {
 
     registerBlock(new CConstantCommandRepr(CCommand::STRING_EXPRESSION));
     registerBlock(new CConstantCommandRepr(CCommand::NUMBER_EXPRESSION));
 }
 
-CCommandBtnLibrary::~CCommandBtnLibrary()
+CCommandReprLibrary::~CCommandReprLibrary()
 {
 
 }
 
-bool CCommandBtnLibrary::registerBlock(CCommandRepr *blockRepr)
+bool CCommandReprLibrary::registerBlock(CCommandRepr *blockRepr)
 {
     if(blockRepr == nullptr)
     {
@@ -26,7 +26,7 @@ bool CCommandBtnLibrary::registerBlock(CCommandRepr *blockRepr)
     m_listBlockReprs.append(blockRepr);
 }
 
-CCommandRepr *CCommandBtnLibrary::getBlockReprInstance(QString id) const
+CCommandRepr *CCommandReprLibrary::getBlockReprInstance(QString id) const
 {
     CCommandRepr* block = get(id);
 
@@ -41,7 +41,7 @@ CCommandRepr *CCommandBtnLibrary::getBlockReprInstance(QString id) const
     }
 }
 
-QStringList CCommandBtnLibrary::createCategoryList()
+QStringList CCommandReprLibrary::createCategoryList()
 {
     QStringList list;
 
@@ -56,7 +56,7 @@ QStringList CCommandBtnLibrary::createCategoryList()
     return list;
 }
 
-bool CCommandBtnLibrary::contains(QString id)
+bool CCommandReprLibrary::contains(QString id)
 {
     foreach (CCommandRepr* blockrepr, m_listBlockReprs) {
         if (blockrepr->getId() == id)
@@ -66,7 +66,7 @@ bool CCommandBtnLibrary::contains(QString id)
     return false;
 }
 
-QList<CCommandRepr *> CCommandBtnLibrary::getBlocksOfCategory(QString cat)
+QList<CCommandRepr *> CCommandReprLibrary::getBlocksOfCategory(QString cat)
 {
     QList<CCommandRepr*> list;
 
@@ -79,7 +79,7 @@ QList<CCommandRepr *> CCommandBtnLibrary::getBlocksOfCategory(QString cat)
     return list;
 }
 
-CCommandRepr *CCommandBtnLibrary::get(QString id) const
+CCommandRepr *CCommandReprLibrary::get(QString id) const
 {
     foreach (CCommandRepr* blockrepr, m_listBlockReprs) {
         if (blockrepr->getId() == id)
